@@ -3,7 +3,7 @@ import { supabase } from "../lib/supabase";
 import { StyleSheet, View, Alert } from "react-native";
 import { Button, Input } from "@rneui/themed";
 import { Session } from "@supabase/supabase-js";
-
+import QRCode from "react-native-qrcode-svg";
 export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
@@ -110,6 +110,11 @@ export default function Account({ session }: { session: Session }) {
       <View style={styles.verticallySpaced}>
         <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
       </View>
+      {username ? (
+        <View style={styles.qrstyle}>
+          <QRCode value={username} />
+        </View>
+      ) : null}
     </View>
   );
 }
@@ -126,5 +131,9 @@ const styles = StyleSheet.create({
   },
   mt20: {
     marginTop: 20,
+  },
+  qrstyle: {
+    marginTop: 5,
+    alignSelf: "center",
   },
 });
