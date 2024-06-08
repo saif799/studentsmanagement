@@ -1,3 +1,4 @@
+import { supabase } from "@/lib/supabase";
 import {
   BarcodeScanningResult,
   CameraType,
@@ -37,8 +38,12 @@ export default function App() {
       </View>
     );
   }
-  const handleBarCodeScanned = ({ type, data }: BarcodeScanningResult) => {
+  const handleBarCodeScanned = async ({
+    type,
+    data,
+  }: BarcodeScanningResult) => {
     setScanned(true);
+    await supabase.from("student").insert({ name: data });
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     setText(data);
     // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
@@ -63,7 +68,7 @@ export default function App() {
             <Text style={styles.text}>Flip this is interesting {text}</Text>
           </TouchableOpacity>
           {isScanned ? (
-            <ExternalLink url={text} />
+            <ExternalLink url={text} handle={() => setScanned(false)} />
           ) : (
             <TouchableOpacity
               style={styles.button}
@@ -107,7 +112,9 @@ const styles = StyleSheet.create({
 const ExternalLink = ({
   url,
   children,
+  handle,
 }: {
+  handle: () => void;
   url: string;
   children?: ReactNode;
 }) => {
@@ -125,7 +132,7 @@ const ExternalLink = ({
   };
 
   return (
-    <TouchableOpacity onPress={handlePress} style={styles.button}>
+    <TouchableOpacity onPress={handle} style={styles.button}>
       <Text style={styles.text}>{children ? children : "this should wrk"}</Text>
     </TouchableOpacity>
   );
