@@ -5,8 +5,8 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
+    "scheme": "Students_Management",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -53,6 +53,9 @@
     },
     "runtimeVersion": {
       "policy": "appVersion"
+    },
+    "expo": {
+      "assetBundlePatterns": ["/assets/images/icon.png"]
     }
   }
 }
