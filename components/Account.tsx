@@ -5,17 +5,14 @@ import { Button, Input } from "@rneui/themed";
 import { Session } from "@supabase/supabase-js";
 import QRCode from "react-native-qrcode-svg";
 import Avatar from "./Avatar";
-import { router } from "expo-router";
-import { useSession } from "@/context/authProvider";
 export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
   const [website, setWebsite] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
 
-  const auth = useSession();
   useEffect(() => {
-    if (auth.session) getProfile();
+    if (session) getProfile();
   }, [session]);
 
   async function getProfile() {
