@@ -2,20 +2,15 @@ import { Redirect, Tabs } from "expo-router";
 import React from "react";
 
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
 import { useSession } from "@/context/authProvider";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   const Auth = useSession();
 
   if (!Auth.session) return <Redirect href="/signin" />;
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         headerShown: false,
       }}
     >
