@@ -1,8 +1,17 @@
 import React, { useState } from "react";
-import { Alert, StyleSheet, View, AppState } from "react-native";
+import {
+  Alert,
+  StyleSheet,
+  View,
+  AppState,
+  TextInput,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { supabase } from "../lib/supabase";
-import { Button, Input } from "@rneui/themed";
+import { Button, Input } from "@rneui/base";
 import { router } from "expo-router";
+import FormField from "./FormField";
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -48,42 +57,52 @@ export default function Auth() {
     setLoading(false);
   }
 
+  const onPasswordChange = (text: string) => setPassword(text);
+  const onEmailChange = (text: string) => setEmail(text);
   return (
-    <View style={styles.container}>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Input
-          label="Email"
-          leftIcon={{ type: "font-awesome", name: "envelope" }}
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-          placeholder="email@address.com"
-          autoCapitalize={"none"}
-        />
+    <View className="p-3">
+      <View>
+        <View className=" gap-3 pr-2">
+          <View>
+            <FormField
+              label="N° d’inscription"
+              value={email}
+              placeholder="xxxx-xxxx"
+              onValueChange={onEmailChange}
+            />
+          </View>
+          <View>
+            <FormField
+              label="Mot de passe"
+              value={password}
+              placeholder="Mot de passe"
+              secureTextEntry
+              onValueChange={onPasswordChange}
+            />
+          </View>
+        </View>
       </View>
-      <View style={styles.verticallySpaced}>
-        <Input
-          label="Password"
-          leftIcon={{ type: "font-awesome", name: "lock" }}
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-          secureTextEntry={true}
-          placeholder="Password"
-          autoCapitalize={"none"}
-        />
-      </View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button
-          title="Sign in"
+
+      <View className="pt-8">
+        <TouchableOpacity
           disabled={loading}
           onPress={() => signInWithEmail()}
-        />
-      </View>
-      <View style={styles.verticallySpaced}>
-        <Button
-          title="Sign up"
+          className="w-full h-12 justify-center items-center bg-primary rounded-lg"
+        >
+          <Text className=" text-white font-bold text-base">Sign in</Text>
+        </TouchableOpacity>
+        <View className="flex-row items-center justify-center">
+          <View className="mt-4 h-3 border-t-[0.5px] grow border-neutral-400"></View>
+          <Text className="text-neutral-500"> OR </Text>
+          <View className="mt-4 h-3 border-t-[0.5px] border-neutral-400 grow"></View>
+        </View>
+        <TouchableOpacity
           disabled={loading}
           onPress={() => signUpWithEmail()}
-        />
+          className="w-full h-12 justify-center mt-2 items-center border-[1px] border-neutral-500 rounded-lg"
+        >
+          <Text className=" text-black font-bold text-base">Sign up</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -98,6 +117,7 @@ const styles = StyleSheet.create({
     paddingTop: 4,
     paddingBottom: 4,
     alignSelf: "stretch",
+    width: "100%",
   },
   mt20: {
     marginTop: 20,
