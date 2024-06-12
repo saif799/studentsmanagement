@@ -37,6 +37,12 @@
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
           "recordAudioAndroid": true
         }
+      ],
+      [
+        "expo-asset",
+        {
+          "assets": ["path/to/file.png", "path/to/directory"]
+        }
       ]
     ],
     "experiments": {

@@ -1,7 +1,15 @@
 import React, { useState } from "react";
-import { Alert, StyleSheet, View, AppState } from "react-native";
+import {
+  Alert,
+  StyleSheet,
+  View,
+  AppState,
+  TextInput,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { supabase } from "../lib/supabase";
-import { Button, Input } from "@rneui/themed";
+import { Button, Input } from "@rneui/base";
 import { router } from "expo-router";
 
 // Tells Supabase Auth to continuously refresh the session automatically if
@@ -49,41 +57,77 @@ export default function Auth() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Input
-          label="Email"
-          leftIcon={{ type: "font-awesome", name: "envelope" }}
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-          placeholder="email@address.com"
-          autoCapitalize={"none"}
-        />
+    <View className="p-3">
+      <View>
+        <View className=" gap-3 pr-2">
+          <View>
+            <Text className="font-semibold text-lg pb-3">N° d’inscription</Text>
+
+            <View className="w-full h-16 px-4 border-[1px] border-neutral-300 rounded-xl items-start">
+              <TextInput
+                className=" flex-1 text-base text-black  caret-black w-full"
+                value={email}
+                placeholder="xxxx-xxxx"
+                placeholderTextColor={"gray"}
+                onChangeText={(text) => setEmail(text)}
+              />
+            </View>
+          </View>
+          <View>
+            <Text className="font-semibold pb-3 text-lg">Mot de passe</Text>
+            <View className="w-full h-16 px-4 border-[1px] border-neutral-300 rounded-xl items-start">
+              <TextInput
+                className=" flex-1 text-base text-black  caret-black w-full"
+                value={password}
+                placeholder="Mot de passe"
+                placeholderTextColor={"gray"}
+                onChangeText={(text) => setPassword(text)}
+              />
+            </View>
+            <View style={styles.verticallySpaced}>
+              <Text className="font-semibold pb-3 text-lg">Mot de passe</Text>
+
+              {/* <Input
+                style={{
+                  // borderColor: "#000",
+
+                  borderWidth: 0.5,
+                  padding: 16,
+                  borderRadius: 10,
+                  width: "100%",
+                  borderColor: "black",
+                }}
+                onChangeText={(text) => setPassword(text)}
+                value={password}
+                secureTextEntry={true}
+                placeholder="Mot de passe"
+                autoCapitalize={"none"}
+              /> */}
+            </View>
+          </View>
+        </View>
       </View>
-      <View style={styles.verticallySpaced}>
-        <Input
-          label="Password"
-          leftIcon={{ type: "font-awesome", name: "lock" }}
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-          secureTextEntry={true}
-          placeholder="Password"
-          autoCapitalize={"none"}
-        />
-      </View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button
-          title="Sign in"
+
+      <View className="pt-8">
+        <TouchableOpacity
           disabled={loading}
           onPress={() => signInWithEmail()}
-        />
-      </View>
-      <View style={styles.verticallySpaced}>
-        <Button
-          title="Sign up"
+          className="w-full h-12 justify-center items-center bg-primary rounded-lg"
+        >
+          <Text className=" text-white font-bold text-base">Sign in</Text>
+        </TouchableOpacity>
+        <View className="flex-row items-center justify-center">
+          <View className="mt-4 h-3 border-t-[0.5px] grow border-neutral-400"></View>
+          <Text className="text-neutral-500"> OR </Text>
+          <View className="mt-4 h-3 border-t-[0.5px] border-neutral-400 grow"></View>
+        </View>
+        <TouchableOpacity
           disabled={loading}
           onPress={() => signUpWithEmail()}
-        />
+          className="w-full h-12 justify-center mt-2 items-center border-[1px] border-neutral-500 rounded-lg"
+        >
+          <Text className=" text-black font-bold text-base">Sign up</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -98,8 +142,23 @@ const styles = StyleSheet.create({
     paddingTop: 4,
     paddingBottom: 4,
     alignSelf: "stretch",
+    width: "100%",
   },
   mt20: {
     marginTop: 20,
   },
 });
+
+{
+  /* <View style={styles.verticallySpaced}>
+        <Input
+          label="Mot de passe"
+          leftIcon={{ type: "font-awesome", name: "lock" }}
+          onChangeText={(text) => setPassword(text)}
+          value={password}
+          secureTextEntry={true}
+          placeholder="Mot de passe"
+          autoCapitalize={"none"}
+        />
+      </View> */
+}
