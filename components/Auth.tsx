@@ -11,6 +11,7 @@ import {
 import { supabase } from "../lib/supabase";
 import { Button, Input } from "@rneui/base";
 import { router } from "expo-router";
+import FormField from "./FormField";
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -56,54 +57,28 @@ export default function Auth() {
     setLoading(false);
   }
 
+  const onPasswordChange = (text: string) => setPassword(text);
+  const onEmailChange = (text: string) => setEmail(text);
   return (
     <View className="p-3">
       <View>
         <View className=" gap-3 pr-2">
           <View>
-            <Text className="font-semibold text-lg pb-3">N° d’inscription</Text>
-
-            <View className="w-full h-16 px-4 border-[1px] border-neutral-300 rounded-xl items-start">
-              <TextInput
-                className=" flex-1 text-base text-black  caret-black w-full"
-                value={email}
-                placeholder="xxxx-xxxx"
-                placeholderTextColor={"gray"}
-                onChangeText={(text) => setEmail(text)}
-              />
-            </View>
+            <FormField
+              label="N° d’inscription"
+              value={email}
+              placeholder="xxxx-xxxx"
+              onValueChange={onEmailChange}
+            />
           </View>
           <View>
-            <Text className="font-semibold pb-3 text-lg">Mot de passe</Text>
-            <View className="w-full h-16 px-4 border-[1px] border-neutral-300 rounded-xl items-start">
-              <TextInput
-                className=" flex-1 text-base text-black  caret-black w-full"
-                value={password}
-                placeholder="Mot de passe"
-                placeholderTextColor={"gray"}
-                onChangeText={(text) => setPassword(text)}
-              />
-            </View>
-            <View style={styles.verticallySpaced}>
-              <Text className="font-semibold pb-3 text-lg">Mot de passe</Text>
-
-              {/* <Input
-                style={{
-                  // borderColor: "#000",
-
-                  borderWidth: 0.5,
-                  padding: 16,
-                  borderRadius: 10,
-                  width: "100%",
-                  borderColor: "black",
-                }}
-                onChangeText={(text) => setPassword(text)}
-                value={password}
-                secureTextEntry={true}
-                placeholder="Mot de passe"
-                autoCapitalize={"none"}
-              /> */}
-            </View>
+            <FormField
+              label="Mot de passe"
+              value={password}
+              placeholder="Mot de passe"
+              secureTextEntry
+              onValueChange={onPasswordChange}
+            />
           </View>
         </View>
       </View>
@@ -148,17 +123,3 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
-
-{
-  /* <View style={styles.verticallySpaced}>
-        <Input
-          label="Mot de passe"
-          leftIcon={{ type: "font-awesome", name: "lock" }}
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-          secureTextEntry={true}
-          placeholder="Mot de passe"
-          autoCapitalize={"none"}
-        />
-      </View> */
-}
