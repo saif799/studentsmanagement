@@ -87,21 +87,21 @@ export default function Auth() {
         <TouchableOpacity
           disabled={loading}
           onPress={() => signInWithEmail()}
-          className="w-full h-12 justify-center items-center bg-primary rounded-lg"
+          className="w-full py-4 justify-center items-center bg-primary rounded-lg"
         >
-          <Text className=" text-white font-bold text-base">Sign in</Text>
+          <Text className=" text-white font-pbold text-base">Sign in</Text>
         </TouchableOpacity>
         <View className="flex-row items-center justify-center">
-          <View className="mt-4 h-3 border-t-[0.5px] grow border-neutral-400"></View>
+          <View className="mt-4 h-3 border-t-[0.5px] grow border-grayBorder"></View>
           <Text className="text-neutral-500"> OR </Text>
-          <View className="mt-4 h-3 border-t-[0.5px] border-neutral-400 grow"></View>
+          <View className="mt-4 h-3 border-t-[0.5px] border-grayBorder grow"></View>
         </View>
         <TouchableOpacity
           disabled={loading}
           onPress={() => signUpWithEmail()}
-          className="w-full h-12 justify-center mt-2 items-center border-[1px] border-neutral-500 rounded-lg"
+          className="w-full py-4 justify-center mt-2 items-center border-[1px] border-disabledGray rounded-lg"
         >
-          <Text className=" text-black font-bold text-base">Sign up</Text>
+          <Text className=" text-disabledGray font-pbold text-base">Sign up</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -1,10 +1,16 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
 import React, { ReactNode, useCallback, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
-import { SplashScreen } from "expo-router";
+import { Link, SplashScreen, router } from "expo-router";
 const App = () => {
-  
   return (
     <SafeAreaView className="bg-white">
       <ScrollView
@@ -55,6 +61,9 @@ function RoleForm() {
       setselectIndex(0), setdisabled(true);
     }
   }
+  // function handleContinue() {
+  //   if (!disabled) router.replace("/(auth)/signin");
+  // }
   return (
     <>
       <View className="flex-row flex w-full justify-between items-center px-5">
@@ -77,15 +86,19 @@ function RoleForm() {
           Élève
         </ChoiceButton>
       </View>
-      <TouchableOpacity
-        className={`${
-          disabled ? "bg-disabledGray" : "bg-primary"
-        } w-3/4 items-center py-3 rounded-xl `}
-      >
-        <Text className={`text-base font-pbold text-white`}>
-          {disabled ? "Sélectioner" : "Continuer"}
-        </Text>
-      </TouchableOpacity>
+      <Link href="/(auth)/signin" asChild className="w-3/4">
+            <TouchableOpacity
+              disabled={disabled}
+              className={`${
+                disabled ? "bg-disabledGray" : "bg-primary"
+              }  items-center py-4 rounded-xl `}
+              // onPress={() => handleContinue()}
+            >
+              <Text className={`text-base font-pbold text-white text-center`}>
+                {disabled ? "Sélectioner" : "Continuer"}
+              </Text>
+            </TouchableOpacity>
+      </Link>
     </>
   );
 }
@@ -108,7 +121,9 @@ export function ChoiceButton({
       >
         <Text
           className={`text-base ${
-            selected ? "text-white font-pbold" : "font-pregular text-disabledGray"
+            selected
+              ? "text-white font-pbold"
+              : "font-pregular text-disabledGray"
           } `}
         >
           {children}
