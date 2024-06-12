@@ -1,7 +1,10 @@
 import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useCallback, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useFonts } from "expo-font";
+import { SplashScreen } from "expo-router";
 const App = () => {
+  
   return (
     <SafeAreaView className="bg-white">
       <ScrollView
@@ -13,7 +16,7 @@ const App = () => {
       >
         <View
           className="w-screen h-full gap-2 items-center pt-4"
-          style={{ gap: 12 }}
+          style={{ gap: 10 }}
         >
           <Image
             resizeMode="contain"
@@ -24,12 +27,14 @@ const App = () => {
             source={require("@/assets/images/teacher-student-illustration.png")}
             className="w-full h-52"
           />
-          <Text className="text-lg px-8 text-center font-medium leading-6">
+          <Text className="text-lg px-8 text-center font-plight leading-6 text-darkestGray">
             Nous relions les élèves, les parents et l'administration scolaire
             pour un avenir meilleur. Commencez à explorer toutes les
             fonctionnalités et services que nous offrons.
           </Text>
-          <Text className="text-xl px-6 text-center font-bold">Vous êtes?</Text>
+          <Text className="text-xl px-6 text-center font-pbold text-darkestGray">
+            Vous êtes?
+          </Text>
           <RoleForm />
         </View>
       </ScrollView>
@@ -74,10 +79,10 @@ function RoleForm() {
       </View>
       <TouchableOpacity
         className={`${
-          disabled ? "bg-gray-500" : "bg-green-600"
+          disabled ? "bg-disabledGray" : "bg-primary"
         } w-3/4 items-center py-3 rounded-xl `}
       >
-        <Text className={`text-base font-bold text-white`}>
+        <Text className={`text-base font-pbold text-white`}>
           {disabled ? "Sélectioner" : "Continuer"}
         </Text>
       </TouchableOpacity>
@@ -97,13 +102,13 @@ export function ChoiceButton({
     <>
       <TouchableOpacity
         className={`${
-          selected ? "bg-green-600" : "border border-gray-500 "
+          selected ? "bg-primary" : "border border-disabledGray "
         } w-[31%] py-3 rounded-lg items-center `}
         onPress={handlePress}
       >
         <Text
           className={`text-base ${
-            selected ? "text-white font-bold" : "text-gray-500"
+            selected ? "text-white font-pbold" : "font-pregular text-disabledGray"
           } `}
         >
           {children}
