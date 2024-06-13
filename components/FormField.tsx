@@ -18,7 +18,7 @@ export default function FormField({
       <Text className="font-semibold pb-3 text-lg">{label}</Text>
       <View className="w-full h-16 border-[1px] border-neutral-300 rounded-xl items-start">
         <TextInput
-          className=" flex-1 text-base text-black  caret-black w-full px-3"
+          className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
           value={value}
           placeholder={placeholder}
           placeholderTextColor={"gray"}
