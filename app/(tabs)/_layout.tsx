@@ -29,11 +29,14 @@ export default function TabLayout() {
           height: 75,
           left: 36,
           right: 36,
-          bottom: 24,
-          borderRadius: 30,
+          bottom: 10,
+          borderRadius: 25,
           backgroundColor: "#263238",
           alignItems: "center",
           width: "80%",
+          elevation: 0,
+          shadowOpacity : 0.1,
+          
         },
       }}
     >

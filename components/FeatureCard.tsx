@@ -12,11 +12,11 @@ export default function FeatureCard({
   icon?: ReactNode;
 }) {
   return (
-    <View className="h-[40vw] flex-1  rounded-lg bg-[#F6F6F7] justify-around pt-4 items-center">
+    <View className="h-[43vw] flex-1 pb-2 rounded-lg bg-[#f5f5f5] justify-around pt-4 items-center ">
       {/* <CalendarClockIcon size={36} className=" text-primary w-7 h-7" /> */}
       {icon}
-      <Text className="font-semibold"> {title}</Text>
-      <Text className="px-2 text-xs text-center">{description} </Text>
+      <Text className="font-psemibold"> {title}</Text>
+      <Text className="px-2 font-pregular text-xs text-center">{description} </Text>
     </View>
   );
 }
