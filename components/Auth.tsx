@@ -4,13 +4,10 @@ import {
   StyleSheet,
   View,
   AppState,
-  TextInput,
   Text,
   TouchableOpacity,
 } from "react-native";
 import { supabase } from "../lib/supabase";
-import { Button, Input } from "@rneui/base";
-import { router } from "expo-router";
 import FormField from "./FormField";
 
 // Tells Supabase Auth to continuously refresh the session automatically if
@@ -52,8 +49,6 @@ export default function Auth() {
     });
 
     if (error) Alert.alert(error.message);
-    if (!session)
-      Alert.alert("Please check your inbox for email verification!");
     setLoading(false);
   }
 

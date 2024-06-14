@@ -7,39 +7,84 @@ import {
   ImageBackground,
 } from "react-native";
 
-import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { Text } from "react-native";
+import FeatureCard from "@/components/FeatureCard";
+import {
+  CalendarClockIcon,
+  CalendarDays,
+  ClipboardCheck,
+  ClipboardCheckIcon,
+  ClipboardList,
+  ClipboardListIcon,
+  Mail,
+  MailIcon,
+  Scale,
+  SheetIcon,
+  TablePropertiesIcon,
+} from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import { Text } from "react-native";
 export default function HomeScreen() {
   return (
     <SafeAreaView>
       <ScrollView>
         <Header />
-       
+        <View className="flex-row justify-between bg-white" style={styles.Card}>
+        <FeatureCard
+          title="Emploi du temps"
+          icon={<CalendarClockIcon size={45} className=" text-primary" />}
+          description="Consultez vos plannings rapidement."
+        />
+        <FeatureCard
+          title="relevé de notes"
+          icon={<TablePropertiesIcon size={45} className=" text-primary" />}
+          description="Accédez à vos notes en un instant."
+        />
+      </View>
+      <View className="flex-row justify-between bg-white" style={styles.Card}>
+        <FeatureCard
+          title="Règlement Intérieur"
+          icon={<Scale size={45} className=" text-primary" />}
+          description="Consultez les règles et politiques de l’école."
+        />
+        <FeatureCard
+          title="calendrier des examens"
+          icon={<CalendarDays size={45} className=" text-primary " />}
+          description="Consultez les dates de vos examens."
+        />
+      </View>
+      <View className="flex-row justify-between bg-white" style={styles.Card}>
+        <FeatureCard
+          title="Vos absences"
+          icon={<ClipboardCheck size={45} className=" text-primary" />}
+          description="Suivez et consulter vos absences."
+        />
+        <FeatureCard
+          title="Matières et Professeurs"
+          icon={<ClipboardList size={45} className=" text-primary" />}
+          description="Découvrez vos matières et vos professeurs."
+        />
+      </View>
+      <View className="flex-row justify-between bg-white" style={styles.Card}>
+        <FeatureCard
+          title="Notes des professeurs"
+          icon={<SheetIcon size={45} className=" text-primary" />}
+          description="Consultez les évaluations de vos professeurs.s"
+        />
+        <FeatureCard
+          title="Convocations"
+          icon={<MailIcon size={45} className=" text-primary" />}
+          description="Accédez aux informations de convocation des parents."
+        />
+      </View>
       </ScrollView>
     </SafeAreaView>
+      
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
-  },
+const styles = StyleSheet.create({  Card: {
+  gap: 10,
+},
 });
 
 function Header() {
