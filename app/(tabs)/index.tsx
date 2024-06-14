@@ -1,49 +1,25 @@
-import { Image, StyleSheet, Platform, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Platform,
+  View,
+  ScrollView,
+  ImageBackground,
+} from "react-native";
 
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-      headerImage={
-        <Image
-          source={require("@/assets/images/partial-react-logo.png")}
-          style={styles.reactLogo}
-        />
-      }
-    >
-      <View style={styles.titleContainer}>
-        <Text>hello world !</Text>
-        <Text className="text-blue-400"> this shoudl wrk</Text>
-        <HelloWave />
-      </View>
-      <View style={styles.stepContainer}>
-        <Text>Step 1: Try it out liek this </Text>
-        <Text>
-          Edit <Text>app/(tabs)/index.tsx</Text> to see changes. Press{" "}
-          <Text>{Platform.select({ ios: "cmd + d", android: "cmd + m" })}</Text>{" "}
-          to open developer tools.
-        </Text>
-      </View>
-      <View style={styles.stepContainer}>
-        <Text>Step 2: Explore</Text>
-        <Text>
-          Tap the Explore tab to learn more about what's included in this
-          starter app.
-        </Text>
-      </View>
-      <View style={styles.stepContainer}>
-        <Text>Step 3: Get a fresh start</Text>
-        <Text>
-          When you're ready, run <Text>npm run reset-project</Text> to get a
-          fresh <Text>app</Text> directory. This will move the current{" "}
-          <Text>app</Text> to <Text>app-example</Text>.
-        </Text>
-      </View>
-    </ParallaxScrollView>
+    <SafeAreaView>
+      <ScrollView>
+        <Header />
+       
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -65,3 +41,31 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
 });
+
+function Header() {
+  return (
+    <View className="px-3">
+      <View className="h-[9vh] items-center justify-center">
+        <Image
+          source={require("@/assets/images/text-logo.png")}
+          className="h-auto w-1/4"
+          resizeMode="contain"
+        />
+      </View>
+      <View className="rounded-xl overflow-hidden">
+        <ImageBackground
+          className="h-[20vh] rounded-3xl p-3 "
+          source={require("@/assets/images/hero-bg.jpg")}
+          resizeMode="cover"
+          resizeMethod="auto"
+        >
+          <Text className="text-white font-pbold text-[20px]">Bienvenue sur Morassalaty!</Text>
+          <Text className="text-white text-[17px] font-plight">
+            Connectez-vous avec votre école et vos parents et Facilitez la
+            communication et la collaboration.
+          </Text>
+        </ImageBackground>
+      </View>
+    </View>
+  );
+}
