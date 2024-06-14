@@ -1,15 +1,7 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-  Pressable,
-} from "react-native";
-import React, { ReactNode, useCallback, useState } from "react";
+import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
+import { ReactNode, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useFonts } from "expo-font";
-import { Link, SplashScreen, router } from "expo-router";
+import { Link } from "expo-router";
 const App = () => {
   return (
     <SafeAreaView className="bg-white">
@@ -87,17 +79,16 @@ function RoleForm() {
         </ChoiceButton>
       </View>
       <Link href="/(auth)/signin" asChild className="w-3/4">
-            <TouchableOpacity
-              disabled={disabled}
-              className={`${
-                disabled ? "bg-disabledGray" : "bg-primary"
-              }  items-center py-4 rounded-xl `}
-              // onPress={() => handleContinue()}
-            >
-              <Text className={`text-base font-pbold text-white text-center`}>
-                {disabled ? "Sélectioner" : "Continuer"}
-              </Text>
-            </TouchableOpacity>
+        <TouchableOpacity
+          disabled={disabled}
+          className={`${
+            disabled ? "bg-disabledGray" : "bg-primary"
+          }  items-center py-4 rounded-xl `}
+        >
+          <Text className={`text-base font-pbold text-white text-center`}>
+            {disabled ? "Sélectioner" : "Continuer"}
+          </Text>
+        </TouchableOpacity>
       </Link>
     </>
   );
