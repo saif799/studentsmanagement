@@ -74,7 +74,7 @@ function RoleForm() {
           selected={selectIndex === 2}
           handlePress={() => handleClick(2, "teacher")}
         >
-          Prof
+          Parent
         </ChoiceButton>
         <ChoiceButton
           selected={selectIndex === 3}

@@ -1,17 +1,22 @@
 import {
   Image,
   StyleSheet,
+  Platform,
   View,
   ScrollView,
   ImageBackground,
 } from "react-native";
 
+import ParallaxScrollView from "@/components/ParallaxScrollView";
 import FeatureCard from "@/components/FeatureCard";
 import {
   CalendarClockIcon,
   CalendarDays,
   ClipboardCheck,
+  ClipboardCheckIcon,
   ClipboardList,
+  ClipboardListIcon,
+  Mail,
   MailIcon,
   Scale,
   SheetIcon,
@@ -24,10 +29,9 @@ export default function HomeScreen() {
   const strokeWidth = 1.2;
   return (
     <SafeAreaView className="bg-white">
-      <Header />
       <ScrollView className="bg-white">
         <HeroSec />
-        <View className="gap-3 mt-1 px-2 pb-[23vh]">
+        <View className="gap-3 mt-1 px-2 pb-[14vh]">
           <View
             className="flex-row  justify-between bg-white"
             style={styles.Card}
@@ -147,9 +151,9 @@ const styles = StyleSheet.create({
   },
 });
 
-function Header() {
+export function Header() {
   return (
-    <View className="h-[9vh] sticky items-center justify-center bg-white z-50">
+    <View className="h-[9vh] border-b-grayBorder border border-t-0 border-x-0 top-6 sticky items-center justify-center bg-white z-50">
       <Image
         source={require("@/assets/images/text-logo.png")}
         className="h-auto w-1/4"
