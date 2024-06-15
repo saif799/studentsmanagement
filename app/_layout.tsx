@@ -40,7 +40,7 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="student/(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)/signin" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>

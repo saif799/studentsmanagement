@@ -1,12 +1,9 @@
 import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import { ReactNode, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Link, Redirect } from "expo-router";
-import { useSession } from "@/context/authProvider";
+import { Link } from "expo-router";
 const App = () => {
-  const auth = useSession();
-
-  if (auth.session) return <Redirect href="/(tabs)" />;
+  // if (auth.session) return <Redirect href="/student/(tabs)" />;
 
   return (
     <SafeAreaView className="bg-white">
@@ -61,6 +58,24 @@ function RoleForm() {
   // function handleContinue() {
   //   if (!disabled) router.replace("/(auth)/signin");
   // }
+
+  const routes = [
+    {
+      index: 1,
+      path: "signin",
+      title: "Élève",
+    },
+    {
+      index: 2,
+      path: "parentSignin",
+      title: "Parent",
+    },
+    {
+      index: 3,
+      path: "adminSignin",
+      title: "École",
+    },
+  ];
   return (
     <>
       <View className="flex-row flex w-full justify-between items-center px-5">

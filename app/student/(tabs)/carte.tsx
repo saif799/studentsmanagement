@@ -1,20 +1,6 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import {
-  StyleSheet,
-  Image,
-  Platform,
-  View,
-  Text,
-  ScrollView,
-  ImageBackground,
-} from "react-native";
+import { StyleSheet, Image, View, Text, ImageBackground } from "react-native";
 
-import { Collapsible } from "@/components/Collapsible";
-import { ExternalLink } from "@/components/ExternalLink";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { useFonts } from "expo-font";
-import { useEffect } from "react";
-import { SplashScreen } from "expo-router";
 import QRCode from "react-native-qrcode-svg";
 const student = {
   id: "200334045205",
@@ -22,7 +8,7 @@ const student = {
   fName: "Abdelbasset",
   pOfBirth: "Setif",
   dBirth: "10/01/2004",
-  image : require("@/assets/images/wakil.jpg"),
+  image: require("@/assets/images/wakil.jpg"),
 };
 export default function TabTwoScreen() {
   const [fontsLoaded, error] = useFonts({
@@ -39,18 +25,15 @@ export default function TabTwoScreen() {
     return null;
   }
   return (
-    <View className="grow pb-[9vh] bg-white items-center  px-2">
+    <View className="grow pb-[8vh] bg-white items-center  px-2">
       <ImageBackground
         source={require("@/assets/images/student-card-bg-dark.jpg")}
         className="flex-1 relative  w-[60vh] -rotate-90 bg-white"
         resizeMode="contain"
       >
-        <View className="absolute flex-row justify-around  px-3 items-center   w-full top-[37vh]">
+        <View className="absolute flex-row justify-around  px-3 items-center  w-full top-[37vh]">
           <View className="w-1/4 h-full bg-white p-1">
-            <Image
-              source={student.image}
-              className="h-full w-full "
-            />
+            <Image source={student.image} className="h-full w-full " />
           </View>
           <View>
             <Text className="font-ltfLight">Nom</Text>

@@ -8,7 +8,7 @@ import { ArrowLeft } from "lucide-react-native";
 export default function ParentSginIn() {
   const auth = useSession();
 
-  if (auth.session) return <Redirect href="/(tabs)" />;
+  if (auth.session) return <Redirect href="/parent/(tabs)" />;
   // if (assets)
   return (
     <SafeAreaView className="h-full bg-white ">
@@ -23,7 +23,7 @@ export default function ParentSginIn() {
                 <ArrowLeft size={35} color={"green"} strokeWidth={2} />
               </Link>
               <Text className="text-white -left-3 font-psemibold text-xl text-center grow">
-                Login étudiant
+                Login Parent
               </Text>
             </View>
           </ImageBackground>
