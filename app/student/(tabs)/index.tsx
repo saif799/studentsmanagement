@@ -6,7 +6,7 @@ import {
   ImageBackground,
 } from "react-native";
 
-import FeatureCard from "@/components/FeatureCard";
+import { FeatureCard } from "@/components/FeatureCard";
 import {
   CalendarClockIcon,
   CalendarDays,

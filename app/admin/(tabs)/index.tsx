@@ -6,22 +6,22 @@ import {
   ImageBackground,
 } from "react-native";
 
-import FeatureCard from "@/components/FeatureCard";
+import { FeatureCard, FeatureCard2 } from "@/components/FeatureCard";
 import {
   CalendarClockIcon,
   CalendarDays,
   ClipboardCheck,
   ClipboardList,
   MailIcon,
+  MessageSquareText,
   Scale,
-  SheetIcon,
   TablePropertiesIcon,
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
 export default function HomeScreen() {
   const iconSize = 45;
-  const strokeWidth = 1.2;
+  const strokeWidth = 1.4;
   return (
     <SafeAreaView className="bg-white">
       <ScrollView className="bg-white">
@@ -31,8 +31,8 @@ export default function HomeScreen() {
             className="flex-row  justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard
-              title="Emploi du temps"
+            <FeatureCard2
+              title="Publier les Emplois du temps"
               icon={
                 <CalendarClockIcon
                   size={iconSize}
@@ -40,10 +40,9 @@ export default function HomeScreen() {
                   className=" text-primary"
                 />
               }
-              description="Consultez vos plannings rapidement."
             />
-            <FeatureCard
-              title="relevé de notes"
+            <FeatureCard2
+              title="Publier les relevé de notes"
               icon={
                 <TablePropertiesIcon
                   size={iconSize}
@@ -51,15 +50,14 @@ export default function HomeScreen() {
                   className=" text-primary"
                 />
               }
-              description="Accédez à vos notes en un instant."
             />
           </View>
           <View
             className="flex-row justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard
-              title="Règlement Intérieur"
+            <FeatureCard2
+              title="Ajouter Règlement Intérieur"
               icon={
                 <Scale
                   size={iconSize}
@@ -67,10 +65,9 @@ export default function HomeScreen() {
                   className=" text-primary"
                 />
               }
-              description="Consultez les règles et politiques de l’école."
             />
-            <FeatureCard
-              title="calendrier des examens"
+            <FeatureCard2
+              title="Publier calendrier des examens"
               icon={
                 <CalendarDays
                   size={iconSize}
@@ -78,7 +75,6 @@ export default function HomeScreen() {
                   className=" text-primary "
                 />
               }
-              description="Consultez les dates de vos examens."
             />
           </View>
           <View
@@ -86,7 +82,7 @@ export default function HomeScreen() {
             style={styles.Card}
           >
             <FeatureCard
-              title="Vos absences"
+              title="les absences"
               icon={
                 <ClipboardCheck
                   size={iconSize}
@@ -94,7 +90,7 @@ export default function HomeScreen() {
                   className=" text-primary"
                 />
               }
-              description="Suivez et consulter vos absences."
+              description="Suivez et gérer les absences."
             />
             <FeatureCard
               title="Matières et Professeurs"
@@ -105,7 +101,7 @@ export default function HomeScreen() {
                   className=" text-primary"
                 />
               }
-              description="Découvrez vos matières et vos professeurs."
+              description="ajouter le tableau des matières et professeurs."
             />
           </View>
           <View
@@ -113,18 +109,18 @@ export default function HomeScreen() {
             style={styles.Card}
           >
             <FeatureCard
-              title="Notes des professeurs"
+              title="Valider une Note d’élève"
               icon={
-                <SheetIcon
+                <MessageSquareText
                   size={iconSize}
                   strokeWidth={strokeWidth}
                   className=" text-primary"
                 />
               }
-              description="Consultez les évaluations de vos professeurs.s"
+              description="Contacter les parent en écrivant une note"
             />
             <FeatureCard
-              title="Convocations"
+              title="valider les Convocations"
               icon={
                 <MailIcon
                   size={iconSize}
@@ -132,7 +128,7 @@ export default function HomeScreen() {
                   className=" text-primary"
                 />
               }
-              description="Accédez aux informations de convocation des parents."
+              description="Convoquer un parent d’élève"
             />
           </View>
         </View>
