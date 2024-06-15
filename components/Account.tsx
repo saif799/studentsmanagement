@@ -1,6 +1,15 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
-import { StyleSheet, View, Alert } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Alert,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { Button, Input } from "@rneui/themed";
 import { Session } from "@supabase/supabase-js";
 import QRCode from "react-native-qrcode-svg";
@@ -8,8 +17,11 @@ import Avatar from "./Avatar";
 export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
-  const [website, setWebsite] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState("");
+  const [UserFamilyName, setUserFamilyName] = useState("");
+  const [UserTown, setUserTown] = useState("");
+  const [birthDate, setbirthDate] = useState("");
+  const [level, setlevel] = useState("");
+  const [Class, setClass] = useState("");
 
   useEffect(() => {
     if (session) getProfile();
@@ -22,17 +34,24 @@ export default function Account({ session }: { session: Session }) {
 
       const { data, error, status } = await supabase
         .from("profiles")
-        .select(`username, website, avatar_url`)
+        .select(
+          `username, website, avatar_url, birthDate, class, level, city, familyName`
+        )
         .eq("id", session?.user.id)
         .single();
       if (error && status !== 406) {
+        console.log(error);
+        Alert.alert(error.message);
         throw error;
       }
 
       if (data) {
         setUsername(data.username);
-        setWebsite(data.website);
-        setAvatarUrl(data.avatar_url);
+        setClass(data.class);
+        setlevel(data.level);
+        setUserFamilyName(data.familyName);
+        setUserTown(data.city);
+        setbirthDate(data.birthDate);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -47,10 +66,17 @@ export default function Account({ session }: { session: Session }) {
     username,
     website,
     avatar_url,
+    familyName,
+    city,
   }: {
     username: string;
-    website: string;
-    avatar_url: string;
+    website?: string;
+    avatar_url?: string;
+    familyName: string;
+    level: string;
+    city: string;
+    Class: string;
+    birthDate: string;
   }) {
     try {
       setLoading(true);
@@ -59,8 +85,13 @@ export default function Account({ session }: { session: Session }) {
       const updates = {
         id: session?.user.id,
         username,
-        website,
-        avatar_url,
+        // website,
+        // avatar_url,
+        familyName,
+        class: Class,
+        birthDate,
+        level,
+        city,
         updated_at: new Date(),
       };
 
@@ -78,9 +109,134 @@ export default function Account({ session }: { session: Session }) {
     }
   }
 
+  function handle(text: string) {}
+
   return (
-    <View style={styles.container}>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
+    <ScrollView
+      automaticallyAdjustKeyboardInsets={true}
+      style={styles.container}
+      className="bg-white h-full pb-10"
+    >
+      <View className="items-center ">
+        <Text className=" font-pbold text-xl pb-5">Profile d’élève</Text>
+        <Image
+          source={require("@/assets/images/wakil.jpg")}
+          className="h-[30vw] rounded-full w-[30vw]"
+          resizeMode="contain"
+        />
+      </View>
+
+      <View className="flex-row justify-between pt-6">
+        <View>
+          <Text className="pl-2 font-pmedium pb-2 text-base">Nom</Text>
+          <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+            <TextInput
+              className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+              value={UserFamilyName}
+              placeholder={"xxxx-xxxx"}
+              placeholderTextColor={"gray"}
+              onChangeText={(e) => setUserFamilyName(e)}
+            />
+          </View>
+        </View>
+        <View>
+          <Text className="pl-2 font-pmedium pb-2 text-base">Prenom</Text>
+          <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+            <TextInput
+              className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+              value={username}
+              placeholder={"xxxx-xxxx"}
+              placeholderTextColor={"gray"}
+              onChangeText={(e) => setUsername(e)}
+            />
+          </View>
+        </View>
+      </View>
+      <View className="flex-row justify-between pt-6">
+        <View>
+          <Text className="pl-2 font-pmedium pb-2 text-base">
+            Date naissance
+          </Text>
+          <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+            <TextInput
+              className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+              value={birthDate}
+              placeholder={"xxxx-xxxx"}
+              placeholderTextColor={"gray"}
+              onChangeText={(e) => setbirthDate(e)}
+            />
+          </View>
+        </View>
+        <View>
+          <Text className="pl-2 font-pmedium pb-2 text-base">
+            ville de naissance
+          </Text>
+          <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+            <TextInput
+              className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+              value={UserTown}
+              placeholder={"xxxx-xxxx"}
+              placeholderTextColor={"gray"}
+              onChangeText={(e) => setUserTown(e)}
+            />
+          </View>
+        </View>
+      </View>
+      <View className="flex-row justify-between pt-6">
+        <View>
+          <Text className="pl-2 font-pmedium pb-2 text-base">Niveau</Text>
+          <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+            <TextInput
+              className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+              value={level}
+              placeholder={"xxxx-xxxx"}
+              placeholderTextColor={"gray"}
+              onChangeText={(e) => setlevel(e)}
+            />
+          </View>
+        </View>
+        <View>
+          <Text className="pl-2 font-pmedium pb-2 text-base">Classe</Text>
+          <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+            <TextInput
+              className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+              value={Class}
+              placeholder={"xxxx-xxxx"}
+              placeholderTextColor={"gray"}
+              onChangeText={(e) => setClass(e)}
+            />
+          </View>
+        </View>
+      </View>
+
+      <View className="pt-5 flex-row gap-3">
+        <TouchableOpacity
+          disabled={loading}
+          onPress={() =>
+            updateProfile({
+              username,
+              // website: UserFamilyName,
+              // avatar_url: Class,
+              familyName: UserFamilyName,
+              birthDate,
+              Class,
+              city: UserTown,
+              level,
+            })
+          }
+          className="py-4 w-[45vw] justify-center items-center bg-primary rounded-lg"
+        >
+          <Text className=" text-white font-pbold text-base">Enregistrer</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          disabled={loading}
+          onPress={() => supabase.auth.signOut()}
+          className="w-[45vw] py-4 justify-center items-center border-[1px] border-red-500 bg-white rounded-lg"
+        >
+          <Text className=" text-red-500  font-pbold text-base">Log out</Text>
+        </TouchableOpacity>
+      </View>
+      {/* <View style={[styles.verticallySpaced, styles.mt20]}>
         <Input label="Email" value={session?.user?.email} disabled />
       </View>
       <View style={styles.verticallySpaced}>
@@ -89,16 +245,16 @@ export default function Account({ session }: { session: Session }) {
           value={username || ""}
           onChangeText={(text) => setUsername(text)}
         />
-      </View>
-      <View style={styles.verticallySpaced}>
+      </View> */}
+      {/* <View style={styles.verticallySpaced}>
         <Input
           label="Website"
           value={website || ""}
           onChangeText={(text) => setWebsite(text)}
         />
-      </View>
+      </View> */}
 
-      <View style={[styles.verticallySpaced, styles.mt20]}>
+      {/* <View style={[styles.verticallySpaced, styles.mt20]}>
         <Button
           title={loading ? "Loading ..." : "Update"}
           onPress={() =>
@@ -130,14 +286,14 @@ export default function Account({ session }: { session: Session }) {
         <View style={styles.qrstyle}>
           <QRCode value={username} />
         </View>
-      ) : null}
-    </View>
+      ) : null} */}
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 40,
+    paddingTop: 40,
     padding: 12,
   },
   verticallySpaced: {

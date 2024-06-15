@@ -1,19 +1,9 @@
 import { Redirect, Tabs } from "expo-router";
 import React from "react";
-
-import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { useSession } from "@/context/authProvider";
-import { View } from "react-native";
-import {
-  CreditCardIcon,
-  Home,
-  HomeIcon,
-  UserCircle,
-  UserCircle2,
-} from "lucide-react-native";
+import { CreditCardIcon, HomeIcon, UserCircle2 } from "lucide-react-native";
 import TabIcon from "@/components/TabIcon";
 import { Header } from ".";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function TabLayout() {
   const Auth = useSession();
@@ -24,6 +14,7 @@ export default function TabLayout() {
       <Header />
       <Tabs
         screenOptions={{
+          tabBarHideOnKeyboard: true,
           tabBarShowLabel: false,
           headerShown: false,
           tabBarActiveTintColor: "#49E582",
