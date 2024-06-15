@@ -1,22 +1,17 @@
 import {
   Image,
   StyleSheet,
-  Platform,
   View,
   ScrollView,
   ImageBackground,
 } from "react-native";
 
-import ParallaxScrollView from "@/components/ParallaxScrollView";
 import FeatureCard from "@/components/FeatureCard";
 import {
   CalendarClockIcon,
   CalendarDays,
   ClipboardCheck,
-  ClipboardCheckIcon,
   ClipboardList,
-  ClipboardListIcon,
-  Mail,
   MailIcon,
   Scale,
   SheetIcon,
@@ -29,7 +24,7 @@ export default function HomeScreen() {
   const strokeWidth = 1.2;
   return (
     <SafeAreaView className="bg-white">
-        <Header />
+      <Header />
       <ScrollView className="bg-white">
         <HeroSec />
         <View className="gap-3 mt-1 px-2 pb-[23vh]">
