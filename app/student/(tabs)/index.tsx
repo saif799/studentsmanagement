@@ -19,6 +19,7 @@ import {
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
+import { Link } from "expo-router";
 export default function HomeScreen() {
   const iconSize = 45;
   const strokeWidth = 1.2;
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
 
 export function Header() {
   return (
-    <View className="h-[9vh] border-b-grayBorder border border-t-0 border-x-0 top-6 sticky items-center justify-center bg-white z-50">
+    <View className="h-[9vh] border border-b-grayBorder border-t-0 border-x-0 top-7 sticky items-center justify-center bg-white z-10">
       <Image
         source={require("@/assets/images/text-logo.png")}
         className="h-auto w-1/4"
