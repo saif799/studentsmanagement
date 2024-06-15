@@ -33,7 +33,10 @@ export function Header() {
         />
       </View>
 
-      <TouchableOpacity className="w-fit h-fit " onPress={() => navigation.goBack()}>
+      <TouchableOpacity
+        className="w-fit h-fit "
+        onPress={() => navigation.goBack()}
+      >
         <ArrowLeft
           size={iconSize}
           strokeWidth={strokeWidth}

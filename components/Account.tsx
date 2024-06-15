@@ -18,6 +18,7 @@ export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
   const [UserFamilyName, setUserFamilyName] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
   const [UserTown, setUserTown] = useState("");
   const [birthDate, setbirthDate] = useState("");
   const [level, setlevel] = useState("");
@@ -52,6 +53,7 @@ export default function Account({ session }: { session: Session }) {
         setUserFamilyName(data.familyName);
         setUserTown(data.city);
         setbirthDate(data.birthDate);
+        setAvatarUrl(data.avatar_url);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -86,7 +88,7 @@ export default function Account({ session }: { session: Session }) {
         id: session?.user.id,
         username,
         // website,
-        // avatar_url,
+        avatar_url,
         familyName,
         class: Class,
         birthDate,
@@ -96,6 +98,8 @@ export default function Account({ session }: { session: Session }) {
       };
 
       const { error } = await supabase.from("profiles").upsert(updates);
+
+      Alert.alert("You data got updated successfully");
 
       if (error) {
         throw error;
@@ -119,10 +123,27 @@ export default function Account({ session }: { session: Session }) {
     >
       <View className="items-center ">
         <Text className=" font-pbold text-xl pb-5">Profile d’élève</Text>
-        <Image
+        {/* <Image
           source={require("@/assets/images/wakil.jpg")}
           className="h-[30vw] rounded-full w-[30vw]"
           resizeMode="contain"
+        /> */}
+        <Avatar
+          size={120}
+          url={avatarUrl}
+          onUpload={(url: string) => {
+            setAvatarUrl(url);
+            updateProfile({
+              username,
+              // website,
+              avatar_url: url,
+              birthDate,
+              city: UserTown,
+              Class,
+              familyName: UserFamilyName,
+              level,
+            });
+          }}
         />
       </View>
 
@@ -226,7 +247,9 @@ export default function Account({ session }: { session: Session }) {
           }
           className="py-4 w-[45vw] justify-center items-center bg-primary rounded-lg"
         >
-          <Text className=" text-white font-pbold text-base">Enregistrer</Text>
+          <Text className=" text-white font-pbold text-base">
+            {!loading ? "Enregistrer" : "Updating"}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           disabled={loading}
@@ -236,23 +259,6 @@ export default function Account({ session }: { session: Session }) {
           <Text className=" text-red-500  font-pbold text-base">Log out</Text>
         </TouchableOpacity>
       </View>
-      {/* <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Input label="Email" value={session?.user?.email} disabled />
-      </View>
-      <View style={styles.verticallySpaced}>
-        <Input
-          label="Username"
-          value={username || ""}
-          onChangeText={(text) => setUsername(text)}
-        />
-      </View> */}
-      {/* <View style={styles.verticallySpaced}>
-        <Input
-          label="Website"
-          value={website || ""}
-          onChangeText={(text) => setWebsite(text)}
-        />
-      </View> */}
 
       {/* <View style={[styles.verticallySpaced, styles.mt20]}>
         <Button
@@ -273,14 +279,7 @@ export default function Account({ session }: { session: Session }) {
         />
       </View>
       <View>
-        <Avatar
-          size={200}
-          url={avatarUrl}
-          onUpload={(url: string) => {
-            setAvatarUrl(url);
-            updateProfile({ username, website, avatar_url: url });
-          }}
-        />
+       
       </View>
       {username ? (
         <View style={styles.qrstyle}>

@@ -22,7 +22,7 @@ import { Text } from "react-native";
 import { Link } from "expo-router";
 export default function HomeScreen() {
   const iconSize = 45;
-  const strokeWidth = 1.2;
+  const strokeWidth = 1.3;
   return (
     <SafeAreaView className="bg-white">
       <ScrollView className="bg-white">
@@ -32,7 +32,9 @@ export default function HomeScreen() {
             className="flex-row  justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard pathTo="planning"
+            <FeatureCard
+              pathTo="planning"
+              from="student"
               title="Emploi du temps"
               icon={
                 <CalendarClockIcon
@@ -43,7 +45,9 @@ export default function HomeScreen() {
               }
               description="Consultez vos plannings rapidement."
             />
-            <FeatureCard pathTo=""
+            <FeatureCard
+              pathTo="planning"
+              from="student"
               title="relevé de notes"
               icon={
                 <TablePropertiesIcon
@@ -59,7 +63,9 @@ export default function HomeScreen() {
             className="flex-row justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard pathTo=""
+            <FeatureCard
+              pathTo="planning"
+              from="student"
               title="Règlement Intérieur"
               icon={
                 <Scale
@@ -70,7 +76,9 @@ export default function HomeScreen() {
               }
               description="Consultez les règles et politiques de l’école."
             />
-            <FeatureCard pathTo=""
+            <FeatureCard
+              pathTo="planning"
+              from="student"
               title="calendrier des examens"
               icon={
                 <CalendarDays
@@ -86,7 +94,9 @@ export default function HomeScreen() {
             className="flex-row justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard pathTo=""
+            <FeatureCard
+              pathTo="planning"
+              from="student"
               title="Vos absences"
               icon={
                 <ClipboardCheck
@@ -97,7 +107,9 @@ export default function HomeScreen() {
               }
               description="Suivez et consulter vos absences."
             />
-            <FeatureCard pathTo=""
+            <FeatureCard
+              pathTo="planning"
+              from="student"
               title="Matières et Professeurs"
               icon={
                 <ClipboardList
@@ -113,7 +125,9 @@ export default function HomeScreen() {
             className="flex-row justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard pathTo=""
+            <FeatureCard
+              pathTo="planning"
+              from="student"
               title="Notes des professeurs"
               icon={
                 <SheetIcon
@@ -124,7 +138,9 @@ export default function HomeScreen() {
               }
               description="Consultez les évaluations de vos professeurs.s"
             />
-            <FeatureCard pathTo=""
+            <FeatureCard
+              pathTo="planning"
+              from="student"
               title="Convocations"
               icon={
                 <MailIcon
