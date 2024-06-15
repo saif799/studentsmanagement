@@ -1,15 +1,29 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
-import { StyleSheet, View, Alert, Image, Button } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Alert,
+  Image,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { Edit, Edit2Icon, Edit3Icon, EditIcon } from "lucide-react-native";
 
 interface Props {
   size: number;
   url: string | null;
   onUpload: (filePath: string) => void;
+  className?: string;
 }
 
-export default function Avatar({ url, size = 150, onUpload }: Props) {
+export default function Avatar({
+  url,
+  size = 150,
+  onUpload,
+  className,
+}: Props) {
   const [uploading, setUploading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const avatarSize = { height: size, width: size };
@@ -93,12 +107,10 @@ export default function Avatar({ url, size = 150, onUpload }: Props) {
   }
 
   return (
-    <View style={{ alignItems: "center" }}>
-        <View>
-            
-        </View>
+    <View className="relative" style={{ alignItems: "center" }}>
       {avatarUrl ? (
         <Image
+          className={`${className} rounded-full`}
           source={{ uri: avatarUrl }}
           accessibilityLabel="Avatar"
           style={[avatarSize, styles.avatar, styles.image]}
@@ -106,13 +118,13 @@ export default function Avatar({ url, size = 150, onUpload }: Props) {
       ) : (
         <View style={[avatarSize, styles.avatar, styles.noImage]} />
       )}
-      <View>
-        <Button
-          title={uploading ? "Uploading ..." : "Upload"}
-          onPress={uploadAvatar}
-          disabled={uploading}
-        />
-      </View>
+      <TouchableOpacity
+        onPress={uploadAvatar}
+        disabled={uploading}
+        className="bg-grayBorder w-7 h-7 items-center justify-center rounded-full absolute bottom-0 right-0"
+      >
+        <Edit size={20} className="text-black" />
+      </TouchableOpacity>
     </View>
   );
 }

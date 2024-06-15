@@ -13,7 +13,7 @@ export default function TabIcon({
   icon: ReactNode;
 }) {
   return (
-    <View className=" items-center justify-center gap-2">
+    <View className=" items-center justify-center gap-1">
       {icon}
       <Text
         style={{ color: focused ? "#49E582" : "white" }}
