@@ -1,8 +1,10 @@
 import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import { ReactNode, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Link } from "expo-router";
+import { Link, Redirect } from "expo-router";
+import { useSession } from "@/context/authProvider";
 const App = () => {
+  // const auth = useSession();
   // if (auth.session) return <Redirect href="/student/(tabs)" />;
 
   return (

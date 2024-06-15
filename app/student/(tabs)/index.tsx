@@ -19,6 +19,7 @@ import {
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
+import { Link } from "expo-router";
 export default function HomeScreen() {
   const iconSize = 45;
   const strokeWidth = 1.2;
@@ -31,7 +32,7 @@ export default function HomeScreen() {
             className="flex-row  justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard
+            <FeatureCard pathTo="planning"
               title="Emploi du temps"
               icon={
                 <CalendarClockIcon
@@ -42,7 +43,7 @@ export default function HomeScreen() {
               }
               description="Consultez vos plannings rapidement."
             />
-            <FeatureCard
+            <FeatureCard pathTo=""
               title="relevé de notes"
               icon={
                 <TablePropertiesIcon
@@ -58,7 +59,7 @@ export default function HomeScreen() {
             className="flex-row justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard
+            <FeatureCard pathTo=""
               title="Règlement Intérieur"
               icon={
                 <Scale
@@ -69,7 +70,7 @@ export default function HomeScreen() {
               }
               description="Consultez les règles et politiques de l’école."
             />
-            <FeatureCard
+            <FeatureCard pathTo=""
               title="calendrier des examens"
               icon={
                 <CalendarDays
@@ -85,7 +86,7 @@ export default function HomeScreen() {
             className="flex-row justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard
+            <FeatureCard pathTo=""
               title="Vos absences"
               icon={
                 <ClipboardCheck
@@ -96,7 +97,7 @@ export default function HomeScreen() {
               }
               description="Suivez et consulter vos absences."
             />
-            <FeatureCard
+            <FeatureCard pathTo=""
               title="Matières et Professeurs"
               icon={
                 <ClipboardList
@@ -112,7 +113,7 @@ export default function HomeScreen() {
             className="flex-row justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard
+            <FeatureCard pathTo=""
               title="Notes des professeurs"
               icon={
                 <SheetIcon
@@ -123,7 +124,7 @@ export default function HomeScreen() {
               }
               description="Consultez les évaluations de vos professeurs.s"
             />
-            <FeatureCard
+            <FeatureCard pathTo=""
               title="Convocations"
               icon={
                 <MailIcon
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
 
 export function Header() {
   return (
-    <View className="h-[9vh] border-b-grayBorder border border-t-0 border-x-0 top-6 sticky items-center justify-center bg-white z-50">
+    <View className="h-[9vh] border border-b-grayBorder border-t-0 border-x-0 top-7 sticky items-center justify-center bg-white z-10">
       <Image
         source={require("@/assets/images/text-logo.png")}
         className="h-auto w-1/4"
