@@ -32,7 +32,7 @@ export default function HomeScreen() {
             className="flex-row  justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard
+            <FeatureCard pathTo="planning"
               title="Emploi du temps"
               icon={
                 <CalendarClockIcon
@@ -43,7 +43,7 @@ export default function HomeScreen() {
               }
               description="Consultez vos plannings rapidement."
             />
-            <FeatureCard
+            <FeatureCard pathTo=""
               title="relevé de notes"
               icon={
                 <TablePropertiesIcon
@@ -59,7 +59,7 @@ export default function HomeScreen() {
             className="flex-row justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard
+            <FeatureCard pathTo=""
               title="Règlement Intérieur"
               icon={
                 <Scale
@@ -70,7 +70,7 @@ export default function HomeScreen() {
               }
               description="Consultez les règles et politiques de l’école."
             />
-            <FeatureCard
+            <FeatureCard pathTo=""
               title="calendrier des examens"
               icon={
                 <CalendarDays
@@ -86,7 +86,7 @@ export default function HomeScreen() {
             className="flex-row justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard
+            <FeatureCard pathTo=""
               title="Vos absences"
               icon={
                 <ClipboardCheck
@@ -97,7 +97,7 @@ export default function HomeScreen() {
               }
               description="Suivez et consulter vos absences."
             />
-            <FeatureCard
+            <FeatureCard pathTo=""
               title="Matières et Professeurs"
               icon={
                 <ClipboardList
@@ -113,7 +113,7 @@ export default function HomeScreen() {
             className="flex-row justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard
+            <FeatureCard pathTo=""
               title="Notes des professeurs"
               icon={
                 <SheetIcon
@@ -124,7 +124,7 @@ export default function HomeScreen() {
               }
               description="Consultez les évaluations de vos professeurs.s"
             />
-            <FeatureCard
+            <FeatureCard pathTo=""
               title="Convocations"
               icon={
                 <MailIcon

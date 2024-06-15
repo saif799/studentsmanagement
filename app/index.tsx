@@ -4,9 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Redirect } from "expo-router";
 import { useSession } from "@/context/authProvider";
 const App = () => {
-  const auth = useSession();
-
-  if (auth.session) return <Redirect href="/student/(tabs)" />;
+  // const auth = useSession();
+  // if (auth.session) return <Redirect href="/student/(tabs)" />;
 
   return (
     <SafeAreaView className="bg-white">

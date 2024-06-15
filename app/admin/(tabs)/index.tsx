@@ -6,7 +6,7 @@ import {
   ImageBackground,
 } from "react-native";
 
-import { FeatureCard, FeatureCard2 } from "@/components/FeatureCard";
+import { FeatureCard } from "@/components/FeatureCard";
 import {
   CalendarClockIcon,
   CalendarDays,
@@ -19,6 +19,7 @@ import {
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
+import { Link } from "expo-router";
 export default function HomeScreen() {
   const iconSize = 45;
   const strokeWidth = 1.4;
@@ -26,12 +27,14 @@ export default function HomeScreen() {
     <SafeAreaView className="bg-white">
       <ScrollView className="bg-white">
         <HeroSec />
+        <Link href="../pages/">good to know</Link>
         <View className="gap-3 mt-1 px-2 pb-[14vh]">
           <View
             className="flex-row  justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard2
+            <FeatureCard
+              pathTo="planning"
               title="Publier les Emplois du temps"
               icon={
                 <CalendarClockIcon
@@ -41,7 +44,8 @@ export default function HomeScreen() {
                 />
               }
             />
-            <FeatureCard2
+            <FeatureCard
+              pathTo=""
               title="Publier les relevé de notes"
               icon={
                 <TablePropertiesIcon
@@ -56,17 +60,8 @@ export default function HomeScreen() {
             className="flex-row justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard2
-              title="Ajouter Règlement Intérieur"
-              icon={
-                <Scale
-                  size={iconSize}
-                  strokeWidth={strokeWidth}
-                  className=" text-primary"
-                />
-              }
-            />
-            <FeatureCard2
+            <FeatureCard
+              pathTo=""
               title="Publier calendrier des examens"
               icon={
                 <CalendarDays
@@ -76,12 +71,8 @@ export default function HomeScreen() {
                 />
               }
             />
-          </View>
-          <View
-            className="flex-row justify-between bg-white"
-            style={styles.Card}
-          >
             <FeatureCard
+              pathTo="presence"
               title="les absences"
               icon={
                 <ClipboardCheck
@@ -92,7 +83,25 @@ export default function HomeScreen() {
               }
               description="Suivez et gérer les absences."
             />
+          </View>
+          <View
+            className="flex-row justify-between bg-white"
+            style={styles.Card}
+          >
             <FeatureCard
+              pathTo=""
+              title="Ajouter Règlement Intérieur"
+              icon={
+                <Scale
+                  size={iconSize}
+                  strokeWidth={strokeWidth}
+                  className=" text-primary"
+                />
+              }
+            />
+
+            <FeatureCard
+              pathTo=""
               title="Matières et Professeurs"
               icon={
                 <ClipboardList
@@ -109,6 +118,7 @@ export default function HomeScreen() {
             style={styles.Card}
           >
             <FeatureCard
+              pathTo=""
               title="Valider une Note d’élève"
               icon={
                 <MessageSquareText
@@ -120,6 +130,7 @@ export default function HomeScreen() {
               description="Contacter les parent en écrivant une note"
             />
             <FeatureCard
+              pathTo=""
               title="valider les Convocations"
               icon={
                 <MailIcon

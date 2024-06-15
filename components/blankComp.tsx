@@ -5,7 +5,7 @@ const BlankComp = () => {
   return (
     <View className="w-full flex-1 items-center pt-[25%]">
       <Image
-        source={require("@/assets/images/nothing-here.png")}
+        source={require("@/assets/images/nothing-here-gray.png")}
         resizeMode="contain"
         className="w-full h-1/2 border"
       />

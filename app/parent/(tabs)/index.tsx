@@ -6,7 +6,7 @@ import {
   ImageBackground,
 } from "react-native";
 
-import { FeatureCard, FeatureCard2 } from "@/components/FeatureCard";
+import { FeatureCard } from "@/components/FeatureCard";
 import {
   CalendarClockIcon,
   ClipboardCheck,
@@ -28,7 +28,7 @@ export default function HomeScreen() {
             className="flex-row  justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard
+            <FeatureCard pathTo="planning"
               title="Emploi du temps"
               icon={
                 <CalendarClockIcon
@@ -39,7 +39,7 @@ export default function HomeScreen() {
               }
               description="Consultez les plannings rapidement."
             />
-            <FeatureCard2
+            <FeatureCard pathTo=""
               title="Justifier et consulter la présence"
               icon={
                 <ClipboardCheck
@@ -55,7 +55,7 @@ export default function HomeScreen() {
             className="flex-row justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard
+            <FeatureCard pathTo=""
               title="Consulter les Note"
               icon={
                 <MessageSquareText
@@ -67,7 +67,7 @@ export default function HomeScreen() {
               description="Voir les notes de votre
                           fils / fille"
             />
-            <FeatureCard
+            <FeatureCard pathTo=""
               title="Vos Convocations"
               icon={
                 <MailIcon
