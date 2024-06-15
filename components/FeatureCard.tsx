@@ -3,14 +3,14 @@ import { CalendarClockIcon } from "lucide-react-native";
 import { ReactNode } from "react";
 import { Pressable, Text, View } from "react-native";
 
-export default function FeatureCard({
+export function FeatureCard({
   description,
   icon,
   title,
 }: {
-  title?: string;
-  description?: string;
-  icon?: ReactNode;
+  title: string;
+  description: string;
+  icon: ReactNode;
 }) {
   return (
     <Link href={"../pages/planning"} asChild>

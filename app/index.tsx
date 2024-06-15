@@ -82,26 +82,17 @@ function RoleForm() {
   return (
     <>
       <View className="flex-row flex w-full justify-between items-center px-5">
-        <ChoiceButton
-          selected={selectIndex === 1}
-          handlePress={() => handleClick(1, "school")}
-        >
-          École
-        </ChoiceButton>
-        <ChoiceButton
-          selected={selectIndex === 2}
-          handlePress={() => handleClick(2, "teacher")}
-        >
-          Parent
-        </ChoiceButton>
-        <ChoiceButton
-          selected={selectIndex === 3}
-          handlePress={() => handleClick(3, "student")}
-        >
-          Élève
-        </ChoiceButton>
+        {routes.map((route) => (
+          <ChoiceButton
+            key={route.index}
+            selected={selectIndex === route.index}
+            handlePress={() => handleClick(route.index, route.path)}
+          >
+            {route.title}
+          </ChoiceButton>
+        ))}
       </View>
-      <Link href="/(auth)/signin" asChild className="w-3/4">
+      <Link href={`/(auth)/${choice}`} asChild className="w-3/4">
         <TouchableOpacity
           disabled={disabled}
           className={`${

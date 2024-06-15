@@ -50,22 +50,8 @@ export default function TabLayout() {
         />
 
         <Tabs.Screen
-          name="carte"
+          name="profile"
           options={{
-            tabBarIcon: ({ color, focused, size }) => (
-              <TabIcon
-                color={color}
-                name="Carte"
-                focused={focused}
-                icon={<CreditCardIcon size={size} color={color} />}
-              />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="auth"
-          options={{
-            title: "Profile",
             tabBarIcon: ({ color, focused, size }) => (
               <TabIcon
                 color={color}
@@ -74,12 +60,6 @@ export default function TabLayout() {
                 icon={<UserCircle2 size={size} color={color} />}
               />
             ),
-          }}
-        />
-        <Tabs.Screen
-          name="BarCodeScanner"
-          options={{
-            href: null,
           }}
         />
       </Tabs>
