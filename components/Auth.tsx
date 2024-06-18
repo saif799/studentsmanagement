@@ -23,6 +23,7 @@ AppState.addEventListener("change", (state) => {
 });
 
 export default function Auth({ role }: { role: string }) {
+  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -48,7 +49,7 @@ export default function Auth({ role }: { role: string }) {
       password: password,
       options: {
         data: {
-          username: "parentSaif",
+          username: userName,
           role,
         },
       },
@@ -56,8 +57,8 @@ export default function Auth({ role }: { role: string }) {
     if (error) Alert.alert(error.message);
     setLoading(false);
   }
-
   const onPasswordChange = (text: string) => setPassword(text);
+  const onUserNameChange = (text: string) => setUserName(text);
   const onEmailChange = (text: string) => setEmail(text);
   return (
     <View className="p-3">
@@ -65,9 +66,17 @@ export default function Auth({ role }: { role: string }) {
         <View className=" gap-3 pr-2">
           <View>
             <FormField
-              label="N° d’inscription"
+              label="Nom"
+              value={userName}
+              placeholder="votre nom ici"
+              onValueChange={onUserNameChange}
+            />
+          </View>
+          <View>
+            <FormField
+              label="Email"
               value={email}
-              placeholder="xxxx-xxxx"
+              placeholder="exemple@domain.com"
               onValueChange={onEmailChange}
             />
           </View>
@@ -75,7 +84,7 @@ export default function Auth({ role }: { role: string }) {
             <FormField
               label="Mot de passe"
               value={password}
-              placeholder="Mot de passe"
+              placeholder="mot de passe ici"
               secureTextEntry
               onValueChange={onPasswordChange}
             />

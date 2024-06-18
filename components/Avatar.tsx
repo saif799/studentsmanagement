@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { Edit, Edit2Icon, Edit3Icon, EditIcon } from "lucide-react-native";
+import { Camera, Edit, Edit2Icon, Edit3Icon, EditIcon } from "lucide-react-native";
 
 interface Props {
   size: number;
@@ -116,7 +116,9 @@ export default function Avatar({
           style={[avatarSize, styles.avatar, styles.image]}
         />
       ) : (
-        <View style={[avatarSize, styles.avatar, styles.noImage]} />
+        <View className="h-[15vh] aspect-square rounded-full bg-white border-2 border-grayBorder items-center justify-center" style={[avatarSize]}>
+          <Camera className="text-disabledGray " size={50} strokeWidth={1} />
+        </View>
       )}
       <TouchableOpacity
         onPress={uploadAvatar}
