@@ -67,7 +67,7 @@ export default function TabTwoScreen() {
       const { data, error, status } = await supabase
         .from("profiles")
         .select(
-          `username, website, avatar_url, birthDate, class, level, city, familyName`
+          `username, avatar_url, birthDate, class, level, city, familyName`
         )
         .eq("id", session?.session.user.id)
         .single();

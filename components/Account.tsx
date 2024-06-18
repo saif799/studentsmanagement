@@ -10,9 +10,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { Button, Input } from "@rneui/themed";
 import { Session } from "@supabase/supabase-js";
-import QRCode from "react-native-qrcode-svg";
 import Avatar from "./Avatar";
 export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
@@ -36,7 +34,7 @@ export default function Account({ session }: { session: Session }) {
       const { data, error, status } = await supabase
         .from("profiles")
         .select(
-          `username, website, avatar_url, birthDate, class, level, city, familyName`
+          `username, avatar_url, birthDate, class, level, city, familyName`
         )
         .eq("id", session?.user.id)
         .single();

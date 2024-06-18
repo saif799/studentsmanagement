@@ -22,7 +22,7 @@ AppState.addEventListener("change", (state) => {
   }
 });
 
-export default function Auth() {
+export default function Auth({ role }: { role: string }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -46,8 +46,13 @@ export default function Auth() {
     } = await supabase.auth.signUp({
       email: email,
       password: password,
+      options: {
+        data: {
+          username: "parentSaif",
+          role,
+        },
+      },
     });
-
     if (error) Alert.alert(error.message);
     setLoading(false);
   }
@@ -96,7 +101,9 @@ export default function Auth() {
           onPress={() => signUpWithEmail()}
           className="w-full py-4 justify-center mt-2 items-center border-[1px] border-disabledGray rounded-lg"
         >
-          <Text className=" text-disabledGray font-pbold text-base">Sign up</Text>
+          <Text className=" text-disabledGray font-pbold text-base">
+            Sign up
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

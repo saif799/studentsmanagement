@@ -45,8 +45,17 @@ export default function Scanner() {
     setScanned(true);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     setText(data);
-    navigation.navigate("presence", { scannedData : data});
     // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    supabase
+      .from("presence")
+      .insert({
+        userId: data,
+        state: "present",
+        created_at: new Date().toISOString().split("T")[0],
+      })
+      .then(({ data, error }) => {
+        console.log("this is the errro ", error);
+      });
   };
 
   return (

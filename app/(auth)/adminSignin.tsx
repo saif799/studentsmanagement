@@ -39,7 +39,7 @@ export default function AdminSginIn() {
                 avenir meilleur.
               </Text>
             </View>
-            <Auth />
+            <Auth role="admin"/>
           </View>
         </View>
       </ScrollView>

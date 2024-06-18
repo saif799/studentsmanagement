@@ -39,7 +39,7 @@ export default function ParentSginIn() {
                 avenir meilleur.
               </Text>
             </View>
-            <Auth />
+            <Auth role="parent" />
           </View>
         </View>
       </ScrollView>
