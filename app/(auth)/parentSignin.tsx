@@ -1,5 +1,5 @@
 import Auth from "../../components/Auth";
-import { ImageBackground, ScrollView, Text, View } from "react-native";
+import { Alert, ImageBackground, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Redirect } from "expo-router";
 import { useSession } from "@/context/authProvider";
@@ -8,7 +8,11 @@ import { ArrowLeft } from "lucide-react-native";
 export default function ParentSginIn() {
   const auth = useSession();
 
-  if (auth.session) return <Redirect href="/parent/(tabs)" />;
+  if (auth.session && auth.user?.role === "parent")
+    return <Redirect href="/parent/(tabs)" />;
+
+  if(auth.user && auth.user.role!=="parent")
+    Alert.alert("you trying to sneek in or what ")
   // if (assets)
   return (
     <SafeAreaView className="h-full bg-white ">

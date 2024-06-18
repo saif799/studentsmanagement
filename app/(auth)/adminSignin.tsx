@@ -7,9 +7,11 @@ import { ArrowLeft } from "lucide-react-native";
 
 export default function AdminSginIn() {
   const auth = useSession();
+  console.log(auth.user?.role);
 
-  if (auth.session) return <Redirect href="/admin/(tabs)" />;
-  // if (assets)
+  if (auth.session && auth.user?.role === "admin")
+    return <Redirect href="/admin/(tabs)" />;
+
   return (
     <SafeAreaView className="h-full bg-white ">
       <ScrollView automaticallyAdjustKeyboardInsets={true}>
@@ -39,7 +41,7 @@ export default function AdminSginIn() {
                 avenir meilleur.
               </Text>
             </View>
-            <Auth role="admin"/>
+            <Auth role="admin" />
           </View>
         </View>
       </ScrollView>

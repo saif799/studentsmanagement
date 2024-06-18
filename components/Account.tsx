@@ -5,7 +5,6 @@ import {
   View,
   Alert,
   Text,
-  Image,
   TextInput,
   TouchableOpacity,
   ScrollView,
@@ -110,8 +109,6 @@ export default function Account({ session }: { session: Session }) {
       setLoading(false);
     }
   }
-
-  function handle(text: string) {}
 
   return (
     <ScrollView

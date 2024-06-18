@@ -1,15 +1,8 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
-import {
-  StyleSheet,
-  View,
-  Alert,
-  Image,
-  Button,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, Alert, Image, TouchableOpacity } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { Edit, Edit2Icon, Edit3Icon, EditIcon } from "lucide-react-native";
+import { Edit } from "lucide-react-native";
 
 interface Props {
   size: number;
