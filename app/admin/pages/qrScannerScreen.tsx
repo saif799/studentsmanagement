@@ -17,7 +17,13 @@ import {
   View,
 } from "react-native";
 
-export default function Scanner() {
+export default function Scanner({
+  setModalVisible,
+  editPresence,
+}: {
+  setModalVisible: (state: boolean) => void;
+  editPresence: (stuId: string, direction: string) => void;
+}) {
   const [isScanned, setScanned] = useState(false);
   const [text, setText] = useState("");
   const [permission, requestPermission] = useCameraPermissions();
@@ -43,19 +49,26 @@ export default function Scanner() {
     data,
   }: BarcodeScanningResult) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     setText(data);
     // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    supabase
+    await supabase
       .from("presence")
-      .insert({
-        userId: data,
-        state: "present",
-        created_at: new Date().toISOString().split("T")[0],
-      })
+      .upsert(
+        {
+          userId: data,
+          state: "present",
+          created_at: new Date().toISOString().split("T")[0],
+        },
+        { onConflict: "userId , created_at" }
+      )
       .then(({ data, error }) => {
         console.log("this is the errro ", error);
       });
+    setTimeout(() => {
+      alert(`étudiant a été marqué présent ${data}!`);
+      editPresence(data, "right");
+      setModalVisible(false);
+    }, 300);
   };
 
   return (
@@ -66,19 +79,7 @@ export default function Scanner() {
         barcodeScannerSettings={{
           barcodeTypes: ["qr", "pdf417"],
         }}
-      >
-        <View className="relative  flex-1 justify-center items-center">
-          <View className="bg-transparent border-dashed border-white border-2  h-[50%] aspect-square"></View>
-          <View className="absolute p-4  w-full h-full items-center justify-end pb-6 ">
-            <TouchableOpacity
-              className="bg-red-500 p-2 rounded-lg self-center  "
-              onPress={() => navigation.goBack()}
-            >
-              <Text className="text-white font-pregular text-lg">Cancel</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </CameraView>
+      />
     </View>
   );
 }
@@ -87,6 +88,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    borderRadius: 20,
+    overflow: "hidden",
   },
   camera: {
     flex: 1,

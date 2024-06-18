@@ -4,6 +4,9 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  Modal,
+  Pressable,
+  Alert,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { Check, Minus, ScanLine, X } from "lucide-react-native";
@@ -13,6 +16,7 @@ import {
 } from "react-native-gesture-handler";
 import { Link, useNavigation } from "expo-router";
 import { supabase } from "@/lib/supabase";
+import Scanner from "./qrScannerScreen";
 
 type PresenceType = {
   id: string;
@@ -26,7 +30,6 @@ type PresenceType = {
 
 const Presence = () => {
   const date = new Date();
-  const navigation = useNavigation();
 
   return (
     <View className="bg-white relative flex-1 px-4 pt-2 items-center">
@@ -41,14 +44,14 @@ const Presence = () => {
         </View>
       </View>
       <PresenceTable />
-
-      <Link
+      
+      {/* <Link
         href={`admin/pages/qrScannerScreen`}
         className="bg-primary p-3 rounded-lg flex-row w-fit absolute bottom-[3%] items-center justify-center "
       >
         <Text className="text-lg font-pmedium text-white pr-3">Scanner QR</Text>
         <ScanLine color={"white"}></ScanLine>
-      </Link>
+      </Link> */}
     </View>
   );
 };
@@ -56,6 +59,7 @@ const Presence = () => {
 function PresenceTable() {
   const swipeableRef = useRef(null);
   const [dbStudents, setDbStudents] = useState<PresenceType | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     supabase
@@ -85,7 +89,7 @@ function PresenceTable() {
               state,
               created_at: new Date().toISOString().split("T")[0],
             })
-            .then(({ error }) => {
+            .then(({ error, data }) => {
               if (!error)
                 console.log(
                   "should be workign and updated the studnt succefuly"
@@ -93,14 +97,16 @@ function PresenceTable() {
               console.log(error);
             });
         } else {
+          console.log(dbStudents[indexOfChange].presence[0].id);
+
           supabase
-            .from("presence")
-            .update({ state })
-            .eq("id", dbStudents[indexOfChange].presence[0].id)
-            .then(({ data, error }) => {
-              console.log("it should be updated i think");
-              console.log(error);
-            });
+          .from("presence")
+          .update({ state })
+          .eq("id", dbStudents[indexOfChange].presence[0].id)
+          .then(({ data, error }) => {
+            console.log("it should be updated i think");
+            console.log(error);
+          });
         }
 
         const updatedDbStudentsArray: PresenceType = dbStudents.map(
@@ -147,7 +153,7 @@ function PresenceTable() {
       </View>
       <ScrollView>
         <GestureHandlerRootView style={styles.scrollTable}>
-          {dbStudents?.map((stu) => (
+        {dbStudents?.map((stu) => (
             <Swipeable
               ref={swipeableRef}
               friction={1}
@@ -185,6 +191,43 @@ function PresenceTable() {
           ))}
         </GestureHandlerRootView>
       </ScrollView>
+      <View className="items-center flex-1 justify-center">
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Scan annulé");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View className="flex-1 bg-white items-center justify-center py-[13vh]">
+            <Text className="font-pmedium text-darkestGray text-lg">
+              Scanner QR d'étudiant
+            </Text>
+            <View className="flex-1 w-full px-[10%] py-[10%] rounded-xl aspect-auto">
+              <Scanner setModalVisible={setModalVisible} editPresence={editPresence} />
+            </View>
+            <TouchableOpacity
+              className="text-red-500 border border-red-500 p-2 rounded-lg self-center"
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Text className="text-red-500 font-pregular text-lg px-2">
+                Annuler
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Pressable
+          className="bg-primary p-3 rounded-lg flex-row w-fit absolute bottom-[3%] items-center justify-center "
+          onPress={() => setModalVisible(!modalVisible)}
+        >
+          <Text className="text-lg font-pmedium text-white pr-3">
+            Scanner QR
+          </Text>
+          <ScanLine color={"white"}></ScanLine>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -192,6 +235,47 @@ function PresenceTable() {
 const styles = StyleSheet.create({
   scrollTable: {
     gap: 8,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
   },
 });
 

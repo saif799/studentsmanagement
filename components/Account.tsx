@@ -114,7 +114,7 @@ export default function Account({ session }: { session: Session }) {
     <ScrollView
       automaticallyAdjustKeyboardInsets={true}
       style={styles.container}
-      className="bg-white h-full pb-10"
+      className="bg-white h-4/5 pb-10 overflow-visible"
     >
       <View className="items-center ">
         <Text className=" font-pbold text-xl pb-5">Profile d’élève</Text>
