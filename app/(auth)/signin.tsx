@@ -8,7 +8,8 @@ import { ArrowLeft } from "lucide-react-native";
 export default function SginIn() {
   const auth = useSession();
 
-  if (auth.session) return <Redirect href="/student/(tabs)" />;
+  if (auth.session && auth.user?.role === "student")
+    return <Redirect href="/student/(tabs)" />;
   // if (assets)
   return (
     <SafeAreaView className="h-full bg-white ">
