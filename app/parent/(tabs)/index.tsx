@@ -12,23 +12,97 @@ import {
   ClipboardCheck,
   MailIcon,
   MessageSquareText,
-  MessagesSquareIcon,
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
+import ChangeSelectChildComp from "@/components/changeSelectChildComp";
+import { supabase } from "@/lib/supabase";
+import { useSession } from "@/context/authProvider";
+import { ChildrenContext, StudentsToSelectContext } from "../pages/context";
+import { useEffect, useState } from "react";
+export type parentshipType = { parentId: string; childId: string };
+export type studentToSelectType = {
+  id: string;
+  username: string;
+  familyName: string;
+  avatar_url: string;
+};
 export default function HomeScreen() {
+  const [children, setchildren] = useState<parentshipType[]>([]);
+
+  const [students, setStudents] = useState<studentToSelectType[]>([]); //fetched only when the parent has no children
+  const [childrenData, setchildrenData] = useState<studentToSelectType[]>([]);
   const iconSize = 45;
   const strokeWidth = 1.4;
+  const parent = useSession();
+  useEffect(() => {
+    supabase
+      .from("parentship")
+      .select("parentId , childId")
+      .eq("parentId", parent.session?.user.id)
+      .then(({ data }) => {
+        if (data) {
+          const children: parentshipType[] = data;
+          setchildren(data);
+          console.log("data");
+          console.log(children);
+
+          const childrenInfo = supabase
+            .from("profiles")
+            .select("id, username , familyName , avatar_url")
+            .in(
+              "id",
+              children.map( (e) => e.childId)
+            )
+            .then(({ data, error }) => {
+              if (data) {
+                console.log("actually there are children");
+                console.log(data);
+
+                const dbdata: studentToSelectType[] = data;
+                setchildrenData(data);
+              }
+            });
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    if (children.length === 0) {
+      const students = supabase
+        .from("profiles")
+        .select("id , username , familyName , avatar_url") //you can add family name if you want
+        .then(({ data }) => {
+          if (data) {
+            console.log("here");
+
+            const students: studentToSelectType[] = data;
+            setStudents(data);
+          }
+        });
+    } else {
+    }
+  }, []);
+
   return (
     <SafeAreaView className="bg-white">
       <ScrollView className="bg-white">
         <HeroSec />
+        <StudentsToSelectContext.Provider value={students}>
+          <ChildrenContext.Provider value={childrenData}>
+            <View className="px-2 w-full pt-4">
+              <ChangeSelectChildComp />
+            </View>
+          </ChildrenContext.Provider>
+        </StudentsToSelectContext.Provider>
+
         <View className="gap-3 mt-1 px-2 pb-[14vh]">
           <View
             className="flex-row  justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard pathTo="planning"
+            <FeatureCard
+              pathTo="planning"
               title="Emploi du temps"
               icon={
                 <CalendarClockIcon
@@ -39,7 +113,9 @@ export default function HomeScreen() {
               }
               description="Consultez les plannings rapidement."
             />
-            <FeatureCard pathTo=""
+            <FeatureCard
+              from="parent"
+              pathTo="justification"
               title="Justifier et consulter la présence"
               icon={
                 <ClipboardCheck
@@ -55,7 +131,8 @@ export default function HomeScreen() {
             className="flex-row justify-between bg-white"
             style={styles.Card}
           >
-            <FeatureCard pathTo=""
+            <FeatureCard
+              pathTo=""
               title="Consulter les Note"
               icon={
                 <MessageSquareText
@@ -67,7 +144,8 @@ export default function HomeScreen() {
               description="Voir les notes de votre
                           fils / fille"
             />
-            <FeatureCard pathTo=""
+            <FeatureCard
+              pathTo=""
               title="Vos Convocations"
               icon={
                 <MailIcon

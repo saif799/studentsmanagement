@@ -95,7 +95,7 @@ export default function HomeScreen() {
             style={styles.Card}
           >
             <FeatureCard
-              pathTo="planning"
+              pathTo="myabsences"
               from="student"
               title="Vos absences"
               icon={
