@@ -1,51 +1,46 @@
 import { useState, useEffect } from "react";
-import { supabase } from "../lib/supabase";
 import { StyleSheet, View, Alert, Image, TouchableOpacity } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Camera, Edit } from "lucide-react-native";
+import { supabase } from "@/lib/supabase";
 
 interface Props {
-  size: number;
-  url: string | null;
-  onUpload: (filePath: string) => void;
+  size?: number;
+  url?: string | null;
+  onUpload?: (filePath: string) => void;
   className?: string;
 }
-
-export default function Avatar({
-  url,
-  size = 150,
-  onUpload,
-  className,
-}: Props) {
-  const [uploading, setUploading] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const avatarSize = { height: size, width: size };
-
+export default function uploadSth() {
   useEffect(() => {
-    if (url) downloadImage(url);
-  }, [url]);
+    downloadImage();
+  }, []);
 
-  async function downloadImage(path: string) {
+  async function downloadImage() {
     try {
-      const { data, error } = await supabase.storage
-        .from("content")
-        .download(path);
-
-      if (error) {
-        throw error;
-      }
-
-      const fr = new FileReader();
-      fr.readAsDataURL(data);
-      fr.onload = () => {
-        setAvatarUrl(fr.result as string);
-      };
+      //   const { data, error } = await supabase.storage.from("avatars");
+      //   if (error) {
+      //     throw error;
+      //   }
+      //   const fr = new FileReader();
+      //   fr.readAsDataURL(data);
+      //   fr.onload = () => {};
     } catch (error) {
       if (error instanceof Error) {
         console.log("Error downloading image: ", error.message);
       }
     }
   }
+  return (
+    <View>
+      <Avatar />
+    </View>
+  );
+}
+
+function Avatar({ url, size = 150, onUpload, className }: Props) {
+  const [uploading, setUploading] = useState(false);
+  //   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  //   const avatarSize = { height: size, width: size };
 
   async function uploadAvatar() {
     try {
@@ -82,12 +77,12 @@ export default function Avatar({
         .upload(path, arraybuffer, {
           contentType: image.mimeType ?? "image/jpeg",
         });
-
       if (uploadError) {
         throw uploadError;
       }
+      console.log("uploaded successfully ", data.path);
 
-      onUpload(data.path);
+      //   onUpload(data.path);
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert(error.message);
@@ -101,7 +96,7 @@ export default function Avatar({
 
   return (
     <View className="relative" style={{ alignItems: "center" }}>
-      {avatarUrl ? (
+      {/* {avatarUrl ? (
         <Image
           className={`${className} rounded-full`}
           source={{ uri: avatarUrl }}
@@ -115,7 +110,7 @@ export default function Avatar({
         >
           <Camera className="text-disabledGray " size={50} strokeWidth={1} />
         </View>
-      )}
+      )} */}
       <TouchableOpacity
         onPress={uploadAvatar}
         disabled={uploading}

@@ -21,7 +21,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
 import { Link } from "expo-router";
 export default function HomeScreen() {
-  const pathFrom = "admin"
+  const pathFrom = "admin";
   const iconSize = 45;
   const strokeWidth = 1.4;
   return (
@@ -35,7 +35,7 @@ export default function HomeScreen() {
           >
             <FeatureCard
               from={pathFrom}
-              pathTo="planning"
+              pathTo="uploadSth"
               title="Publier les Emplois du temps"
               icon={
                 <CalendarClockIcon
