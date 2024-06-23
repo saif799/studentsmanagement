@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import { StyleSheet, View, Alert, Image, TouchableOpacity } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { Camera, Edit } from "lucide-react-native";
+  import { Camera, Edit } from "lucide-react-native";
 
 interface Props {
   size: number;

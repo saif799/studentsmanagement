@@ -7,7 +7,6 @@ import { ArrowLeft } from "lucide-react-native";
 
 export default function AdminSginIn() {
   const auth = useSession();
-  console.log(auth.user?.role);
 
   if (auth.session && auth.user?.role === "admin")
     return <Redirect href="/admin/(tabs)" />;

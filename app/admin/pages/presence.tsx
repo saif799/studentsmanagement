@@ -14,9 +14,9 @@ import {
   GestureHandlerRootView,
   Swipeable,
 } from "react-native-gesture-handler";
-import { Link, useNavigation } from "expo-router";
 import { supabase } from "@/lib/supabase";
 import Scanner from "./qrScannerScreen";
+import { BarcodeScanningResult } from "expo-camera";
 
 type PresenceType = {
   id: string;
@@ -44,7 +44,7 @@ const Presence = () => {
         </View>
       </View>
       <PresenceTable />
-      
+
       {/* <Link
         href={`admin/pages/qrScannerScreen`}
         className="bg-primary p-3 rounded-lg flex-row w-fit absolute bottom-[3%] items-center justify-center "
@@ -89,24 +89,15 @@ function PresenceTable() {
               state,
               created_at: new Date().toISOString().split("T")[0],
             })
-            .then(({ error, data }) => {
-              if (!error)
-                console.log(
-                  "should be workign and updated the studnt succefuly"
-                );
-              console.log(error);
+            .then(({ error }) => {
+              if (error) console.log(error);
             });
         } else {
-          console.log(dbStudents[indexOfChange].presence[0].id);
-
           supabase
-          .from("presence")
-          .update({ state })
-          .eq("id", dbStudents[indexOfChange].presence[0].id)
-          .then(({ data, error }) => {
-            console.log("it should be updated i think");
-            console.log(error);
-          });
+            .from("presence")
+            .update({ state })
+            .eq("id", dbStudents[indexOfChange].presence[0].id)
+            .then(({ data, error }) => {});
         }
 
         const updatedDbStudentsArray: PresenceType = dbStudents.map(
@@ -143,6 +134,27 @@ function PresenceTable() {
     );
   }
 
+  const handleBarCodeScanned = async ({
+    type,
+    data,
+  }: BarcodeScanningResult) => {
+    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    await supabase
+      .from("presence")
+      .upsert(
+        {
+          userId: data,
+          state: "present",
+          created_at: new Date().toISOString().split("T")[0],
+        },
+        { onConflict: "userId , created_at" }
+      )
+      .then(({ data, error }) => {});
+    setTimeout(() => {
+      editPresence(data, "right");
+      setModalVisible(false);
+    }, 300);
+  };
   return (
     <View className="w-full pt-3 h-[75vh]">
       <View className="w-full flex-row justify-between px-2">
@@ -153,7 +165,7 @@ function PresenceTable() {
       </View>
       <ScrollView>
         <GestureHandlerRootView style={styles.scrollTable}>
-        {dbStudents?.map((stu) => (
+          {dbStudents?.map((stu) => (
             <Swipeable
               ref={swipeableRef}
               friction={1}
@@ -206,7 +218,10 @@ function PresenceTable() {
               Scanner QR d'étudiant
             </Text>
             <View className="flex-1 w-full px-[10%] py-[10%] rounded-xl aspect-auto">
-              <Scanner setModalVisible={setModalVisible} editPresence={editPresence} />
+              <Scanner
+                handleBarCodeScanned={handleBarCodeScanned}
+                setModalVisible={setModalVisible}
+              />
             </View>
             <TouchableOpacity
               className="text-red-500 border border-red-500 p-2 rounded-lg self-center"

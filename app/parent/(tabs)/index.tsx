@@ -16,85 +16,35 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
 import ChangeSelectChildComp from "@/components/changeSelectChildComp";
-import { supabase } from "@/lib/supabase";
 import { useSession } from "@/context/authProvider";
-import { ChildrenContext, StudentsToSelectContext } from "../pages/context";
-import { useEffect, useState } from "react";
+import { getChildren } from "@/hooks/getChildren";
+
 export type parentshipType = { parentId: string; childId: string };
+
 export type studentToSelectType = {
   id: string;
   username: string;
   familyName: string;
   avatar_url: string;
 };
-export default function HomeScreen() {
-  const [children, setchildren] = useState<parentshipType[]>([]);
 
-  const [students, setStudents] = useState<studentToSelectType[]>([]); //fetched only when the parent has no children
-  const [childrenData, setchildrenData] = useState<studentToSelectType[]>([]);
+export default function HomeScreen() {
+  const parent = useSession();
+
+  const { isLoading, data } = getChildren(parent.session?.user.id);
+
+  if (isLoading) return <Text className="pt-5">it should be loading</Text>;
+
   const iconSize = 45;
   const strokeWidth = 1.4;
-  const parent = useSession();
-  useEffect(() => {
-    supabase
-      .from("parentship")
-      .select("parentId , childId")
-      .eq("parentId", parent.session?.user.id)
-      .then(({ data }) => {
-        if (data) {
-          const children: parentshipType[] = data;
-          setchildren(data);
-          console.log("data");
-          console.log(children);
-
-          const childrenInfo = supabase
-            .from("profiles")
-            .select("id, username , familyName , avatar_url")
-            .in(
-              "id",
-              children.map( (e) => e.childId)
-            )
-            .then(({ data, error }) => {
-              if (data) {
-                console.log("actually there are children");
-                console.log(data);
-
-                const dbdata: studentToSelectType[] = data;
-                setchildrenData(data);
-              }
-            });
-        }
-      });
-  }, []);
-
-  useEffect(() => {
-    if (children.length === 0) {
-      const students = supabase
-        .from("profiles")
-        .select("id , username , familyName , avatar_url") //you can add family name if you want
-        .then(({ data }) => {
-          if (data) {
-            console.log("here");
-
-            const students: studentToSelectType[] = data;
-            setStudents(data);
-          }
-        });
-    } else {
-    }
-  }, []);
 
   return (
     <SafeAreaView className="bg-white">
       <ScrollView className="bg-white">
         <HeroSec />
-        <StudentsToSelectContext.Provider value={students}>
-          <ChildrenContext.Provider value={childrenData}>
-            <View className="px-2 w-full pt-4">
-              <ChangeSelectChildComp />
-            </View>
-          </ChildrenContext.Provider>
-        </StudentsToSelectContext.Provider>
+        <View className="px-2 w-full pt-4">
+          <ChangeSelectChildComp />
+        </View>
 
         <View className="gap-3 mt-1 px-2 pb-[14vh]">
           <View
@@ -102,6 +52,7 @@ export default function HomeScreen() {
             style={styles.Card}
           >
             <FeatureCard
+              from="parent"
               pathTo="planning"
               title="Emploi du temps"
               icon={
@@ -132,6 +83,7 @@ export default function HomeScreen() {
             style={styles.Card}
           >
             <FeatureCard
+              from="parent"
               pathTo=""
               title="Consulter les Note"
               icon={
@@ -145,6 +97,7 @@ export default function HomeScreen() {
                           fils / fille"
             />
             <FeatureCard
+              from="parent"
               pathTo=""
               title="Vos Convocations"
               icon={

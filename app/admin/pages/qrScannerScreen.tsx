@@ -5,29 +5,21 @@ import {
   CameraView,
   useCameraPermissions,
 } from "expo-camera";
-import { useNavigation } from "expo-router";
-import { ReactNode, useState } from "react";
-import {
-  Alert,
-  Button,
-  Linking,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { useState } from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
 
 export default function Scanner({
   setModalVisible,
-  editPresence,
+  handleBarCodeScanned,
 }: {
   setModalVisible: (state: boolean) => void;
-  editPresence: (stuId: string, direction: string) => void;
+  handleBarCodeScanned: ({
+    type,
+    data,
+  }: BarcodeScanningResult) => Promise<void>;
 }) {
   const [isScanned, setScanned] = useState(false);
-  const [text, setText] = useState("");
   const [permission, requestPermission] = useCameraPermissions();
-  const navigation = useNavigation();
   if (!permission) {
     // Camera permissions are still loading.
     return <View />;
@@ -44,38 +36,17 @@ export default function Scanner({
       </View>
     );
   }
-  const handleBarCodeScanned = async ({
-    type,
-    data,
-  }: BarcodeScanningResult) => {
+
+  const qrCodeScan = async (params: BarcodeScanningResult) => {
     setScanned(true);
-    setText(data);
-    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    await supabase
-      .from("presence")
-      .upsert(
-        {
-          userId: data,
-          state: "present",
-          created_at: new Date().toISOString().split("T")[0],
-        },
-        { onConflict: "userId , created_at" }
-      )
-      .then(({ data, error }) => {
-        console.log("this is the errro ", error);
-      });
-    setTimeout(() => {
-      alert(`étudiant a été marqué présent ${data}!`);
-      editPresence(data, "right");
-      setModalVisible(false);
-    }, 300);
+    await handleBarCodeScanned(params);
   };
 
   return (
     <View style={styles.container}>
       <CameraView
         style={styles.camera}
-        onBarcodeScanned={isScanned ? undefined : handleBarCodeScanned}
+        onBarcodeScanned={isScanned ? undefined : qrCodeScan}
         barcodeScannerSettings={{
           barcodeTypes: ["qr", "pdf417"],
         }}

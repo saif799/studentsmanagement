@@ -1,4 +1,13 @@
-import { View, Text, Image, ScrollView, TouchableHighlight, TouchableNativeFeedback, Pressable, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableHighlight,
+  TouchableNativeFeedback,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useSession } from "@/context/authProvider";
@@ -7,7 +16,6 @@ type absenceType = { created_at: string };
 export default function Myabsences() {
   const { session, user } = useSession();
   const [absences, setabsences] = useState<absenceType[]>([]);
-  console.log("good");
 
   useEffect(() => {
     supabase
@@ -15,12 +23,11 @@ export default function Myabsences() {
       .select("created_at")
       .match({ userId: session?.user.id, state: "absent" })
       .then(({ data, error }) => {
-        console.log(error);
+        if (error) console.log(error);
 
         if (data) {
           const test: absenceType[] = data;
           setabsences(test);
-          console.log(test);
         }
       });
   }, []);
@@ -41,7 +48,7 @@ export default function Myabsences() {
         <ScrollView className="grow flex-1 w-full">
           {absences.map((e) => (
             <TouchableOpacity
-            key={e.created_at}
+              key={e.created_at}
               className={`w-full text-center border border-grayBorder rounded-lg py-1 pt-3 px-3  flex-row justify-center items-center`}
             >
               <Text className="text-lg font-pmedium text-darkestGray pb-2">

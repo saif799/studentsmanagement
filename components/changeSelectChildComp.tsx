@@ -4,35 +4,35 @@ import {
   Image,
   TouchableOpacity,
   Modal,
-  ScrollView,
+  Alert,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useSession } from "@/context/authProvider";
-import {
-  ChildrenContext,
-  StudentsToSelectContext,
-} from "@/app/parent/pages/context";
-import SelectMultiple from "react-native-select-multiple";
 import { studentToSelectType } from "@/app/parent/(tabs)";
 import { supabase } from "@/lib/supabase";
+import Scanner from "@/app/admin/pages/qrScannerScreen";
+import { BarcodeScanningResult } from "expo-camera";
+import { getChildren } from "@/hooks/getChildren";
+import { queryClient } from "@/app/_layout";
+import { useCurrentChild } from "@/context/currentChild";
 
 const ChangeSelectChildComp = () => {
   const parent = useSession();
-  const children = useContext(ChildrenContext);
-  const [selectedChild, setSelectedChild] = useState<
-    studentToSelectType | undefined
-  >();
-setTimeout(() => {
-  setSelectedChild(children![0])
-}, 200);
+  const { currentChild: yourCurrentChild, change: setCurrentChild } =
+    useCurrentChild();
+
+  const { isLoading, data: children } = getChildren(parent.session?.user.id);
+
   function handleSelectChild(stuId: string) {
-    setSelectedChild(children?.find((e) => e.id === stuId))
+    const selectedChild = children?.find((e) => e.id === stuId);
+    if (selectedChild) setCurrentChild(selectedChild);
   }
+
   return (
     <>
-      {children?.length !== 0 ? (
+      {children ? (
         <View className="w-full rounded-xl border border-grayBorder p-2 h-[12vh] flex-row items-center justify-between">
-          <View className="w-1/5 h-full rounded-full overflow-hidden border border-primary">
+          <View className="w-14 h-14 rounded-full overflow-hidden border border-primary">
             <Image
               source={{
                 uri: "https://static.vecteezy.com/system/resources/previews/036/280/650/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
@@ -40,8 +40,10 @@ setTimeout(() => {
               className="h-full w-full"
             />
           </View>
-          <Text className="font-pmedium text-darkestGray grow text-base pl-2">
-            {selectedChild?.familyName} {selectedChild?.username}
+          <Text className="font-pmedium text-darkestGray grow text-base pl-4">
+            {yourCurrentChild
+              ? `${yourCurrentChild?.familyName} ${yourCurrentChild.username}`
+              : `${children[0].familyName} ${children[0].username}`}
           </Text>
           <ChangeModal handleSelectChild={handleSelectChild} />
         </View>
@@ -62,8 +64,9 @@ function ChangeModal({
 }: {
   handleSelectChild: (stuId: string) => void;
 }) {
+  const parent = useSession();
   const [modalVisible, setModalVisible] = useState(false);
-  const children = useContext(ChildrenContext);
+  const { data: children } = getChildren(parent.session?.user.id);
 
   return (
     <View className="items-center flex-1 justify-center">
@@ -75,40 +78,39 @@ function ChangeModal({
           setModalVisible(!modalVisible);
         }}
       >
-        <View className="self-center bg-white items-center justify-center w-4/5 h-fit m-auto rounded-3xl py-4 shadow-md px-3 ">
-          <Text className="font-pmedium text-base pb-5 text-darkestGray">
-            Vos enfants
-          </Text>
+        <View className="self-center items-center justify-center h-fit m-auto shadow-md">
+          <View className="self-center bg-white items-center  w-4/5  rounded-2xl py-4 px-3 ">
+            <Text className="font-pmedium text-base pb-5 text-darkestGray">
+              Vos enfants
+            </Text>
 
-          {children?.map((ch) => (
-            <View className="pb-3" key={ch.id}>
-              <TouchableOpacity
-                className={`w-full rounded-[100px]  border-grayBorder p-2 h-[10vh] flex-row items-center justify-between`}
-                onPress={() => {
-                  handleSelectChild(ch.id);
-                  setModalVisible(false);
-                }}
-              >
-                <View className="w-1/5 h-full rounded-full overflow-hidden border border-primary">
-                  <Image
-                    source={{
-                      uri: "https://static.vecteezy.com/system/resources/previews/036/280/650/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
-                    }}
-                    className="h-full w-full"
-                  />
-                </View>
-                <Text className="font-pregular text-darkestGray grow text-base pl-2">
-                  {ch.familyName} {ch.username}
-                </Text>
-              </TouchableOpacity>
+            {children?.map((ch) => (
+              <View className="pb-3" key={ch.id}>
+                <TouchableOpacity
+                  className={`w-full rounded-[100px]  border-grayBorder p-2 h-[10vh] flex-row items-center justify-between`}
+                  onPress={() => {
+                    handleSelectChild(ch.id);
+                    setModalVisible(false);
+                  }}
+                >
+                  <View className="w-14 h-14 rounded-full overflow-hidden border border-primary">
+                    <Image
+                      source={{
+                        uri: "https://static.vecteezy.com/system/resources/previews/036/280/650/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
+                      }}
+                      className="h-full w-full"
+                    />
+                  </View>
+                  <Text className="font-pregular text-darkestGray grow text-base pl-4">
+                    {ch.familyName} {ch.username}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+            <View className="h-4 pt-6">
+              <AddModal parentId={parent.session?.user.id} />
             </View>
-          ))}
-          {/* <Pressable
-            onPress={() => setModalVisible(!modalVisible)}
-            className="px-5 py-3  rounded-md"
-          >
-            <Text className="font-pmedium text-base text-red-400">Annuler</Text>
-          </Pressable> */}
+          </View>
         </View>
       </Modal>
       <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -118,39 +120,21 @@ function ChangeModal({
   );
 }
 
-function AddModal({ parentId }: { parentId: string }) {
+function AddModal({ parentId }: { parentId: string | undefined }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const students = useContext(StudentsToSelectContext);
-  const [selectedStudents, setselectedStudents] = useState<string[]>([]);
-  function handleSelection(stuId: string) {
-    const indexOfChange = selectedStudents.findIndex((ss) => ss === stuId);
-    if (indexOfChange !== -1) {
-      setselectedStudents(selectedStudents.filter((s) => s !== stuId));
-    } else {
-      setselectedStudents([...selectedStudents, stuId]);
-    }
-  }
 
-  function handleSave() {
-    selectedStudents.forEach((e) =>
-      supabase
-        .from("parentship")
-        .insert({ parentId: parentId, childId: e })
-        .then(({ data, error }) => {
-          if (data) {
-            const test: { id: string; parentId: string; childId: string }[] =
-              data;
-            setselectedStudents(test.map((e) => e.id));
-            console.log("test");
+  const handleBarCodeScanned = async ({ data }: BarcodeScanningResult) => {
+    await supabase
+      .from("profiles")
+      .update({ parentId })
+      .eq("id", data)
+      .then(({ error }) => {
+        if (!error) queryClient.invalidateQueries({ queryKey: ["children"] });
+        else console.log(error);
 
-            console.log(test);
-          }
-        })
-    );
-    setTimeout(() => {
-      setModalVisible(false);
-    }, 2000);
-  }
+        setModalVisible(!modalVisible);
+      });
+  };
   return (
     <View className="items-center flex-1 justify-center">
       <Modal
@@ -158,55 +142,34 @@ function AddModal({ parentId }: { parentId: string }) {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
+          Alert.alert("Scan annulé");
           setModalVisible(!modalVisible);
         }}
       >
-        <View className="self-center bg-white items-center justify-center w-4/5 h-fit m-auto rounded-3xl py-4 shadow-md px-3 ">
-          <Text className="font-pmedium text-base pb-5 text-darkestGray">
+        <View className="flex-1 bg-white items-center justify-center py-[13vh]">
+          <Text className="font-pmedium text-darkestGray text-lg">
             Ajouter vos enfants
           </Text>
-
-          <ScrollView className="max-h-[50vh]">
-            {students?.map((stu) => (
-              <View className="pb-3" key={stu.id}>
-                <TouchableOpacity
-                  className={`w-full rounded-[100px]  border-grayBorder p-2 h-[10vh] flex-row items-center justify-between ${
-                    selectedStudents.findIndex((ss) => ss === stu.id) !== -1
-                      ? "bg-green-200"
-                      : ""
-                  }`}
-                  onPress={() => handleSelection(stu.id)}
-                >
-                  <View className="w-1/5 h-full rounded-full overflow-hidden border border-primary">
-                    <Image
-                      source={{
-                        uri: "https://static.vecteezy.com/system/resources/previews/036/280/650/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
-                      }}
-                      className="h-full w-full"
-                    />
-                  </View>
-                  <Text className="font-pregular text-darkestGray grow text-base pl-2">
-                    {stu.familyName} {stu.username}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            ))}
-          </ScrollView>
-          <TouchableOpacity onPress={() => handleSave()} className="p-3 pb-0">
-            <Text className="font-pmedium text-primary text-center w-fit ">
-              Enregistrer
+          <View className="flex-1 w-full px-[10%] py-[10%] rounded-xl aspect-auto">
+            <Scanner
+              handleBarCodeScanned={handleBarCodeScanned}
+              setModalVisible={setModalVisible}
+            />
+          </View>
+          <TouchableOpacity
+            className="text-red-500 border border-red-500 p-2 rounded-lg self-center"
+            onPress={() => setModalVisible(!modalVisible)}
+          >
+            <Text className="text-red-500 font-pregular text-lg px-2">
+              Annuler
             </Text>
           </TouchableOpacity>
-
-          {/* <Pressable
-            onPress={() => setModalVisible(!modalVisible)}
-            className="px-5 py-3  rounded-md"
-          >
-            <Text className="font-pmedium text-base text-red-400">Annuler</Text>
-          </Pressable> */}
         </View>
       </Modal>
-      <TouchableOpacity onPress={() => setModalVisible(true)}>
+      <TouchableOpacity
+        className="h-10 w-full"
+        onPress={() => setModalVisible(true)}
+      >
         <Text className="font-pmedium text-primary text-center w-fit ">
           Ajouter
         </Text>
