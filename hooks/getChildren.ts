@@ -15,11 +15,8 @@ async function fetchChildren(parentId: string | undefined) {
     familyName: string;
     avatar_url: string;
   }[] = [];
-  if (data) {
-    students = data;
-    // setCurrentCHild(students[0]);
-    return students;
-  }
+  if (data) students = data;
+  return students;
 }
 
 export const getChildren = (parentId: string | undefined) =>

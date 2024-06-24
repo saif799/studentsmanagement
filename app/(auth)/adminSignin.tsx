@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Redirect } from "expo-router";
 import { useSession } from "@/context/authProvider";
 import { ArrowLeft } from "lucide-react-native";
+import { Alert } from "react-native";
 
 export default function AdminSginIn() {
   const auth = useSession();

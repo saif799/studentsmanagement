@@ -2,8 +2,15 @@ import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 import React from "react";
 import { useSession } from "@/context/authProvider";
 import { getAbsence } from "@/hooks/getAbsence";
-export default function Myabsences() {
+import { useCurrentChild } from "@/context/currentChild";
+export default function Childrenabsences() {
   const { session, user } = useSession();
+
+  const { currentChild } = useCurrentChild();
+
+  // TODO : make the ui for the case where the user didint select a child yet
+  // or maybe make it so that if there is no child we just get the first child data like we did in the main page for the selct component
+  if (!currentChild) return <Text>please select a child</Text>;
   const { data: absences, isLoading, error } = getAbsence(session?.user.id);
 
   // TODO : handle the is loading and error UI
@@ -25,7 +32,7 @@ export default function Myabsences() {
           <ScrollView className="grow flex-1 w-full">
             {absences.map((e) => (
               <TouchableOpacity
-                key={e.created_at}
+                key={e.id}
                 className={`w-full text-center border border-grayBorder rounded-lg py-1 pt-3 px-3  flex-row justify-center items-center`}
               >
                 <Text className="text-lg font-pmedium text-darkestGray pb-2">

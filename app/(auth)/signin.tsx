@@ -10,6 +10,10 @@ export default function SginIn() {
 
   if (auth.session && auth.user?.role === "student")
     return <Redirect href="/student/(tabs)" />;
+  if (auth.session && auth.user?.role === "admin")
+    return <Redirect href="/admin/(tabs)" />;
+  if (auth.session && auth.user?.role === "parent")
+    return <Redirect href="/parent/(tabs)" />;
   // if (assets)
   return (
     <SafeAreaView className="h-full bg-white ">

@@ -8,13 +8,12 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { useSession } from "@/context/authProvider";
-import { studentToSelectType } from "@/app/parent/(tabs)";
-import { supabase } from "@/lib/supabase";
 import Scanner from "@/app/admin/pages/qrScannerScreen";
 import { BarcodeScanningResult } from "expo-camera";
 import { getChildren } from "@/hooks/getChildren";
 import { queryClient } from "@/app/_layout";
 import { useCurrentChild } from "@/context/currentChild";
+import { AddChildMutation } from "@/hooks/mutations/addChild";
 
 const ChangeSelectChildComp = () => {
   const parent = useSession();
@@ -28,6 +27,7 @@ const ChangeSelectChildComp = () => {
     if (selectedChild) setCurrentChild(selectedChild);
   }
 
+  // TODO : handle loading state
   return (
     <>
       {children ? (
@@ -121,19 +121,20 @@ function ChangeModal({
 }
 
 function AddModal({ parentId }: { parentId: string | undefined }) {
+  const mutateChildren = AddChildMutation();
+
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleBarCodeScanned = async ({ data }: BarcodeScanningResult) => {
-    await supabase
-      .from("profiles")
-      .update({ parentId })
-      .eq("id", data)
-      .then(({ error }) => {
-        if (!error) queryClient.invalidateQueries({ queryKey: ["children"] });
-        else console.log(error);
-
-        setModalVisible(!modalVisible);
-      });
+    mutateChildren.mutate(
+      { parentId, id: data },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["children"] });
+          setModalVisible(!modalVisible);
+        },
+      }
+    );
   };
   return (
     <View className="items-center flex-1 justify-center">

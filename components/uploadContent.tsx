@@ -1,31 +1,22 @@
-import { useState } from "react";
-import { View, Alert, TouchableOpacity, Text } from "react-native";
+import { ReactNode, useState } from "react";
+import {
+  View,
+  Alert,
+  TouchableOpacity,
+  Text,
+  StyleProp,
+  ViewStyle,
+} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { supabase } from "@/lib/supabase";
-import { useMutation } from "@tanstack/react-query";
 
 interface Props {
   onUpload: (filePath: string) => void;
-}
-export default function uploadSth() {
-  const { mutate: uploadImage } = useMutation({
-    mutationFn: async (path: string) =>
-      await supabase.from("schedule").insert({ path }),
-  });
-
-  // TODO : build better ui  for this page and make it show the last uploaded planning (steal it from the parent planning page) 
-  return (
-    <View>
-      <Avatar
-        onUpload={(path: string) => {
-          uploadImage(path);
-        }}
-      />
-    </View>
-  );
+  children: ReactNode;
+  style?: StyleProp<ViewStyle>;
 }
 
-function Avatar({ onUpload }: Props) {
+export function UploadContent({ onUpload, children, style }: Props) {
   const [uploading, setUploading] = useState(false);
 
   async function uploadAvatar() {
@@ -80,15 +71,10 @@ function Avatar({ onUpload }: Props) {
     }
   }
 
+  // TODO : did it with class name instead of style but it didnt work if u wanna fuck with it go ahead
   return (
-    <View className="relative" style={{ alignItems: "center" }}>
-      <TouchableOpacity
-        onPress={uploadAvatar}
-        disabled={uploading}
-        className="p-4 bg-primary items-center justify-center rounded-md"
-      >
-        <Text className="text-white ">Upload planning</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity onPress={uploadAvatar} disabled={uploading} style={style}>
+      {children}
+    </TouchableOpacity>
   );
 }

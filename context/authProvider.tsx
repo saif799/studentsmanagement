@@ -28,7 +28,6 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log(session?.user.role);
       setSession(session);
     });
     supabase.auth.onAuthStateChange((_event, session) => {

@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Session } from "@supabase/supabase-js";
 import Avatar from "./Avatar";
+import { queryClient } from "@/app/_layout";
 export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
@@ -248,7 +249,10 @@ export default function Account({ session }: { session: Session }) {
         </TouchableOpacity>
         <TouchableOpacity
           disabled={loading}
-          onPress={() => supabase.auth.signOut()}
+          onPress={() => {
+            supabase.auth.signOut();
+            queryClient.clear();
+          }}
           className="w-[45vw] py-4 justify-center items-center border-[1px] border-red-500 bg-white rounded-lg"
         >
           <Text className=" text-red-500  font-pbold text-base">Log out</Text>
