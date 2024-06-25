@@ -3,9 +3,11 @@ import React from "react";
 import { useSession } from "@/context/authProvider";
 import { getAbsence } from "@/hooks/getAbsence";
 import { useCurrentChild } from "@/context/currentChild";
+import { useUser } from "@/context/getUser";
 export default function Childrenabsences() {
-  const { session, user } = useSession();
+  const { session } = useSession();
 
+  const {user } =useUser()
   const { currentChild } = useCurrentChild();
 
   // TODO : make the ui for the case where the user didint select a child yet

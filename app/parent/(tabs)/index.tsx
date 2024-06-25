@@ -18,6 +18,7 @@ import { Text } from "react-native";
 import ChangeSelectChildComp from "@/components/changeSelectChildComp";
 import { useSession } from "@/context/authProvider";
 import { getChildren } from "@/hooks/getChildren";
+import { useUser } from "@/context/getUser";
 
 export type parentshipType = { parentId: string; childId: string };
 
@@ -30,6 +31,9 @@ export type studentToSelectType = {
 
 export default function HomeScreen() {
   const parent = useSession();
+
+  const { user } = useUser();
+  console.log(user);
 
   const { isLoading, data } = getChildren(parent.session?.user.id);
 

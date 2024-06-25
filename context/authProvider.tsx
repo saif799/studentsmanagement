@@ -7,24 +7,24 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useUser } from "./getUser";
 
-type Usertype = { username: string; role: string };
+type Usertype = {
+  role: "parent" | "admin" | "student";
+  username: string;
+};
 
 const AuthContext = createContext<{
   session: Session | null;
-
-  user: Usertype | null;
 }>({
   session: null,
-
-  user: null,
 });
 
 export const useSession = () => useContext(AuthContext);
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [authSession, setSession] = useState<Session | null>(null);
-  const [user, setUser] = useState<Usertype | null>(null);
+  const { setUser } = useUser();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -43,14 +43,13 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
       .then(({ data }) => {
         if (data) {
           const fetchedUser: Usertype = data[0];
-
           setUser(fetchedUser);
         }
       });
   }, [authSession]);
 
   return (
-    <AuthContext.Provider value={{ session: authSession, user }}>
+    <AuthContext.Provider value={{ session: authSession }}>
       {children}
     </AuthContext.Provider>
   );

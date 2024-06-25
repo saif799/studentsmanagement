@@ -2,16 +2,15 @@ import Auth from "../../components/Auth";
 import { ImageBackground, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Redirect } from "expo-router";
-import { useSession } from "@/context/authProvider";
 import { ArrowLeft } from "lucide-react-native";
-import { Alert } from "react-native";
+import { useUser } from "@/context/getUser";
 
 export default function AdminSginIn() {
-  const auth = useSession();
+  const { user } = useUser();
 
-  if (auth.session && auth.user?.role === "admin")
-    return <Redirect href="/admin/(tabs)" />;
-
+  if (user?.role === "student") return <Redirect href="/student/(tabs)" />;
+  if (user?.role === "admin") return <Redirect href="/admin/(tabs)" />;
+  if (user?.role === "parent") return <Redirect href="/parent/(tabs)" />;
   return (
     <SafeAreaView className="h-full bg-white ">
       <ScrollView automaticallyAdjustKeyboardInsets={true}>

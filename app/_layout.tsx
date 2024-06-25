@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AuthProvider from "@/context/authProvider";
+import UserProvider from "@/context/userProvider";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -40,8 +41,8 @@ export default function RootLayout() {
     return null;
   }
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen
             name="student/(tabs)"
@@ -51,7 +52,7 @@ export default function RootLayout() {
           <Stack.Screen name="admin/pages" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
         </Stack>
-      </QueryClientProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }

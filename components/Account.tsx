@@ -12,7 +12,9 @@ import {
 import { Session } from "@supabase/supabase-js";
 import Avatar from "./Avatar";
 import { queryClient } from "@/app/_layout";
+import { useUser } from "@/context/getUser";
 export default function Account({ session }: { session: Session }) {
+  const {  setUser } = useUser();
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
   const [UserFamilyName, setUserFamilyName] = useState("");
@@ -64,13 +66,11 @@ export default function Account({ session }: { session: Session }) {
 
   async function updateProfile({
     username,
-    website,
     avatar_url,
     familyName,
     city,
   }: {
     username: string;
-    website?: string;
     avatar_url?: string;
     familyName: string;
     level: string;
@@ -85,7 +85,6 @@ export default function Account({ session }: { session: Session }) {
       const updates = {
         id: session?.user.id,
         username,
-        // website,
         avatar_url,
         familyName,
         class: Class,
@@ -119,11 +118,6 @@ export default function Account({ session }: { session: Session }) {
     >
       <View className="items-center ">
         <Text className=" font-pbold text-xl pb-5">Profile d’élève</Text>
-        {/* <Image
-          source={require("@/assets/images/wakil.jpg")}
-          className="h-[30vw] rounded-full w-[30vw]"
-          resizeMode="contain"
-        /> */}
         <Avatar
           size={120}
           url={avatarUrl}
@@ -131,7 +125,6 @@ export default function Account({ session }: { session: Session }) {
             setAvatarUrl(url);
             updateProfile({
               username,
-              // website,
               avatar_url: url,
               birthDate,
               city: UserTown,
@@ -232,8 +225,6 @@ export default function Account({ session }: { session: Session }) {
           onPress={() =>
             updateProfile({
               username,
-              // website: UserFamilyName,
-              // avatar_url: Class,
               familyName: UserFamilyName,
               birthDate,
               Class,
@@ -252,6 +243,7 @@ export default function Account({ session }: { session: Session }) {
           onPress={() => {
             supabase.auth.signOut();
             queryClient.clear();
+            setUser(null);
           }}
           className="w-[45vw] py-4 justify-center items-center border-[1px] border-red-500 bg-white rounded-lg"
         >

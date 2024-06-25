@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { View, Text, Image, ScrollView, Alert } from "react-native";
 import React from "react";
 import { getAbsence } from "@/hooks/getAbsence";
 import { useCurrentChild } from "@/context/currentChild";
@@ -43,7 +36,10 @@ export default function Justification() {
         {absences.length ? (
           <ScrollView className="grow flex-1 w-full">
             {absences.map((e) => (
-              <View className="w-full border border-grayBorder rounded-lg  py-1 pt-3 px-3 text-center ">
+              <View
+                key={e.id}
+                className="w-full border border-grayBorder rounded-lg  py-1 pt-3 px-3 text-center "
+              >
                 <UploadContent
                   key={e.id}
                   onUpload={() =>

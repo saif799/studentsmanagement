@@ -2,8 +2,10 @@ import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 import React from "react";
 import { useSession } from "@/context/authProvider";
 import { getAbsence } from "@/hooks/getAbsence";
+import { useUser } from "@/context/getUser";
 export default function Myabsences() {
-  const { session, user } = useSession();
+  const { session } = useSession();
+  const { user } = useUser();
   const { data: absences, isLoading, error } = getAbsence(session?.user.id);
 
   // TODO : handle the is loading and error UI
