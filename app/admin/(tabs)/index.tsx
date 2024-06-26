@@ -46,7 +46,7 @@ export default function HomeScreen() {
             />
             <FeatureCard
               from={pathFrom}
-              pathTo=""
+              pathTo="notes"
               title="Publier les relevé de notes"
               icon={
                 <TablePropertiesIcon

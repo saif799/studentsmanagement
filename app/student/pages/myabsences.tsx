@@ -6,11 +6,12 @@ import { useUser } from "@/context/getUser";
 export default function Myabsences() {
   const { session } = useSession();
   const { user } = useUser();
-  const { data: absences, isLoading, error } = getAbsence(session?.user.id);
+  const { data: absences, isLoading, isError } = getAbsence(session?.user.id);
 
-  // TODO : handle the is loading and error UI
+  // TODO : handle the loading and error UI
   if (isLoading || !absences)
     return <Text>please wait while we fetch your data </Text>;
+
   return (
     <>
       <View className="flex-1 bg-white items-center px-4 pt-4">
@@ -28,7 +29,7 @@ export default function Myabsences() {
             {absences.map((e) => (
               <TouchableOpacity
                 key={e.created_at}
-                className={`w-full text-center border border-grayBorder rounded-lg py-1 pt-3 px-3  flex-row justify-center items-center`}
+                className={`w-full text-center border border-grayBorder rounded-lg py-1 pt-3 px-3 mb-3 flex-row justify-center items-center`}
               >
                 <Text className="text-lg font-pmedium text-darkestGray pb-2">
                   {e.created_at}

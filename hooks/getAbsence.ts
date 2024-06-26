@@ -7,7 +7,8 @@ async function fetchAbsence(userId: string | undefined) {
   const { data } = await supabase
     .from("presence")
     .select("created_at,id")
-    .match({ userId: userId, state: "absent" });
+    .match({ userId: userId, state: "absent" })
+    .order("created_at", { ascending: true });
 
   let absences: {
     id: string;

@@ -14,7 +14,7 @@ import Avatar from "./Avatar";
 import { queryClient } from "@/app/_layout";
 import { useUser } from "@/context/getUser";
 export default function Account({ session }: { session: Session }) {
-  const {  setUser } = useUser();
+  const { setUser } = useUser();
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
   const [UserFamilyName, setUserFamilyName] = useState("");
@@ -250,33 +250,6 @@ export default function Account({ session }: { session: Session }) {
           <Text className=" text-red-500  font-pbold text-base">Log out</Text>
         </TouchableOpacity>
       </View>
-
-      {/* <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button
-          title={loading ? "Loading ..." : "Update"}
-          onPress={() =>
-            updateProfile({ username, website, avatar_url: avatarUrl })
-          }
-          disabled={loading}
-        />
-      </View>
-
-      <View style={styles.verticallySpaced}>
-        <Button
-          title="Sign Out"
-          onPress={() => {
-            supabase.auth.signOut();
-          }}
-        />
-      </View>
-      <View>
-       
-      </View>
-      {username ? (
-        <View style={styles.qrstyle}>
-          <QRCode value={username} />
-        </View>
-      ) : null} */}
     </ScrollView>
   );
 }

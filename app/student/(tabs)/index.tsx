@@ -46,7 +46,7 @@ export default function HomeScreen() {
               description="Consultez vos plannings rapidement."
             />
             <FeatureCard
-              pathTo="planning"
+              pathTo="myNotes"
               from="student"
               title="relevé de notes"
               icon={

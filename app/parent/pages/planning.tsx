@@ -15,6 +15,7 @@ export default function Planning() {
         .from("schedule")
         .select("path")
         .order("created_at", { ascending: false })
+        .limit(1)
         .single();
 
       let path: string = "";
