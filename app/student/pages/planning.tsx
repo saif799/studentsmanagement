@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BlankComp from "@/components/blankComp";
 import { useQuery } from "@tanstack/react-query";
-import { Image, Text } from "react-native";
+import { Image, Text, View } from "react-native";
 
 import { supabase } from "@/lib/supabase";
+import LottieView from "lottie-react-native";
 
 export default function Planning() {
   const [image, setImage] = useState("");
@@ -54,19 +55,42 @@ export default function Planning() {
   // TODO : handle the loading and error state
   // TODO : build better UI for this page
   return (
-    <SafeAreaView className="bg-white flex-1 items-center">
+    <View className="bg-white flex-1 items-center">
+      <Text className="p-4 font-psemibold text-base text-darkestGray">
+          Emploi du temps
+        </Text>
       {!image || !data ? (
-        <BlankComp />
+        // <BlankComp />
+        <>
+          <View className="bg-white h-full items-center w-full">
+            <View className="h-[50vh] w-full items-center justify-center">
+              <LottieView
+                autoPlay
+                source={require("@/assets/images/loading_files.json")}
+                style={{
+                  width: "100%",
+                  height: 100,
+                  backgroundColor: "white",
+                }}
+              />
+              <Text className="p-4 font-pmedium text-base text-disabledGray">
+                Chargement de contenu...
+              </Text>
+            </View>
+          </View>
+        </>
       ) : (
         <>
-          <Text className="pb-4 text-2xl font-bold">Votre planning </Text>
-          <Image
-            className={`h-3/4 w-[90%]`}
-            source={{ uri: image }}
-            accessibilityLabel="planning table"
-          />
+          <View className="bg-white rounded-lg overflow-hidden h-[60vh] w-[80%] items-center justify-center border border-disabledGray">
+            <Image
+              className={`w-full h-full`}
+              source={{ uri: image }}
+              accessibilityLabel="planning table"
+            />
+          </View>
+
         </>
       )}
-    </SafeAreaView>
+    </View>
   );
 }
