@@ -5,6 +5,7 @@ import {
   Text,
   ImageBackground,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 
 import { useFonts } from "expo-font";
@@ -22,6 +23,7 @@ const student = {
 };
 export default function TabTwoScreen() {
   const [loading, setLoading] = useState(false);
+  const [isViewingCard, setIsViewingCard] = useState(true);
   const [username, setUsername] = useState("");
   // const [userId, setUserId] = useState("");
   const [UserFamilyName, setUserFamilyName] = useState("");
@@ -106,42 +108,55 @@ export default function TabTwoScreen() {
     return null;
   }
   return (
-    <View className="grow pb-[8vh] bg-white items-center  px-2">
-      <ImageBackground
-        source={require("@/assets/images/student-card-bg-dark.jpg")}
-        className="flex-1 relative  w-[60vh] -rotate-90 bg-white"
-        resizeMode="contain"
-      >
-        <View className="absolute flex-row justify-around  px-3 items-center  w-full top-[37vh]">
-          <View className="w-1/4 h-full bg-white p-1">
-            <Image
-              source={
-                avatarUrl
-                  ? { uri: avatarUrl }
-                  : require("@/assets/images/no_profile_pic.webp")
-              }
-              className="h-full w-full "
-            />
+    <TouchableOpacity
+      onPress={() => setIsViewingCard(!isViewingCard)}
+      className="grow pb-[8vh] bg-white items-center  px-2"
+    >
+      {isViewingCard ? (
+        <ImageBackground
+          source={require("@/assets/images/student-card-bg-dark.jpg")}
+          className="flex-1 relative  w-[60vh] -rotate-90 bg-white"
+          resizeMode="contain"
+        >
+          <View className="absolute flex-row justify-around  px-3 items-center  w-full top-[37vh]">
+            <View className="w-1/4 h-full bg-white p-1">
+              <Image
+                source={
+                  avatarUrl
+                    ? { uri: avatarUrl }
+                    : require("@/assets/images/no_profile_pic.webp")
+                }
+                className="h-full w-full "
+              />
+            </View>
+            <View>
+              <Text className="font-ltfLight">Nom</Text>
+              <Text className="font-ltfBold">{username}</Text>
+              <Text className="font-ltfLight">Prénom</Text>
+              <Text className="font-ltfBold">{UserFamilyName}</Text>
+              <Text className="font-ltfLight">Date et ville de naissance</Text>
+              <Text className="font-ltfBold">
+                {birthDate} - {UserTown}
+              </Text>
+            </View>
+            <View className="bg-white  p-1 w-fit">
+              <QRCode value={session.session?.user.id} />
+            </View>
           </View>
-          <View>
-            <Text className="font-ltfLight">Nom</Text>
-            <Text className="font-ltfBold">{username}</Text>
-            <Text className="font-ltfLight">Prénom</Text>
-            <Text className="font-ltfBold">{UserFamilyName}</Text>
-            <Text className="font-ltfLight">Date et ville de naissance</Text>
-            <Text className="font-ltfBold">
-              {birthDate} - {UserTown}
-            </Text>
-          </View>
-          <View className="bg-white  p-1 w-fit">
-            <QRCode value={session.session?.user.id} />
-          </View>
-        </View>
-        <Text className="absolute bottom-[30%] self-end right-[10%] text-base font-ltfLight">
-          {session.session?.user.id}
-        </Text>
-      </ImageBackground>
-    </View>
+          <Text className="absolute bottom-[30%] self-end right-[10%] text-base font-ltfLight">
+            {session.session?.user.id}
+          </Text>
+        </ImageBackground>
+      ) : (
+        <TouchableOpacity
+          onPress={() => setIsViewingCard(!isViewingCard)}
+          className="flex-1 h-full items-center justify-center  w-[60vh] bg-white p-1"
+        >
+          <Text className="text-darkestGray font-pmedium text-xl p-4">Qr étudiant</Text>
+          <QRCode value={session.session?.user.id} size={250}/>
+        </TouchableOpacity>
+      )}
+    </TouchableOpacity>
   );
 }
 
