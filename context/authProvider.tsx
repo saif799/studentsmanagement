@@ -7,7 +7,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useUser } from "./getUser";
 
 type Usertype = {
   role: "parent" | "admin" | "student";
@@ -24,7 +23,6 @@ export const useSession = () => useContext(AuthContext);
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [authSession, setSession] = useState<Session | null>(null);
-  const { setUser } = useUser();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -32,21 +30,31 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     });
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
+      supabase
+        .from("profiles")
+        .select("role, username")
+        .eq("id", authSession?.user.id)
+        .then(({ data }) => {
+          if (data) {
+            const fetchedUser: Usertype = data[0];
+            // setUser(fetchedUser);
+          }
+        });
     });
   }, []);
 
-  useEffect(() => {
-    supabase
-      .from("profiles")
-      .select("role, username")
-      .eq("id", authSession?.user.id)
-      .then(({ data }) => {
-        if (data) {
-          const fetchedUser: Usertype = data[0];
-          setUser(fetchedUser);
-        }
-      });
-  }, [authSession]);
+  // useEffect(() => {
+  //   supabase
+  //     .from("profiles")
+  //     .select("role, username")
+  //     .eq("id", authSession?.user.id)
+  //     .then(({ data }) => {
+  //       if (data) {
+  //         const fetchedUser: Usertype = data[0];
+  //         setUser(fetchedUser);
+  //       }
+  //     });
+  // }, [authSession]);
 
   return (
     <AuthContext.Provider value={{ session: authSession }}>

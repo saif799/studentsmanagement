@@ -12,9 +12,7 @@ import {
 import { Session } from "@supabase/supabase-js";
 import Avatar from "./Avatar";
 import { queryClient } from "@/app/_layout";
-import { useUser } from "@/context/getUser";
 export default function Account({ session }: { session: Session }) {
-  const { setUser } = useUser();
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
   const [UserFamilyName, setUserFamilyName] = useState("");
@@ -243,7 +241,6 @@ export default function Account({ session }: { session: Session }) {
           onPress={() => {
             supabase.auth.signOut();
             queryClient.clear();
-            setUser(null);
           }}
           className="w-[45vw] py-4 justify-center items-center border-[1px] border-red-500 bg-white rounded-lg"
         >
