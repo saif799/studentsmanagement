@@ -2,10 +2,8 @@ import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 import React from "react";
 import { useSession } from "@/context/authProvider";
 import { getAbsence } from "@/hooks/getAbsence";
-import { useUser } from "@/context/getUser";
 export default function Myabsences() {
   const { session } = useSession();
-  const { user } = useUser();
   const { data: absences, isLoading, isError } = getAbsence(session?.user.id);
 
   // TODO : handle the loading and error UI
@@ -17,7 +15,7 @@ export default function Myabsences() {
       <View className="flex-1 bg-white items-center px-4 pt-4">
         <View className="w-full flex-row justify-between px-2 items-center pb-4">
           <Text className="text-lg font-pmedium  text-darkestGray pb-2">
-            Absences de : {user?.username}
+            Absences de : {session?.user.email}
           </Text>
           <Text className="text-lg font-pregular text-white bg-red-400 px-2 pt-1 items-center rounded-md">
             {absences.length}

@@ -19,7 +19,7 @@ import {
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
-import { Link } from "expo-router";
+
 export default function HomeScreen() {
   const iconSize = 45;
   const strokeWidth = 1.3;
