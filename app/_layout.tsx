@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AuthProvider from "@/context/authProvider";
-import UserProvider from "@/context/userProvider";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();

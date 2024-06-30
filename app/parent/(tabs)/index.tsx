@@ -102,7 +102,7 @@ export default function HomeScreen() {
             />
             <FeatureCard
               from="parent"
-              pathTo=""
+              pathTo="chat"
               title="Vos Convocations"
               icon={
                 <MailIcon
