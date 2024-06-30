@@ -39,7 +39,7 @@ const Presence = () => {
         </Text>
         <View className="bg-primary py-1 px-2 rounded-lg justify-center">
           <Text className="text-lg font-pmedium text-white ">
-            {date.getDate()}/{date.getMonth()}/{date.getFullYear()}
+            {date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}
           </Text>
         </View>
       </View>

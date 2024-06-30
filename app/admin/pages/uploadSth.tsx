@@ -1,94 +1,45 @@
-import { useState } from "react";
-import { View, Alert, TouchableOpacity, Text } from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import { supabase } from "@/lib/supabase";
-import { useMutation } from "@tanstack/react-query";
-
-interface Props {
-  onUpload: (filePath: string) => void;
-}
-export default function uploadSth() {
-  const { mutate: uploadImage } = useMutation({
-    mutationFn: async (path: string) =>
-      await supabase.from("schedule").insert({ path }),
-  });
-
-  // TODO : build better ui  for this page and make it show the last uploaded planning (steal it from the parent planning page) 
+import { View, Text, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import LottieView from "lottie-react-native";
+import BlankComp from "@/components/blankComp";
+const UploadSth = () => {
+  const [content, setContent] = useState(true);
+  const [isLoading, setisLoading] = useState(true);
   return (
-    <View>
-      <Avatar
-        onUpload={(path: string) => {
-          uploadImage(path);
-        }}
-      />
-    </View>
+    <>
+      <View className="relative bg-white h-full items-center w-full">
+        <Text className="p-4 font-psemibold text-base text-darkestGray">
+          Emploi du temps
+        </Text>
+        {!isLoading ? (
+          <View className="bg-white h-full items-center w-full">
+            <View className="h-[50vh] w-full items-center justify-center">
+              <LottieView
+                autoPlay
+                source={require("@/assets/images/loading_files.json")}
+                style={{
+                  width: "100%",
+                  height: 100,
+                  backgroundColor: "white",
+                }}
+              />
+              <Text className="p-4 font-pmedium text-base text-disabledGray">
+                Chargement de contenu...
+              </Text>
+            </View>
+          </View>
+        ) : null}
+        {!content ? (
+          <View className="bg-white border border-darkestGray rounded-md h-[60vh] w-[80%]"></View>
+        ) : (
+            <BlankComp />
+        )}
+        <TouchableOpacity className="absolute bottom-32 px-4 pb-2 pt-3 mt-4 bg-primary items-center justify-center rounded-md">
+          <Text className="text-white font-pmedium">Nouveau planning</Text>
+        </TouchableOpacity>
+      </View>
+    </>
   );
-}
+};
 
-function Avatar({ onUpload }: Props) {
-  const [uploading, setUploading] = useState(false);
-
-  async function uploadAvatar() {
-    try {
-      setUploading(true);
-
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images, // Restrict to only images
-        allowsMultipleSelection: false, // Can only select one image
-        allowsEditing: true, // Allows the user to crop / rotate their photo before uploading it
-        quality: 1,
-        exif: false, // We don't want nor need that data.
-      });
-
-      if (result.canceled || !result.assets || result.assets.length === 0) {
-        console.log("User cancelled image picker.");
-        return;
-      }
-
-      const image = result.assets[0];
-      console.log("Got image", image);
-
-      if (!image.uri) {
-        throw new Error("No image uri!"); // Realistically, this should never happen, but just in case...
-      }
-
-      const arraybuffer = await fetch(image.uri).then((res) =>
-        res.arrayBuffer()
-      );
-
-      const fileExt = image.uri?.split(".").pop()?.toLowerCase() ?? "jpeg";
-      const path = `${Date.now()}.${fileExt}`;
-      const { data, error: uploadError } = await supabase.storage
-        .from("content")
-        .upload(path, arraybuffer, {
-          contentType: image.mimeType ?? "image/jpeg",
-        });
-      if (uploadError) {
-        throw uploadError;
-      }
-      console.log("uploaded successfully ", data.path);
-
-      onUpload(data.path);
-    } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert(error.message);
-      } else {
-        throw error;
-      }
-    } finally {
-      setUploading(false);
-    }
-  }
-
-  return (
-    <View className="relative" style={{ alignItems: "center" }}>
-      <TouchableOpacity
-        onPress={uploadAvatar}
-        disabled={uploading}
-        className="p-4 bg-primary items-center justify-center rounded-md"
-      >
-        <Text className="text-white ">Upload planning</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
+export default UploadSth;
