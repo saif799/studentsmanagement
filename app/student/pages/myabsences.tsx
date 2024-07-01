@@ -1,21 +1,80 @@
-import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import { useSession } from "@/context/authProvider";
 import { getAbsence } from "@/hooks/getAbsence";
+import { supabase } from "@/lib/supabase";
+import LottieView from "lottie-react-native";
 export default function Myabsences() {
   const { session } = useSession();
+  const [loadingUserName, setLoadingUserName] = useState(true);
   const { data: absences, isLoading, isError } = getAbsence(session?.user.id);
+  const [username, setUsername] = useState("");
+  useEffect(() => {
+    if (session) getUserName();
+  }, [session]);
+  async function getUserName() {
+    try {
+      setLoadingUserName(true);
+      if (!session?.user) throw new Error("No user on the session!");
 
+      const { data, error, status } = await supabase
+        .from("profiles")
+        .select(`username`)
+        .eq("id", session?.user.id)
+        .single();
+      if (error && status !== 406) {
+        console.log(error);
+        Alert.alert(error.message);
+        throw error;
+      }
+
+      if (data) {
+        setUsername(data.username);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message);
+      }
+    } finally {
+      setLoadingUserName(false);
+    }
+  }
   // TODO : handle the loading and error UI
-  if (isLoading || !absences)
-    return <Text>please wait while we fetch your data </Text>;
+  if (isLoading || !absences || loadingUserName)
+    return (
+      <>
+        <View className="bg-white flex-1 justify-center items-center w-full">
+          <View className="h-[50vh] w-full items-center justify-center">
+            <LottieView
+              autoPlay
+              source={require("@/assets/images/loading_animation.json")}
+              style={{
+                width: "100%",
+                height: 100,
+                backgroundColor: "white",
+              }}
+            />
+            <Text className="p-4 font-pmedium text-base text-disabledGray">
+              Chargement de contenu...
+            </Text>
+          </View>
+        </View>
+      </>
+    );
 
   return (
     <>
       <View className="flex-1 bg-white items-center px-4 pt-4">
-        <View className="w-full flex-row justify-between px-2 items-center pb-4">
-          <Text className="text-lg font-pmedium  text-darkestGray pb-2">
-            Absences de : {session?.user.email}
+        <View className="w-full flex-row justify-between px-2 items-center">
+          <Text className="text-lg font-pmedium  text-darkestGray ">
+            Absences de : {username}
           </Text>
           <Text className="text-lg font-pregular text-white bg-red-400 px-2 pt-1 items-center rounded-md">
             {absences.length}
