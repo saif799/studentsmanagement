@@ -29,11 +29,11 @@ export type studentToSelectType = {
 };
 
 export default function HomeScreen() {
-  const parent = useSession();
+  const { session } = useSession();
 
-  const { isLoading, data } = getChildren(parent.session?.user.id);
+  // const { isPending, data } = getChildren(session?.user.id);
 
-  if (isLoading) return <Text className="pt-5">it should be loading</Text>;
+  // if (isPending) return <Text className="pt-5">it should be loading</Text>;
 
   const iconSize = 45;
   const strokeWidth = 1.4;

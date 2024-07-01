@@ -20,7 +20,7 @@ const ChangeSelectChildComp = () => {
   const { currentChild: yourCurrentChild, change: setCurrentChild } =
     useCurrentChild();
 
-  const { isLoading, data: children } = getChildren(parent.session?.user.id);
+  const { isPending, data: children } = getChildren(parent.session?.user.id);
 
   function handleSelectChild(stuId: string) {
     const selectedChild = children?.find((e) => e.id === stuId);

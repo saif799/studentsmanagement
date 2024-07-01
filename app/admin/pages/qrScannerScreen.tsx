@@ -1,7 +1,5 @@
-import { supabase } from "@/lib/supabase";
 import {
   BarcodeScanningResult,
-  CameraType,
   CameraView,
   useCameraPermissions,
 } from "expo-camera";
