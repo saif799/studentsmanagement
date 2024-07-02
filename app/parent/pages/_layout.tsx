@@ -4,11 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Slot, useNavigation } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 
-export default function PagesLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function PagesLayout() {
   return (
     <>
       <View className="bg-white h-[13vh] ">
@@ -33,7 +29,10 @@ export function Header() {
         />
       </View>
 
-      <TouchableOpacity className="w-fit h-fit " onPress={() => navigation.goBack()}>
+      <TouchableOpacity
+        className="w-fit h-fit "
+        onPress={() => navigation.goBack()}
+      >
         <ArrowLeft
           size={iconSize}
           strokeWidth={strokeWidth}

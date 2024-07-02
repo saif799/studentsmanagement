@@ -2,7 +2,7 @@ import { View, ScrollView, Text } from "react-native";
 import React, { useState } from "react";
 import { useSession } from "@/context/authProvider";
 import { getMyNotes } from "@/hooks/getStudentNotes";
-import LottieView from "lottie-react-native";
+import LoadingComp from "@/components/LoadingComp";
 
 const MyNotes = () => {
   const { session } = useSession();
@@ -33,24 +33,7 @@ const MyNotes = () => {
         </Text>
         {isPending ? (
           // <BlankComp />
-          <>
-            <View className="bg-white flex-1 items-center w-full">
-              <View className="h-[50vh] w-full items-center justify-center">
-                <LottieView
-                  autoPlay
-                  source={require("@/assets/images/loading_animation.json")}
-                  style={{
-                    width: "100%",
-                    height: 100,
-                    backgroundColor: "white",
-                  }}
-                />
-                <Text className="p-4 font-pmedium text-base text-disabledGray">
-                  Chargement de contenu...
-                </Text>
-              </View>
-            </View>
-          </>
+          <LoadingComp />
         ) : (
           <>
             <View className="bg-white  flex-1 px-4 items-center  w-full">
@@ -60,7 +43,9 @@ const MyNotes = () => {
                 </Text>
 
                 <View className="font-pregular text-base bg-primary text-left py-2 px-2 rounded-lg">
-                  <Text className="font-pmedium text-base text-white text-left">{moyenneGen.toPrecision(4)}</Text>
+                  <Text className="font-pmedium text-base text-white text-left">
+                    {moyenneGen.toPrecision(4)}
+                  </Text>
                 </View>
               </View>
               <View className="flex-row px-2 items-center w-full pb-2 ">

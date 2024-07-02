@@ -4,6 +4,7 @@ import { getAbsence } from "@/hooks/getAbsence";
 import { useCurrentChild } from "@/context/currentChild";
 import { UploadContent } from "@/components/uploadContent";
 import { useJustification } from "@/hooks/justification";
+import { queryClient } from "@/app/_layout";
 export default function Justification() {
   const { currentChild } = useCurrentChild();
 
@@ -42,11 +43,18 @@ export default function Justification() {
               >
                 <UploadContent
                   key={e.id}
-                  onUpload={() =>
-                    justify(e.id, {
-                      onSuccess: () =>
-                        Alert.alert("justification sent successfully"),
-                    })
+                  onUpload={(file_path) =>
+                    justify(
+                      { absence_Id: e.id, file_path },
+                      {
+                        onSuccess: () => {
+                          queryClient.invalidateQueries({
+                            queryKey: ["absence"],
+                          });
+                          Alert.alert("justification sent successfully");
+                        },
+                      }
+                    )
                   }
                   style={{ alignItems: "center" }}
                 >

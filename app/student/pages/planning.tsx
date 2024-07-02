@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import BlankComp from "@/components/blankComp";
 import { useQuery } from "@tanstack/react-query";
 import { Image, Text, View } from "react-native";
 
 import { supabase } from "@/lib/supabase";
-import LottieView from "lottie-react-native";
+import LoadingComp from "@/components/LoadingComp";
+import { downloadImage } from "@/lib/downloadImage";
 
 export default function Planning() {
   const [image, setImage] = useState("");
-  const { data, isLoading, isError } = useQuery({
+  const { data, isPending, isError } = useQuery({
     queryKey: ["planning"],
     queryFn: async () => {
       const { data } = await supabase
@@ -23,62 +23,26 @@ export default function Planning() {
 
       if (data && data.path) {
         path = data?.path;
-        downloadImage(path);
+        downloadImage(path, setImage);
       }
 
       return path;
     },
   });
 
-  async function downloadImage(path: string) {
-    try {
-      const { data, error } = await supabase.storage
-        .from("content")
-        .download(path);
-
-      if (error) {
-        throw error;
-      }
-
-      const fr = new FileReader();
-      fr.readAsDataURL(data);
-      fr.onload = () => {
-        setImage(fr.result as string);
-      };
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log("Error downloading image: ", error.message);
-      }
-    }
-  }
-
   // TODO : handle the loading and error state
   // TODO : build better UI for this page
+  if (isError) return <Text> an error </Text>;
+
+  if (isPending) return <LoadingComp />;
   return (
     <View className="bg-white flex-1 items-center">
       <Text className="p-4 font-psemibold text-base text-darkestGray">
-          Emploi du temps
-        </Text>
+        Emploi du temps
+      </Text>
       {!image || !data ? (
         // <BlankComp />
-        <>
-          <View className="bg-white h-full items-center w-full">
-            <View className="h-[50vh] w-full items-center justify-center">
-              <LottieView
-                autoPlay
-                source={require("@/assets/images/loading_files.json")}
-                style={{
-                  width: "100%",
-                  height: 100,
-                  backgroundColor: "white",
-                }}
-              />
-              <Text className="p-4 font-pmedium text-base text-disabledGray">
-                Chargement de contenu...
-              </Text>
-            </View>
-          </View>
-        </>
+        <LoadingComp />
       ) : (
         <>
           <View className="bg-white rounded-lg overflow-hidden h-[60vh] w-[80%] items-center justify-center border border-disabledGray">
@@ -88,7 +52,6 @@ export default function Planning() {
               accessibilityLabel="planning table"
             />
           </View>
-
         </>
       )}
     </View>

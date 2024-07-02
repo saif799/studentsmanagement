@@ -10,15 +10,17 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "@/context/authProvider";
 import { getAbsence } from "@/hooks/getAbsence";
 import { supabase } from "@/lib/supabase";
-import LottieView from "lottie-react-native";
+import LoadingComp from "@/components/LoadingComp";
 export default function Myabsences() {
   const { session } = useSession();
   const [loadingUserName, setLoadingUserName] = useState(true);
   const { data: absences, isLoading, isError } = getAbsence(session?.user.id);
   const [username, setUsername] = useState("");
+
   useEffect(() => {
     if (session) getUserName();
   }, [session]);
+
   async function getUserName() {
     try {
       setLoadingUserName(true);
@@ -47,27 +49,7 @@ export default function Myabsences() {
     }
   }
   // TODO : handle the loading and error UI
-  if (isLoading || !absences || loadingUserName)
-    return (
-      <>
-        <View className="bg-white flex-1 justify-center items-center w-full">
-          <View className="h-[50vh] w-full items-center justify-center">
-            <LottieView
-              autoPlay
-              source={require("@/assets/images/loading_animation.json")}
-              style={{
-                width: "100%",
-                height: 100,
-                backgroundColor: "white",
-              }}
-            />
-            <Text className="p-4 font-pmedium text-base text-disabledGray">
-              Chargement de contenu...
-            </Text>
-          </View>
-        </View>
-      </>
-    );
+  if (isLoading || !absences || loadingUserName) return <LoadingComp />;
 
   return (
     <>

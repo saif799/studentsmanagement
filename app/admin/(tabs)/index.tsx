@@ -63,7 +63,7 @@ export default function HomeScreen() {
           >
             <FeatureCard
               from={pathFrom}
-              pathTo=""
+              pathTo="uploadExams"
               title="Publier calendrier des examens"
               icon={
                 <CalendarDays

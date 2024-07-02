@@ -16,25 +16,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
 import ChangeSelectChildComp from "@/components/changeSelectChildComp";
-import { useSession } from "@/context/authProvider";
-import { getChildren } from "@/hooks/getChildren";
-
-export type parentshipType = { parentId: string; childId: string };
-
-export type studentToSelectType = {
-  id: string;
-  username: string;
-  familyName: string;
-  avatar_url: string;
-};
 
 export default function HomeScreen() {
-  const { session } = useSession();
-
-  // const { isPending, data } = getChildren(session?.user.id);
-
-  // if (isPending) return <Text className="pt-5">it should be loading</Text>;
-
   const iconSize = 45;
   const strokeWidth = 1.4;
 
@@ -43,7 +26,7 @@ export default function HomeScreen() {
       <ScrollView className="bg-white">
         <HeroSec />
         <View className="px-2 w-full pt-4">
-          <ChangeSelectChildComp />
+          {/* <ChangeSelectChildComp /> */}
         </View>
 
         <View className="gap-3 mt-1 px-2 pb-[14vh]">

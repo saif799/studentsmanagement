@@ -14,9 +14,10 @@ interface Props {
   onUpload: (filePath: string) => void;
   children: ReactNode;
   style?: StyleProp<ViewStyle>;
+  disabled?: boolean;
 }
 
-export function UploadContent({ onUpload, children, style }: Props) {
+export function UploadContent({ onUpload, children, style, disabled }: Props) {
   const [uploading, setUploading] = useState(false);
 
   async function uploadAvatar() {
@@ -57,9 +58,9 @@ export function UploadContent({ onUpload, children, style }: Props) {
       if (uploadError) {
         throw uploadError;
       }
-      console.log("uploaded successfully ", data.path);
 
       onUpload(data.path);
+      console.log("uploaded successfully ", data.path);
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert(error.message);
@@ -73,7 +74,12 @@ export function UploadContent({ onUpload, children, style }: Props) {
 
   // TODO : did it with class name instead of style but it didnt work if u wanna fuck with it go ahead
   return (
-    <TouchableOpacity onPress={uploadAvatar} disabled={uploading} style={style}>
+    <TouchableOpacity
+      onPress={uploadAvatar}
+      disabled={uploading}
+      style={style}
+      aria-disabled={disabled}
+    >
       {children}
     </TouchableOpacity>
   );

@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Alert } from "react-native";
 import React, { useState } from "react";
 import BlankComp from "@/components/blankComp";
 import { useQuery } from "@tanstack/react-query";
@@ -6,16 +6,18 @@ import { supabase } from "@/lib/supabase";
 import { downloadImage } from "@/lib/downloadImage";
 import LoadingComp from "@/components/LoadingComp";
 import { UploadContent } from "@/components/uploadContent";
-import { UploadPlanning } from "@/hooks/UploadStuff";
-const UploadSth = () => {
+import { UploadExamPlanning } from "@/hooks/UploadStuff";
+import { Loader2 } from "lucide-react-native";
+
+const uploadExams = () => {
   const [image, setImage] = useState("");
-  const { mutate: upload, isPending: mutationPending } = UploadPlanning();
+  const { mutate: upload, isPending: mutationPending } = UploadExamPlanning();
 
   const { isPending, isError } = useQuery({
-    queryKey: ["planning"],
+    queryKey: ["exam_planning"],
     queryFn: async () => {
       const { data } = await supabase
-        .from("schedule")
+        .from("exam_planning")
         .select("path")
         .order("created_at", { ascending: false })
         .limit(1)
@@ -54,7 +56,14 @@ const UploadSth = () => {
         <UploadContent
           disabled={mutationPending}
           onUpload={(path) => {
-            upload({ path });
+            upload(
+              { path },
+              {
+                onSuccess: () => Alert.alert("exams should be uploaded"),
+                onError: (eror) =>
+                  Alert.alert("there was an error uploading hte exams "),
+              }
+            );
           }}
           style={[
             {
@@ -78,4 +87,4 @@ const UploadSth = () => {
   );
 };
 
-export default UploadSth;
+export default uploadExams;

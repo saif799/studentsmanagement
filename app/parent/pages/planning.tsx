@@ -5,10 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 import { Image, Text } from "react-native";
 
 import { supabase } from "@/lib/supabase";
+import LoadingComp from "@/components/LoadingComp";
+import { downloadImage } from "@/lib/downloadImage";
 
 export default function Planning() {
   const [image, setImage] = useState("");
-  const { data, isLoading, isError } = useQuery({
+  const { data, isPending, isError } = useQuery({
     queryKey: ["planning"],
     queryFn: async () => {
       const { data } = await supabase
@@ -22,36 +24,17 @@ export default function Planning() {
 
       if (data && data.path) {
         path = data?.path;
-        downloadImage(path);
+        downloadImage(path, setImage);
       }
 
       return path;
     },
   });
 
-  async function downloadImage(path: string) {
-    try {
-      const { data, error } = await supabase.storage
-        .from("content")
-        .download(path);
-
-      if (error) {
-        throw error;
-      }
-
-      const fr = new FileReader();
-      fr.readAsDataURL(data);
-      fr.onload = () => {
-        setImage(fr.result as string);
-      };
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log("Error downloading image: ", error.message);
-      }
-    }
-  }
-
   // TODO : handle the loading and error state
+  if (isError) return <Text> an error </Text>;
+
+  if (isPending) return <LoadingComp />;
   // TODO : build better UI for this page
   return (
     <SafeAreaView className="bg-white flex-1 items-center">
