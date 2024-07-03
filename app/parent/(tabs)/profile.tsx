@@ -1,4 +1,4 @@
-import Account from "../../../components/Account";
+import Account from "@/components/Account";
 import { View } from "react-native";
 import { useSession } from "@/context/authProvider";
 import { Redirect } from "expo-router";

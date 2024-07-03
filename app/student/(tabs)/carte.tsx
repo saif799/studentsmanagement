@@ -95,9 +95,9 @@ export default function TabTwoScreen() {
     }
   }
   const [fontsLoaded, error] = useFonts({
-    "Lateef-Bold": require("../../../assets/fonts/Lateef-Bold.ttf"),
+    "Lateef-Bold": require("@/assets/fonts/Lateef-Bold.ttf"),
 
-    "Lateef-Light": require("../../../assets/fonts/Lateef-Light.ttf"),
+    "Lateef-Light": require("@/assets/fonts/Lateef-Light.ttf"),
   });
 
   if (!fontsLoaded) {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { supabase } from "../lib/supabase";
+import { supabase } from "@/lib/supabase";
 import {
   StyleSheet,
   View,
@@ -10,7 +10,7 @@ import {
   ScrollView,
 } from "react-native";
 import { Session } from "@supabase/supabase-js";
-import Avatar from "./Avatar";
+import Avatar from "@/components/Avatar";
 import { queryClient } from "@/app/_layout";
 export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
