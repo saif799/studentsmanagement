@@ -64,7 +64,7 @@ export default function HomeScreen() {
             style={styles.Card}
           >
             <FeatureCard
-              pathTo="planning"
+              pathTo="schoolrules"
               from="student"
               title="Règlement Intérieur"
               icon={
@@ -77,7 +77,7 @@ export default function HomeScreen() {
               description="Consultez les règles et politiques de l’école."
             />
             <FeatureCard
-              pathTo="planning"
+              pathTo="examcalendar"
               from="student"
               title="calendrier des examens"
               icon={

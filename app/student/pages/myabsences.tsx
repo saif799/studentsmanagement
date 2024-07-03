@@ -54,7 +54,7 @@ export default function Myabsences() {
   return (
     <>
       <View className="flex-1 bg-white items-center px-4 pt-4">
-        <View className="w-full flex-row justify-between px-2 items-center">
+        <View className="w-full flex-row justify-between px-2 items-center pb-2">
           <Text className="text-lg font-pmedium  text-darkestGray ">
             Absences de : {username}
           </Text>

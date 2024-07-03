@@ -8,7 +8,7 @@ import LoadingComp from "@/components/LoadingComp";
 import { downloadImage } from "@/lib/downloadImage";
 import ErrorComp from "@/components/ErrorComp";
 
-export default function Planning() {
+export default function ExamCalendar() {
   const [image, setImage] = useState("");
   const { data, isPending, isError } = useQuery({
     queryKey: ["planning"],
@@ -39,7 +39,7 @@ export default function Planning() {
   return (
     <View className="bg-white flex-1 items-center">
       <Text className="p-4 font-psemibold text-base text-darkestGray">
-        Emploi du temps
+        Calendrier des examens
       </Text>
       {!image || !data ? (
         // <BlankComp />
