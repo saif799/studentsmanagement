@@ -7,8 +7,8 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { supabase } from "../lib/supabase";
-import FormField from "./FormField";
+import { supabase } from "@/lib/supabase";
+import FormField from "@/components/FormField";
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive

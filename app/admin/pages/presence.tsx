@@ -15,7 +15,7 @@ import {
   Swipeable,
 } from "react-native-gesture-handler";
 import { supabase } from "@/lib/supabase";
-import Scanner from "./qrScannerScreen";
+import Scanner from "@/app/admin/pages/qrScannerScreen";
 import { BarcodeScanningResult } from "expo-camera";
 
 type PresenceType = {

@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "Students_Management",
+    "scheme": "students-management",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/splash.png",
@@ -21,7 +21,9 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.saiiiforg.studentsmanagement"
+      "package": "com.saiiiforg.studentsmanagement",
+
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "bundler": "metro",
@@ -36,12 +38,6 @@
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
           "recordAudioAndroid": true
-        }
-      ],
-      [
-        "expo-asset",
-        {
-          "assets": ["path/to/file.png", "path/to/directory"]
         }
       ],
       [
@@ -75,9 +71,6 @@
     },
     "runtimeVersion": {
       "policy": "appVersion"
-    },
-    "expo": {
-      "assetBundlePatterns": ["/assets/images/icon.png"]
     }
   }
 }
