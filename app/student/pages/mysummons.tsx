@@ -9,7 +9,7 @@ import {
   
   import React from "react";
   import { useSession } from "@/context/authProvider";
-  import LoadingComp from "@/components/LoadingComp";
+  import  { LoadingAnimationComp } from "@/components/LoadingComp";
   import ErrorComp from "@/components/ErrorComp";
 import { getStudentSummons } from "@/hooks/getStudentSummons";
   export default function StudentSummons() {
@@ -19,7 +19,7 @@ import { getStudentSummons } from "@/hooks/getStudentSummons";
     if (isError ) return <ErrorComp />;
     // TODO : handle the loading and error UI
     if (isLoading || !summons )
-      return <LoadingComp />;
+      return <LoadingAnimationComp />;
  
   
     return (

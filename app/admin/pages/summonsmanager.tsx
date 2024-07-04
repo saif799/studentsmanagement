@@ -14,7 +14,7 @@ import SelectDropdown from "react-native-select-dropdown";
 
 import React, { useState } from "react";
 import { useSession } from "@/context/authProvider";
-import LoadingComp from "@/components/LoadingComp";
+import LoadingComp, { LoadingAnimationComp } from "@/components/LoadingComp";
 import ErrorComp from "@/components/ErrorComp";
 import { getStudents } from "@/hooks/getStudentsNames";
 import { ChevronDown, MessageSquarePlus } from "lucide-react-native";
@@ -33,7 +33,7 @@ export default function NotesManager() {
   if (isError || isErrorStudents) return <ErrorComp />;
   // TODO : handle the loading and error UI
   if (isLoading || isLoadingStudents || !notes || !students)
-    return <LoadingComp />;
+    return <LoadingAnimationComp />;
 
   const updatedNotes = notes.map((msg) => {
     const receiver = students!.find((user) => user.id === msg.sent_to);

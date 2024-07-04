@@ -12,6 +12,7 @@ import {
 import { Session } from "@supabase/supabase-js";
 import Avatar from "@/components/Avatar";
 import { queryClient } from "@/app/_layout";
+import { LoadingAnimationComp } from "./LoadingComp";
 export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
@@ -106,6 +107,10 @@ export default function Account({ session }: { session: Session }) {
     } finally {
       setLoading(false);
     }
+  }
+   
+  if (loading) {
+    return (<LoadingAnimationComp />)
   }
 
   return (

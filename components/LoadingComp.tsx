@@ -19,3 +19,23 @@ export default function LoadingComp() {
     </View>
   );
 }
+
+export function LoadingAnimationComp() {
+  return (
+    <View className="bg-white h-[90%] items-center w-full justify-center  ">
+      <LottieView
+        autoPlay
+        source={require("@/assets/images/loading_animation.json")}
+        style={{
+          width: "100%",
+          height: 100,
+          backgroundColor: "white",
+        }}
+      />
+      <Text className="p-4 font-pmedium text-base text-disabledGray">
+        Chargement en course...
+      </Text>
+    </View>
+  );
+}
+

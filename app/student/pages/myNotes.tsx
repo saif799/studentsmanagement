@@ -9,9 +9,8 @@ import {
   
   import React from "react";
   import { useSession } from "@/context/authProvider";
-  import LoadingComp from "@/components/LoadingComp";
+  import { LoadingAnimationComp } from "@/components/LoadingComp";
   import ErrorComp from "@/components/ErrorComp";
-  import { getStudents } from "@/hooks/getStudentsNames";
 import { getStudentMessages } from "@/hooks/getStudentMessages";
   export default function StudentNotes() {
     const { session } = useSession();
@@ -20,7 +19,7 @@ import { getStudentMessages } from "@/hooks/getStudentMessages";
     if (isError ) return <ErrorComp />;
     // TODO : handle the loading and error UI
     if (isLoading  || !notes )
-      return <LoadingComp />;
+      return <LoadingAnimationComp />;
   
     
   

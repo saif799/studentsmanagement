@@ -13,6 +13,7 @@ import QRCode from "react-native-qrcode-svg";
 import { useEffect, useState } from "react";
 import { useSession } from "@/context/authProvider";
 import { supabase } from "@/lib/supabase";
+import { LoadingAnimationComp } from "@/components/LoadingComp";
 const student = {
   id: "200334045205",
   name: "Djari",
@@ -107,6 +108,10 @@ export default function TabTwoScreen() {
   if (!fontsLoaded && !error) {
     return null;
   }
+
+  if (loading) {
+    return <LoadingAnimationComp />;
+  }
   return (
     <TouchableOpacity
       onPress={() => setIsViewingCard(!isViewingCard)}
@@ -152,8 +157,10 @@ export default function TabTwoScreen() {
           onPress={() => setIsViewingCard(!isViewingCard)}
           className="flex-1 h-full items-center justify-center  w-[60vh] bg-white p-1"
         >
-          <Text className="text-darkestGray font-pmedium text-xl p-4">Qr étudiant</Text>
-          <QRCode value={session.session?.user.id} size={250}/>
+          <Text className="text-darkestGray font-pmedium text-xl p-4">
+            Qr étudiant
+          </Text>
+          <QRCode value={session.session?.user.id} size={250} />
         </TouchableOpacity>
       )}
     </TouchableOpacity>

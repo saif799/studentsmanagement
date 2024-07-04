@@ -1,4 +1,3 @@
-import LottieView from "lottie-react-native";
 import { Image, Text, View } from "react-native";
 
 export default function ErrorComp() {
