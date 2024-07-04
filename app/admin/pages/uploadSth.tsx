@@ -7,6 +7,7 @@ import { downloadImage } from "@/lib/downloadImage";
 import LoadingComp from "@/components/LoadingComp";
 import { UploadContent } from "@/components/uploadContent";
 import { UploadPlanning } from "@/hooks/UploadStuff";
+import ErrorComp from "@/components/ErrorComp";
 const UploadSth = () => {
   const [image, setImage] = useState("");
   const { mutate: upload, isPending: mutationPending } = UploadPlanning();
@@ -32,7 +33,7 @@ const UploadSth = () => {
     },
   });
 
-  if (isError) return <Text> an error </Text>;
+  if (isError) return <ErrorComp />;
 
   if (isPending) return <LoadingComp />;
   return (
@@ -43,12 +44,12 @@ const UploadSth = () => {
 
       {image ? (
         <Image
-          className={`h-3/4 w-[90%]`}
+          className={`h-3/4 w-[90%] rounded-xl`}
           source={{ uri: image }}
           accessibilityLabel="planning table"
         />
       ) : (
-        <BlankComp />
+        <LoadingComp />
       )}
       <View className=" flex-1 justify-center ">
         <UploadContent

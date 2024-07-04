@@ -124,8 +124,8 @@ export default function HomeScreen() {
           >
             <FeatureCard
               from={pathFrom}
-              pathTo=""
-              title="Valider une Note d’élève"
+              pathTo="notesmanager"
+              title="Gestion des Notes"
               icon={
                 <MessageSquareText
                   size={iconSize}
@@ -137,8 +137,8 @@ export default function HomeScreen() {
             />
             <FeatureCard
               from={pathFrom}
-              pathTo=""
-              title="valider les Convocations"
+              pathTo="notesmanager"
+              title="gestion des Convocations"
               icon={
                 <MailIcon
                   size={iconSize}
