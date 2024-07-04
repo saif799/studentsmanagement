@@ -12,29 +12,20 @@ import Scanner from "@/app/admin/pages/qrScannerScreen";
 import { BarcodeScanningResult } from "expo-camera";
 import { getChildren } from "@/hooks/getChildren";
 import { queryClient } from "@/app/_layout";
-import { childData } from "@/context/currentChild";
+import { useCurrentChild } from "@/context/currentChild";
 import { AddChildMutation } from "@/hooks/mutations/addChild";
 import LoadingComp from "./LoadingComp";
 import ErrorComp from "./ErrorComp";
 
-const ChangeSelectChildComp = ({
-  currentChild,
-  setCurrentChild,
-}: {
-  currentChild: childData;
-  setCurrentChild: (newChild: childData) => void;
-}) => {
+const ChangeSelectChildComp = () => {
   const parent = useSession();
+  const { currentChild, change: setCurrentChild } = useCurrentChild();
 
-
-  const { isPending, data: children } = getChildren(parent.session?.user.id);
-
-  useEffect(() => {
-    
-    if (!isPending && children) {
-      setCurrentChild(children[0]);
-    }
-  }, [isPending, children]);
+  const {
+    isPending,
+    data: children,
+    isError,
+  } = getChildren(parent.session?.user.id);
 
   function handleSelectChild(stuId: string) {
     const selectedChild = children?.find((e) => e.id === stuId);
@@ -44,7 +35,7 @@ const ChangeSelectChildComp = ({
     return <LoadingComp />;
   }
 
-  if (!children) {
+  if (isError) {
     return <ErrorComp />;
   }
 
@@ -58,27 +49,26 @@ const ChangeSelectChildComp = ({
       </View>
     );
   }
-  if (children)
-    return (
-      <>
-        <View className="w-full rounded-xl border border-grayBorder p-2 h-[12vh] flex-row items-center justify-between">
-          <View className="w-14 h-14 rounded-full overflow-hidden border border-primary">
-            <Image
-              source={{
-                uri: "https://static.vecteezy.com/system/resources/previews/036/280/650/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
-              }}
-              className="h-full w-full"
-            />
-          </View>
-          <Text className="font-pmedium text-darkestGray grow text-base max-w-[60%] pl-4">
-            {currentChild
-              ? `${currentChild?.familyName} ${currentChild.username}`
-              : `${children[0].familyName} ${children[0].username}`}
-          </Text>
-          <ChangeModal handleSelectChild={handleSelectChild} />
+  return (
+    <>
+      <View className="w-full rounded-xl border border-grayBorder p-2 h-[12vh] flex-row items-center justify-between">
+        <View className="w-14 h-14 rounded-full overflow-hidden border border-primary">
+          <Image
+            source={{
+              uri: "https://static.vecteezy.com/system/resources/previews/036/280/650/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
+            }}
+            className="h-full w-full"
+          />
         </View>
-      </>
-    );
+        <Text className="font-pmedium text-darkestGray grow text-base max-w-[60%] pl-4">
+          {currentChild
+            ? `${currentChild?.familyName} ${currentChild.username}`
+            : "selectioner votre enfant"}
+        </Text>
+        <ChangeModal handleSelectChild={handleSelectChild} />
+      </View>
+    </>
+  );
 };
 
 function ChangeModal({

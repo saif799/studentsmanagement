@@ -10,11 +10,11 @@ import ErrorComp from "@/components/ErrorComp";
 
 export default function SchoolRules() {
   const [image, setImage] = useState("");
-  const { data, isPending, isError } = useQuery({
-    queryKey: ["planning"],
+  const { isPending, isError } = useQuery({
+    queryKey: ["matier"],
     queryFn: async () => {
       const { data } = await supabase
-        .from("schedule")
+        .from("matier")
         .select("path")
         .order("created_at", { ascending: false })
         .limit(1)
@@ -26,6 +26,7 @@ export default function SchoolRules() {
         path = data?.path;
         downloadImage(path, setImage);
       }
+      console.log(data);
 
       return path;
     },
@@ -41,7 +42,7 @@ export default function SchoolRules() {
       <Text className="p-4 font-psemibold text-base text-darkestGray">
         Tableau Prof-matière
       </Text>
-      {!image || !data ? (
+      {!image ? (
         // <BlankComp />
         <LoadingComp />
       ) : (

@@ -10,11 +10,11 @@ import ErrorComp from "@/components/ErrorComp";
 
 export default function ExamCalendar() {
   const [image, setImage] = useState("");
-  const { data, isPending, isError } = useQuery({
-    queryKey: ["planning"],
+  const { isPending, isError } = useQuery({
+    queryKey: ["exam_planning"],
     queryFn: async () => {
       const { data } = await supabase
-        .from("schedule")
+        .from("exam_planning")
         .select("path")
         .order("created_at", { ascending: false })
         .limit(1)
@@ -30,7 +30,6 @@ export default function ExamCalendar() {
       return path;
     },
   });
-
   // TODO : handle the loading and error state
   // TODO : build better UI for this page
   if (isError) return <ErrorComp />;
@@ -41,7 +40,7 @@ export default function ExamCalendar() {
       <Text className="p-4 font-psemibold text-base text-darkestGray">
         Calendrier des examens
       </Text>
-      {!image || !data ? (
+      {!image ? (
         // <BlankComp />
         <LoadingComp />
       ) : (

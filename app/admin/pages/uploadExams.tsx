@@ -40,7 +40,7 @@ const uploadExams = () => {
   return (
     <View className=" bg-white flex-1 items-center w-full justify-between ">
       <Text className="p-4 font-psemibold text-base text-darkestGray">
-        Emploi du temps
+        Publier calendrier des examens
       </Text>
 
       {image ? (
@@ -79,7 +79,9 @@ const uploadExams = () => {
           ]}
         >
           {/* <TouchableOpacity className="px-4 pb-2 pt-3  bg-primary items-center justify-center rounded-md"> */}
-          <Text className="text-white font-pmedium">Nouveau planning</Text>
+          <Text className="text-white font-pmedium">
+            Nouveau calendrier des examens
+          </Text>
           {/* </TouchableOpacity> */}
         </UploadContent>
       </View>

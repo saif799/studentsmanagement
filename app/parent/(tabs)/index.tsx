@@ -21,15 +21,14 @@ import { useCurrentChild } from "@/context/currentChild";
 export default function HomeScreen() {
   const iconSize = 45;
   const strokeWidth = 1.4;
-  const { currentChild , change: setCurrentChild } =
-    useCurrentChild();
-    
+  const { currentChild } = useCurrentChild();
+
   return (
     <SafeAreaView className="bg-white">
       <ScrollView className="bg-white">
         <HeroSec />
         <View className="px-2 w-full pt-4">
-          <ChangeSelectChildComp currentChild={currentChild} setCurrentChild={setCurrentChild} />
+          <ChangeSelectChildComp />
         </View>
 
         {currentChild ? (

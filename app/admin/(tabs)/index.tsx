@@ -93,7 +93,7 @@ export default function HomeScreen() {
           >
             <FeatureCard
               from={pathFrom}
-              pathTo=""
+              pathTo="rules"
               title="Ajouter Règlement Intérieur"
               icon={
                 <Scale
@@ -106,7 +106,7 @@ export default function HomeScreen() {
 
             <FeatureCard
               from={pathFrom}
-              pathTo=""
+              pathTo="matier"
               title="Matières et Professeurs"
               icon={
                 <ClipboardList

@@ -38,7 +38,6 @@
     "expo-system-ui": "~3.0.4",
     "expo-updates": "~0.25.18",
     "expo-web-browser": "~13.0.3",
-    "firebase": "^10.12.2",
     "lottie-react-native": "6.7.0",
     "lucide-react-native": "^0.394.0",
     "nativewind": "^2.0.11",

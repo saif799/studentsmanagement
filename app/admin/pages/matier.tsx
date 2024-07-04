@@ -6,17 +6,17 @@ import { supabase } from "@/lib/supabase";
 import { downloadImage } from "@/lib/downloadImage";
 import LoadingComp from "@/components/LoadingComp";
 import { UploadContent } from "@/components/uploadContent";
-import { UploadRules } from "@/hooks/UploadStuff";
+import { UploadMaiter } from "@/hooks/UploadStuff";
 
-const Rules = () => {
+const Matier = () => {
   const [image, setImage] = useState("");
-  const { mutate: upload, isPending: mutationPending } = UploadRules();
+  const { mutate: upload, isPending: mutationPending } = UploadMaiter();
 
   const { isPending, isError } = useQuery({
-    queryKey: ["rules"],
+    queryKey: ["matier"],
     queryFn: async () => {
       const { data } = await supabase
-        .from("rules")
+        .from("matier")
         .select("path")
         .order("created_at", { ascending: false })
         .limit(1)
@@ -28,6 +28,7 @@ const Rules = () => {
         path = data?.path;
         downloadImage(path, setImage);
       }
+      console.log(data);
 
       return path;
     },
@@ -39,7 +40,7 @@ const Rules = () => {
   return (
     <View className=" bg-white flex-1 items-center w-full justify-between ">
       <Text className="p-4 font-psemibold text-base text-darkestGray">
-        Règlement Intérieur
+        Matières et Professeurs
       </Text>
 
       {image ? (
@@ -59,9 +60,7 @@ const Rules = () => {
               { path },
               {
                 onError: (eror) =>
-                  Alert.alert(
-                    "there was an error uploading Règlement Intérieur "
-                  ),
+                  Alert.alert("there was an error uploading Maiter"),
               }
             );
           }}
@@ -78,11 +77,13 @@ const Rules = () => {
             mutationPending ? { backgroundColor: "#777F82" } : null,
           ]}
         >
-          <Text className="text-white font-pmedium">Nouveau Règles</Text>
+          <Text className="text-white font-pmedium">
+            Nouveau Matières et Professeurs
+          </Text>
         </UploadContent>
       </View>
     </View>
   );
 };
 
-export default Rules;
+export default Matier;

@@ -13,6 +13,7 @@ import { Session } from "@supabase/supabase-js";
 import Avatar from "@/components/Avatar";
 import { queryClient } from "@/app/_layout";
 import { LoadingAnimationComp } from "./LoadingComp";
+import { useCurrentChild } from "@/context/currentChild";
 export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
@@ -22,6 +23,8 @@ export default function Account({ session }: { session: Session }) {
   const [birthDate, setbirthDate] = useState("");
   const [level, setlevel] = useState("");
   const [Class, setClass] = useState("");
+
+  const { change: setCurrentChild } = useCurrentChild();
 
   useEffect(() => {
     if (session) getProfile();
@@ -108,9 +111,9 @@ export default function Account({ session }: { session: Session }) {
       setLoading(false);
     }
   }
-   
+
   if (loading) {
-    return (<LoadingAnimationComp />)
+    return <LoadingAnimationComp />;
   }
 
   return (
@@ -246,6 +249,7 @@ export default function Account({ session }: { session: Session }) {
           onPress={() => {
             supabase.auth.signOut();
             queryClient.clear();
+            setCurrentChild(null);
           }}
           className="w-[45vw] py-4 justify-center items-center border-[1px] border-red-500 bg-white rounded-lg"
         >

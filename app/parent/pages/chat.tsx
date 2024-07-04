@@ -1,4 +1,4 @@
-import { NoNotes } from "@/app/student/pages/mynotes";
+import { NoNotes } from "@/app/student/pages/myNotes";
 import ErrorComp from "@/components/ErrorComp";
 import { LoadingAnimationComp } from "@/components/LoadingComp";
 import { useCurrentChild } from "@/context/currentChild";
@@ -7,9 +7,9 @@ import { useQuery } from "@tanstack/react-query";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function Chat() {
-  const currentChild = useCurrentChild()
+  const currentChild = useCurrentChild();
   // create some data from their GUi and make sure that the sent to property is your parent account
-  const { data ,isLoading, isError} = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["messages"],
     queryFn: async () => {
       const { data } = await supabase
@@ -33,14 +33,14 @@ export default function Chat() {
     return <LoadingAnimationComp />;
   }
 
-  if (isError  ) {
+  if (isError) {
     console.log(isError);
-    
-    return <ErrorComp />
+
+    return <ErrorComp />;
   }
 
   if (!data) {
-    return <NoNotes />
+    return <NoNotes />;
   }
   return (
     <View className="flex-1 bg-white items-center px-4 pt-4 relative">

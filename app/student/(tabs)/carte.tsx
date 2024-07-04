@@ -26,7 +26,6 @@ export default function TabTwoScreen() {
   const [loading, setLoading] = useState(false);
   const [isViewingCard, setIsViewingCard] = useState(true);
   const [username, setUsername] = useState("");
-  // const [userId, setUserId] = useState("");
   const [UserFamilyName, setUserFamilyName] = useState("");
   const [UserTown, setUserTown] = useState("");
   const [birthDate, setbirthDate] = useState("");

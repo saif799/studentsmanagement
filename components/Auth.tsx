@@ -66,14 +66,6 @@ export default function Auth({ role }: { role: string }) {
         <View className=" gap-3 pr-2">
           <View>
             <FormField
-              label="Nom"
-              value={userName}
-              placeholder="votre nom ici"
-              onValueChange={onUserNameChange}
-            />
-          </View>
-          <View>
-            <FormField
               label="Email"
               value={email}
               placeholder="exemple@domain.com"
