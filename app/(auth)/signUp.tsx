@@ -1,13 +1,15 @@
-import Auth from "@/components/Auth";
 import { ImageBackground, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Redirect } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import { useSession } from "@/context/authProvider";
+import SignUpAuth from "@/components/signupAuth";
 
-export default function AdminSginIn() {
+export default function SignUp() {
   const { session } = useSession();
-  if (session) return <Redirect href="/admin/(tabs)" />;
+
+  if (session) return <Redirect href="/student/(tabs)" />;
+
   return (
     <SafeAreaView className="h-full bg-white ">
       <ScrollView automaticallyAdjustKeyboardInsets={true}>
@@ -17,11 +19,11 @@ export default function AdminSginIn() {
             className=" h-[175px] pt-7"
           >
             <View className="flex-row items-center pl-2">
-              <Link href={"/"} asChild className="rounded-full bg-white p-2">
+              <Link href="/" asChild className="rounded-full bg-white p-2">
                 <ArrowLeft size={35} color={"green"} strokeWidth={2} />
               </Link>
               <Text className="text-white -left-3 font-psemibold text-xl text-center grow">
-                Login Admin
+                sign Up étudiant
               </Text>
             </View>
           </ImageBackground>
@@ -37,7 +39,7 @@ export default function AdminSginIn() {
                 avenir meilleur.
               </Text>
             </View>
-            <Auth role="admin" signup="/adminSignUp" />
+            <SignUpAuth role="student" signIn="/singin" />
           </View>
         </View>
       </ScrollView>

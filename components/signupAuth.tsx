@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Alert,
-  StyleSheet,
-  View,
-  AppState,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { Alert, View, AppState, Text, TouchableOpacity } from "react-native";
 import { supabase } from "@/lib/supabase";
 import FormField from "@/components/FormField";
 import { Link } from "expo-router";
@@ -23,34 +16,55 @@ AppState.addEventListener("change", (state) => {
   }
 });
 
-export default function Auth({
+export default function SignUpAuth({
   role,
-  signup,
+  signIn,
 }: {
   role: string;
-  signup: string;
+  signIn: string;
 }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function signInWithEmail() {
+  async function signUpWithEmail() {
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
+
+    console.log("username ", userName, "role ", role, email, password);
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
       email: email,
       password: password,
+      options: {
+        data: {
+          username: userName,
+          role,
+        },
+      },
     });
+    if (error) Alert.alert(error.message);
 
-    if (error) Alert.alert(error.message, " this is not working");
+    Alert.alert("in the signUp function ", error?.name);
     setLoading(false);
   }
-
+  const onUserNameChange = (text: string) => setUserName(text);
   const onPasswordChange = (text: string) => setPassword(text);
   const onEmailChange = (text: string) => setEmail(text);
   return (
     <View className="p-3">
       <View>
         <View className=" gap-3 pr-2">
+          <View>
+            <FormField
+              label="Nom"
+              value={userName}
+              placeholder="Mohamed"
+              onValueChange={onUserNameChange}
+            />
+          </View>
           <View>
             <FormField
               label="Email"
@@ -63,7 +77,7 @@ export default function Auth({
             <FormField
               label="Mot de passe"
               value={password}
-              placeholder="mot de passe ici"
+              placeholder="**********"
               secureTextEntry
               onValueChange={onPasswordChange}
             />
@@ -74,10 +88,10 @@ export default function Auth({
       <View className="pt-8">
         <TouchableOpacity
           disabled={loading}
-          onPress={() => signInWithEmail()}
+          onPress={() => signUpWithEmail()}
           className="w-full py-4 justify-center items-center bg-primary rounded-lg"
         >
-          <Text className=" text-white font-pbold text-base">Sign in</Text>
+          <Text className=" text-white font-pbold text-base">Sign up</Text>
         </TouchableOpacity>
         <View className="flex-row items-center justify-center">
           <View className="mt-4 h-3 border-t-[0.5px] grow border-grayBorder"></View>
@@ -85,8 +99,8 @@ export default function Auth({
           <View className="mt-4 h-3 border-t-[0.5px] border-grayBorder grow"></View>
         </View>
 
-        <Link href={signup}>
-          <Text> dont have an account, sign up instead</Text>
+        <Link href={signIn}>
+          <Text>already have an account sign In</Text>
         </Link>
       </View>
     </View>

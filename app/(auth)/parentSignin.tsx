@@ -38,7 +38,7 @@ export default function ParentSginIn() {
                 avenir meilleur.
               </Text>
             </View>
-            <Auth role="parent" />
+            <Auth role="parent"  signup="/parentSignUp"/>
           </View>
         </View>
       </ScrollView>

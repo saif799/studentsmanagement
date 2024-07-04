@@ -39,7 +39,7 @@ export default function SginIn() {
                 avenir meilleur.
               </Text>
             </View>
-            <Auth role="student" />
+            <Auth role="student" signup="/signUp" />
           </View>
         </View>
       </ScrollView>
