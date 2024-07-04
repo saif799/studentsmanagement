@@ -137,7 +137,7 @@ export default function HomeScreen() {
             />
             <FeatureCard
               from={pathFrom}
-              pathTo="notesmanager"
+              pathTo="summonsmanager"
               title="gestion des Convocations"
               icon={
                 <MailIcon

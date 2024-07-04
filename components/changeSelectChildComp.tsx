@@ -14,6 +14,8 @@ import { getChildren } from "@/hooks/getChildren";
 import { queryClient } from "@/app/_layout";
 import { useCurrentChild } from "@/context/currentChild";
 import { AddChildMutation } from "@/hooks/mutations/addChild";
+import LoadingComp from "./LoadingComp";
+import ErrorComp from "./ErrorComp";
 
 const ChangeSelectChildComp = () => {
   const parent = useSession();
@@ -26,37 +28,46 @@ const ChangeSelectChildComp = () => {
     const selectedChild = children?.find((e) => e.id === stuId);
     if (selectedChild) setCurrentChild(selectedChild);
   }
+  if (isPending) {
+    return <LoadingComp />;
+  }
 
-  // TODO : handle loading state
-  return (
-    <>
-      {children ? (
-        <View className="w-full rounded-xl border border-grayBorder p-2 h-[12vh] flex-row items-center justify-between">
-          <View className="w-14 h-14 rounded-full overflow-hidden border border-primary">
-            <Image
-              source={{
-                uri: "https://static.vecteezy.com/system/resources/previews/036/280/650/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
-              }}
-              className="h-full w-full"
-            />
+  if (!children ) {
+    return <ErrorComp />
+  }
+
+  if (children.length === 0) {
+    return (
+      <View className="w-full rounded-xl border border-grayBorder p-2 h-[12vh] flex-row items-center justify-between">
+        <Text className="font-pmedium text-darkestGray text-base pl-2">
+          Vous n'avez pas d'enfants{" "}
+        </Text>
+        <AddModal parentId={parent.session!.user.id} />
+      </View>
+    );
+  }
+  if (children)
+    return (
+      <>
+
+          <View className="w-full rounded-xl border border-grayBorder p-2 h-[12vh] flex-row items-center justify-between">
+            <View className="w-14 h-14 rounded-full overflow-hidden border border-primary">
+              <Image
+                source={{
+                  uri: "https://static.vecteezy.com/system/resources/previews/036/280/650/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
+                }}
+                className="h-full w-full"
+              />
+            </View>
+            <Text className="font-pmedium text-darkestGray grow text-base max-w-[60%] pl-4">
+              {yourCurrentChild
+                ? `${yourCurrentChild?.familyName} ${yourCurrentChild.username}`
+                : `${children[0].familyName} ${children[0].username}`}
+            </Text>
+            <ChangeModal handleSelectChild={handleSelectChild} />
           </View>
-          <Text className="font-pmedium text-darkestGray grow text-base pl-4">
-            {yourCurrentChild
-              ? `${yourCurrentChild?.familyName} ${yourCurrentChild.username}`
-              : `${children[0].familyName} ${children[0].username}`}
-          </Text>
-          <ChangeModal handleSelectChild={handleSelectChild} />
-        </View>
-      ) : (
-        <View className="w-full rounded-xl border border-grayBorder p-2 h-[12vh] flex-row items-center justify-between">
-          <Text className="font-pmedium text-darkestGray text-base pl-2">
-            Vous n'avez pas d'enfants{" "}
-          </Text>
-          <AddModal parentId={parent.session!.user.id} />
-        </View>
-      )}
-    </>
-  );
+      </>
+    );
 };
 
 function ChangeModal({

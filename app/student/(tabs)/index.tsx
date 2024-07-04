@@ -46,7 +46,7 @@ export default function HomeScreen() {
               description="Consultez vos plannings rapidement."
             />
             <FeatureCard
-              pathTo="myNotes"
+              pathTo="mygrades"
               from="student"
               title="relevé de notes"
               icon={
@@ -108,7 +108,7 @@ export default function HomeScreen() {
               description="Suivez et consulter vos absences."
             />
             <FeatureCard
-              pathTo="planning"
+              pathTo="profmodule"
               from="student"
               title="Matières et Professeurs"
               icon={
@@ -126,7 +126,7 @@ export default function HomeScreen() {
             style={styles.Card}
           >
             <FeatureCard
-              pathTo="planning"
+              pathTo="mynotes"
               from="student"
               title="Notes des professeurs"
               icon={
@@ -139,7 +139,7 @@ export default function HomeScreen() {
               description="Consultez les évaluations de vos professeurs.s"
             />
             <FeatureCard
-              pathTo="planning"
+              pathTo="mysummons"
               from="student"
               title="Convocations"
               icon={

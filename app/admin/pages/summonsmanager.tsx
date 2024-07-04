@@ -15,15 +15,15 @@ import SelectDropdown from "react-native-select-dropdown";
 import React, { useState } from "react";
 import { useSession } from "@/context/authProvider";
 import LoadingComp from "@/components/LoadingComp";
-import { getMessages } from "@/hooks/getMessages";
 import ErrorComp from "@/components/ErrorComp";
 import { getStudents } from "@/hooks/getStudentsNames";
 import { ChevronDown, MessageSquarePlus } from "lucide-react-native";
 import { supabase } from "@/lib/supabase";
+import { getSummons } from "@/hooks/getSummons";
 export default function NotesManager() {
   const { session } = useSession();
   const [modalVisible, setModalVisible] = useState(false);
-  const { data: notes, isLoading, isError } = getMessages(session?.user.id);
+  const { data: notes, isLoading, isError } = getSummons(session?.user.id);
   let {
     data: students,
     isLoading: isLoadingStudents,
@@ -49,7 +49,7 @@ export default function NotesManager() {
     <>
       <View className="flex-1 bg-white items-center px-4 pt-4 relative">
         <Text className="text-lg font-pmedium  text-darkestGray pb-2">
-          Gestion des notes
+          Gestion des convocation
         </Text>
 
         {notes.length ? (
@@ -64,17 +64,13 @@ export default function NotesManager() {
               >
                 <View className="flex-row">
                   <Text className="pl-1 text-lg font-pmedium text-darkestGray pb-2">
-                    Pour : {n.receiverFullName}
+                    Parent de : {n.receiverFullName}
                   </Text>
                 </View>
 
                 <View className="w-full flex-row justify-between">
-                  <Text className="pl-1 text-lg font-pmedium text-darkestGray pb-2">
-                    {n.title}
-                  </Text>
-
-                  <Text className="text-lg font-pregular text-disabledGray pb-2">
-                    {n.created_at.slice(0, 10)}
+                  <Text className="text-lg font-pregular text-disabledGray pl-2 pb-2">
+                    date : {n.created_at.slice(0, 10)}
                   </Text>
                 </View>
 
@@ -87,7 +83,7 @@ export default function NotesManager() {
         ) : (
           <NoNotes />
         )}
-        <NewNote
+        <NewSummon
           students={students}
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
@@ -112,7 +108,7 @@ function NoNotes() {
   );
 }
 
-function NewNote({
+function NewSummon({
   modalVisible,
   setModalVisible,
   students,
@@ -125,28 +121,25 @@ function NewNote({
   const [selectedStudent, setSelectedStudent] = useState<
     { title: string; id: string } | undefined
   >(undefined);
-  const [noteContent, setnoteContent] = useState("");
-  const [titleContent, setTitleContent] = useState("");
+  const [summonContent, setsummonContent] = useState("");
   const [isSaving, setisSaving] = useState(false);
 
   const displayStudents = students.map((s) => ({
     title: s.fullName,
     id: s.id,
   }));
-  async function addNote() {
+  async function addSummon() {
     try {
       setisSaving(true);
       if (!session?.user) throw new Error("No user on the session!");
 
-      const newNote = {
+      const newSummon = {
         profile_id: session?.user.id,
-        content: noteContent,
-        title: titleContent,
+        content: summonContent,
         sent_to: selectedStudent?.id,
       };
 
-
-      const { error } = await supabase.from("messages").insert(newNote);
+      const { error } = await supabase.from("summons").insert(newSummon);
 
       if (error) {
         throw error;
@@ -159,9 +152,8 @@ function NewNote({
       setisSaving(false);
       setModalVisible(false);
       setSelectedStudent(undefined);
-      setnoteContent("");
-      setTitleContent("");
-      Alert.alert("Note Enregistré avec succés");
+      setsummonContent("");
+      Alert.alert("Convocation Envoyé");
     }
   }
 
@@ -174,19 +166,18 @@ function NewNote({
         onRequestClose={() => {
           if (!isSaving) {
             setSelectedStudent(undefined);
-            setnoteContent("");
-            setTitleContent("");
+            setsummonContent("");
             setModalVisible(false);
           }
         }}
       >
         <View className=" w-11/12 h-fit min-h-[50vh] m-auto bg-white rounded-3xl shadow-lg items-center justify-between pt-6 pb-3 ">
           <Text className="font-pmedium text-darkestGray text-lg pb-2">
-            Ecrire une note
+            Convoquer un parent
           </Text>
           <View className=" w-full px-[4%] py-[3%] rounded-xl pb-2">
             <Text className="w-full pl-2 text-base font-pregular text-darkestGray pb-2">
-              étudiant
+              étudiant concerné
             </Text>
             <SelectDropdown
               data={displayStudents}
@@ -231,24 +222,10 @@ function NewNote({
               dropdownStyle={styles.dropdownMenuStyle}
             />
           </View>
+
           <View className=" w-full px-[4%] py-[3%] rounded-xl">
             <Text className="w-full pl-2 text-base font-pregular text-darkestGray pb-2">
-              Titre
-            </Text>
-            <TextInput
-              autoCapitalize="sentences"
-              className="border border-grayBorder h-fit max-h-[20vh] rounded-lg p-2 grow font-pregular text-lg"
-              cursorColor={"green"}
-              multiline={true}
-              numberOfLines={1}
-              value={titleContent}
-              onChangeText={(c) => setTitleContent(c)}
-              placeholder="titre ici..."
-            />
-          </View>
-          <View className=" w-full px-[4%] py-[3%] rounded-xl">
-            <Text className="w-full pl-2 text-base font-pregular text-darkestGray pb-2">
-              contenu
+              Message de convocation
             </Text>
             <TextInput
               autoCapitalize="sentences"
@@ -256,27 +233,25 @@ function NewNote({
               cursorColor={"green"}
               multiline={true}
               numberOfLines={3}
-              value={noteContent}
-              onChangeText={(c) => setnoteContent(c)}
+              value={summonContent}
+              onChangeText={(c) => setsummonContent(c)}
               placeholder="Contenu ici..."
             />
           </View>
 
           <TouchableOpacity
             className="  p-2 rounded-lg self-center"
-            onPress={() => addNote()}
+            onPress={() => addSummon()}
             disabled={
               isSaving ||
-              noteContent.length === 0 ||
-              titleContent.length === 0 ||
+              summonContent.length === 0 ||
               selectedStudent === undefined
             }
           >
             <Text
               className={`${
                 isSaving ||
-                noteContent.length === 0 ||
-                titleContent.length === 0 ||
+                summonContent.length === 0 ||
                 selectedStudent === undefined
                   ? "text-disabledGray"
                   : "text-primary"
@@ -292,7 +267,7 @@ function NewNote({
         onPress={() => setModalVisible(true)}
       >
         <Text className="text-lg font-pmedium text-white pr-3">
-          Nouvelle note
+          Nouvelle Convocation
         </Text>
         <MessageSquarePlus color={"white"} />
       </Pressable>

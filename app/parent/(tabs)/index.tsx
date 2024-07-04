@@ -26,7 +26,7 @@ export default function HomeScreen() {
       <ScrollView className="bg-white">
         <HeroSec />
         <View className="px-2 w-full pt-4">
-          {/* <ChangeSelectChildComp /> */}
+          <ChangeSelectChildComp />
         </View>
 
         <View className="gap-3 mt-1 px-2 pb-[14vh]">

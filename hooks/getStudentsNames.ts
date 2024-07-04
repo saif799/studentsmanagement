@@ -33,6 +33,6 @@ async function fetchStudents() {
 // TODO : maybe update the query so that it joins with the justification table so the parent know if he already sent one or not
 export const getStudents = () =>
   useQuery({
-    queryKey: ["profiles"],
+    queryKey: ["studentNames"],
     queryFn: async () => await fetchStudents(),
   });
