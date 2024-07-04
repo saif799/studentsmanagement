@@ -6,23 +6,35 @@ import {
   Modal,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "@/context/authProvider";
 import Scanner from "@/app/admin/pages/qrScannerScreen";
 import { BarcodeScanningResult } from "expo-camera";
 import { getChildren } from "@/hooks/getChildren";
 import { queryClient } from "@/app/_layout";
-import { useCurrentChild } from "@/context/currentChild";
+import { childData } from "@/context/currentChild";
 import { AddChildMutation } from "@/hooks/mutations/addChild";
 import LoadingComp from "./LoadingComp";
 import ErrorComp from "./ErrorComp";
 
-const ChangeSelectChildComp = () => {
+const ChangeSelectChildComp = ({
+  currentChild,
+  setCurrentChild,
+}: {
+  currentChild: childData;
+  setCurrentChild: (newChild: childData) => void;
+}) => {
   const parent = useSession();
-  const { currentChild: yourCurrentChild, change: setCurrentChild } =
-    useCurrentChild();
+
 
   const { isPending, data: children } = getChildren(parent.session?.user.id);
+
+  useEffect(() => {
+    
+    if (!isPending && children) {
+      setCurrentChild(children[0]);
+    }
+  }, [isPending, children]);
 
   function handleSelectChild(stuId: string) {
     const selectedChild = children?.find((e) => e.id === stuId);
@@ -32,8 +44,8 @@ const ChangeSelectChildComp = () => {
     return <LoadingComp />;
   }
 
-  if (!children ) {
-    return <ErrorComp />
+  if (!children) {
+    return <ErrorComp />;
   }
 
   if (children.length === 0) {
@@ -49,23 +61,22 @@ const ChangeSelectChildComp = () => {
   if (children)
     return (
       <>
-
-          <View className="w-full rounded-xl border border-grayBorder p-2 h-[12vh] flex-row items-center justify-between">
-            <View className="w-14 h-14 rounded-full overflow-hidden border border-primary">
-              <Image
-                source={{
-                  uri: "https://static.vecteezy.com/system/resources/previews/036/280/650/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
-                }}
-                className="h-full w-full"
-              />
-            </View>
-            <Text className="font-pmedium text-darkestGray grow text-base max-w-[60%] pl-4">
-              {yourCurrentChild
-                ? `${yourCurrentChild?.familyName} ${yourCurrentChild.username}`
-                : `${children[0].familyName} ${children[0].username}`}
-            </Text>
-            <ChangeModal handleSelectChild={handleSelectChild} />
+        <View className="w-full rounded-xl border border-grayBorder p-2 h-[12vh] flex-row items-center justify-between">
+          <View className="w-14 h-14 rounded-full overflow-hidden border border-primary">
+            <Image
+              source={{
+                uri: "https://static.vecteezy.com/system/resources/previews/036/280/650/original/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg",
+              }}
+              className="h-full w-full"
+            />
           </View>
+          <Text className="font-pmedium text-darkestGray grow text-base max-w-[60%] pl-4">
+            {currentChild
+              ? `${currentChild?.familyName} ${currentChild.username}`
+              : `${children[0].familyName} ${children[0].username}`}
+          </Text>
+          <ChangeModal handleSelectChild={handleSelectChild} />
+        </View>
       </>
     );
 };
@@ -90,15 +101,15 @@ function ChangeModal({
         }}
       >
         <View className="self-center items-center justify-center h-fit m-auto shadow-md">
-          <View className="self-center bg-white items-center  w-4/5  rounded-2xl py-4 px-3 ">
+          <View className="self-center bg-white items-center  w-4/5  rounded-2xl py-4 px-3 shadow-2xl">
             <Text className="font-pmedium text-base pb-5 text-darkestGray">
               Vos enfants
             </Text>
 
             {children?.map((ch) => (
-              <View className="pb-3" key={ch.id}>
+              <View className="pb-3 w-full" key={ch.id}>
                 <TouchableOpacity
-                  className={`w-full rounded-[100px]  border-grayBorder p-2 h-[10vh] flex-row items-center justify-between`}
+                  className={`w-full rounded-[100px]  border-grayBorder p-2 h-[10vh] flex-row items-center border`}
                   onPress={() => {
                     handleSelectChild(ch.id);
                     setModalVisible(false);

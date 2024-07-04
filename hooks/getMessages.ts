@@ -8,7 +8,7 @@ async function fetchMessages(userId: string | undefined) {
     .from("messages")
     .select("created_at,id, content , title , sent_to")
     .eq('profile_id',userId)
-    .order("created_at", { ascending: true });
+    .order("created_at", { ascending: false });
 
   let messages: {
     id: string;

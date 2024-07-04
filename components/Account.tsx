@@ -117,7 +117,7 @@ export default function Account({ session }: { session: Session }) {
     <ScrollView
       automaticallyAdjustKeyboardInsets={true}
       style={styles.container}
-      className="bg-white h-4/5 pb-10 overflow-visible"
+      className="bg-white h-[85%] overflow-visible"
     >
       <View className="items-center ">
         <Text className=" font-pbold text-xl pb-5">Profile d’élève</Text>
@@ -146,7 +146,7 @@ export default function Account({ session }: { session: Session }) {
             <TextInput
               className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
               value={UserFamilyName}
-              placeholder={"xxxx-xxxx"}
+              placeholder={"nom de famille"}
               placeholderTextColor={"gray"}
               onChangeText={(e) => setUserFamilyName(e)}
             />
@@ -158,7 +158,7 @@ export default function Account({ session }: { session: Session }) {
             <TextInput
               className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
               value={username}
-              placeholder={"xxxx-xxxx"}
+              placeholder={"prénom"}
               placeholderTextColor={"gray"}
               onChangeText={(e) => setUsername(e)}
             />
@@ -174,7 +174,7 @@ export default function Account({ session }: { session: Session }) {
             <TextInput
               className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
               value={birthDate}
-              placeholder={"xxxx-xxxx"}
+              placeholder={"DD-MM-YYYY"}
               placeholderTextColor={"gray"}
               onChangeText={(e) => setbirthDate(e)}
             />
@@ -188,7 +188,7 @@ export default function Account({ session }: { session: Session }) {
             <TextInput
               className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
               value={UserTown}
-              placeholder={"xxxx-xxxx"}
+              placeholder={"ville"}
               placeholderTextColor={"gray"}
               onChangeText={(e) => setUserTown(e)}
             />
@@ -202,7 +202,7 @@ export default function Account({ session }: { session: Session }) {
             <TextInput
               className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
               value={level}
-              placeholder={"xxxx-xxxx"}
+              placeholder={"niveau"}
               placeholderTextColor={"gray"}
               onChangeText={(e) => setlevel(e)}
             />
@@ -214,7 +214,7 @@ export default function Account({ session }: { session: Session }) {
             <TextInput
               className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
               value={Class}
-              placeholder={"xxxx-xxxx"}
+              placeholder={"classe"}
               placeholderTextColor={"gray"}
               onChangeText={(e) => setClass(e)}
             />
@@ -222,7 +222,7 @@ export default function Account({ session }: { session: Session }) {
         </View>
       </View>
 
-      <View className="pt-5 flex-row gap-3">
+      <View className="pt-5 flex-row gap-3 pb-10">
         <TouchableOpacity
           disabled={loading}
           onPress={() =>

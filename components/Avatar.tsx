@@ -109,7 +109,7 @@ export default function Avatar({
         />
       ) : (
         <View
-          className="h-[15vh] aspect-square rounded-full bg-white border-2 border-grayBorder items-center justify-center"
+          className="h-[15vh] aspect-square rounded-full bg-gray-100 border-2 border-grayBorder items-center justify-center"
           style={[avatarSize]}
         >
           <Camera className="text-disabledGray " size={50} strokeWidth={1} />
@@ -118,7 +118,7 @@ export default function Avatar({
       <TouchableOpacity
         onPress={uploadAvatar}
         disabled={uploading}
-        className="bg-grayBorder w-7 h-7 items-center justify-center rounded-full absolute bottom-0 right-0"
+        className="bg-grayBorder w-7 h-7 items-center justify-center rounded-full absolute bottom-2 right-2"
       >
         <Edit size={20} className="text-black" />
       </TouchableOpacity>

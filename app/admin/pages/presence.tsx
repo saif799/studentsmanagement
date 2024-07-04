@@ -17,6 +17,7 @@ import {
 import { supabase } from "@/lib/supabase";
 import Scanner from "@/app/admin/pages/qrScannerScreen";
 import { BarcodeScanningResult } from "expo-camera";
+import { LoadingAnimationComp } from "@/components/LoadingComp";
 
 type PresenceType = {
   id: string;
@@ -39,7 +40,7 @@ const Presence = () => {
         </Text>
         <View className="bg-primary py-1 px-2 rounded-lg justify-center">
           <Text className="text-lg font-pmedium text-white ">
-            {date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}
+            {date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}
           </Text>
         </View>
       </View>
@@ -59,6 +60,7 @@ const Presence = () => {
 function PresenceTable() {
   const swipeableRef = useRef(null);
   const [dbStudents, setDbStudents] = useState<PresenceType | null>(null);
+  const [loading, setloading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
@@ -70,9 +72,15 @@ function PresenceTable() {
         if (data) {
           const db: PresenceType = data;
           setDbStudents(db);
+          setloading(false);
         }
       });
   }, []);
+
+  if (loading) {
+    return <LoadingAnimationComp />;
+
+  }
 
   function editPresence(id: string, direction: string) {
     if (dbStudents) {

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type childData = {
+export type childData = {
   id: string;
   username: string;
   familyName: string;

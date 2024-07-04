@@ -7,6 +7,8 @@ import { Image, Text } from "react-native";
 import { supabase } from "@/lib/supabase";
 import LoadingComp from "@/components/LoadingComp";
 import { downloadImage } from "@/lib/downloadImage";
+import ErrorComp from "@/components/ErrorComp";
+import { View } from "react-native";
 
 export default function Planning() {
   const [image, setImage] = useState("");
@@ -32,24 +34,30 @@ export default function Planning() {
   });
 
   // TODO : handle the loading and error state
-  if (isError) return <Text> an error </Text>;
+  // TODO : build better UI for this page
+  if (isError) return <ErrorComp />;
 
   if (isPending) return <LoadingComp />;
-  // TODO : build better UI for this page
   return (
-    <SafeAreaView className="bg-white flex-1 items-center">
+    <View className="bg-white flex-1 items-center">
+      <Text className="p-4 font-psemibold text-base text-darkestGray">
+        Emploi du temps
+      </Text>
       {!image || !data ? (
-        <BlankComp />
+        // <BlankComp />
+        <LoadingComp />
       ) : (
         <>
-          <Text className="pb-4 text-2xl font-bold">Votre planning </Text>
-          <Image
-            className={`h-3/4 w-[90%]`}
-            source={{ uri: image }}
-            accessibilityLabel="planning table"
-          />
+          <View className="bg-white rounded-lg overflow-hidden h-[60vh] w-[80%] items-center justify-center border border-disabledGray">
+            <Image
+              className={`w-full h-full`}
+              source={{ uri: image }}
+              accessibilityLabel="planning table"
+              resizeMode="cover"
+            />
+          </View>
         </>
       )}
-    </SafeAreaView>
+    </View>
   );
 }

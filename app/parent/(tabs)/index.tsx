@@ -16,84 +16,89 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
 import ChangeSelectChildComp from "@/components/changeSelectChildComp";
+import { useCurrentChild } from "@/context/currentChild";
 
 export default function HomeScreen() {
   const iconSize = 45;
   const strokeWidth = 1.4;
-
+  const { currentChild , change: setCurrentChild } =
+    useCurrentChild();
+    
   return (
     <SafeAreaView className="bg-white">
       <ScrollView className="bg-white">
         <HeroSec />
         <View className="px-2 w-full pt-4">
-          <ChangeSelectChildComp />
+          <ChangeSelectChildComp currentChild={currentChild} setCurrentChild={setCurrentChild} />
         </View>
 
-        <View className="gap-3 mt-1 px-2 pb-[14vh]">
-          <View
-            className="flex-row  justify-between bg-white"
-            style={styles.Card}
-          >
-            <FeatureCard
-              from="parent"
-              pathTo="planning"
-              title="Emploi du temps"
-              icon={
-                <CalendarClockIcon
-                  size={iconSize}
-                  strokeWidth={strokeWidth}
-                  className=" text-primary"
-                />
-              }
-              description="Consultez les plannings rapidement."
-            />
-            <FeatureCard
-              from="parent"
-              pathTo="justification"
-              title="Justifier et consulter la présence"
-              icon={
-                <ClipboardCheck
-                  size={iconSize}
-                  strokeWidth={strokeWidth}
-                  className=" text-primary"
-                />
-              }
-            />
-          </View>
+        {currentChild ? (
+          <View className="gap-3 mt-1 px-2 pb-[14vh]">
+            <View
+              className="flex-row  justify-between bg-white"
+              style={styles.Card}
+            >
+              <FeatureCard
+                from="parent"
+                pathTo="planning"
+                title="Emploi du temps"
+                icon={
+                  <CalendarClockIcon
+                    size={iconSize}
+                    strokeWidth={strokeWidth}
+                    className=" text-primary"
+                  />
+                }
+                description="Consultez les plannings rapidement."
+              />
+              <FeatureCard
+                from="parent"
+                pathTo="justification"
+                title="Justifier et consulter la présence"
+                icon={
+                  <ClipboardCheck
+                    size={iconSize}
+                    strokeWidth={strokeWidth}
+                    className=" text-primary"
+                  />
+                }
+              />
+            </View>
 
-          <View
-            className="flex-row justify-between bg-white"
-            style={styles.Card}
-          >
-            <FeatureCard
-              from="parent"
-              pathTo=""
-              title="Consulter les Note"
-              icon={
-                <MessageSquareText
-                  size={iconSize}
-                  strokeWidth={strokeWidth}
-                  className=" text-primary"
-                />
-              }
-              description="Voir les notes de votre
+            <View
+              className="flex-row justify-between bg-white"
+              style={styles.Card}
+            >
+              <FeatureCard
+                from="parent"
+                pathTo=""
+                title="Consulter les Notes"
+                icon={
+                  <MessageSquareText
+                    size={iconSize}
+                    strokeWidth={strokeWidth}
+                    className=" text-primary"
+                  />
+                }
+                description="Voir les notes de votre
                           fils / fille"
-            />
-            <FeatureCard
-              from="parent"
-              pathTo="chat"
-              title="Vos Convocations"
-              icon={
-                <MailIcon
-                  size={iconSize}
-                  strokeWidth={strokeWidth}
-                  className=" text-primary"
-                />
-              }
-              description="Consulter les vos convocation"
-            />
+              />
+              <FeatureCard
+                from="parent"
+                pathTo="summons"
+                title="Vos Convocations"
+                icon={
+                  <MailIcon
+                    size={iconSize}
+                    strokeWidth={strokeWidth}
+                    className=" text-primary"
+                  />
+                }
+                description="Consulter les vos convocation"
+              />
+            </View>
           </View>
-        </View>
+        ) : null}
       </ScrollView>
     </SafeAreaView>
   );

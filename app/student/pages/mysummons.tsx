@@ -27,7 +27,7 @@ import { getStudentSummons } from "@/hooks/getStudentSummons";
         <View className="flex-1 bg-white items-center px-4 pt-4 relative">
         <View className="w-full flex-row justify-between px-2 items-center pb-2">
           <Text className="text-lg font-pmedium  text-darkestGray ">
-            Vos Convocation : 
+            Vos Convocations : 
           </Text>
           <Text className={`text-lg font-pregular text-white ${summons.length > 0 ? 'bg-red-400' : "bg-green-500" } px-2 pt-1 items-center rounded-md`}>
             {summons.length}

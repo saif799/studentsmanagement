@@ -14,13 +14,15 @@ import SelectDropdown from "react-native-select-dropdown";
 
 import React, { useState } from "react";
 import { useSession } from "@/context/authProvider";
-import LoadingComp, { LoadingAnimationComp } from "@/components/LoadingComp";
+import { LoadingAnimationComp } from "@/components/LoadingComp";
 import ErrorComp from "@/components/ErrorComp";
 import { getStudents } from "@/hooks/getStudentsNames";
 import { ChevronDown, MessageSquarePlus } from "lucide-react-native";
 import { supabase } from "@/lib/supabase";
 import { getSummons } from "@/hooks/getSummons";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 export default function NotesManager() {
+  const queryClient = useQueryClient();
   const { session } = useSession();
   const [modalVisible, setModalVisible] = useState(false);
   const { data: notes, isLoading, isError } = getSummons(session?.user.id);
@@ -29,6 +31,10 @@ export default function NotesManager() {
     isLoading: isLoadingStudents,
     isError: isErrorStudents,
   } = getStudents();
+  const { mutateAsync: addSummonMutation } = useMutation({
+    mutationFn: addSummon,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["summons"] }),
+  });
 
   if (isError || isErrorStudents) return <ErrorComp />;
   // TODO : handle the loading and error UI
@@ -84,6 +90,7 @@ export default function NotesManager() {
           <NoNotes />
         )}
         <NewSummon
+          summonMutation={addSummonMutation}
           students={students}
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
@@ -102,7 +109,7 @@ function NoNotes() {
         className="w-full h-1/2 border"
       />
       <Text className="font-pregular text-xl text-center text-disabledGray pt-4">
-        pas des notes pour le moment
+        pas des convocations pour le moment
       </Text>
     </View>
   );
@@ -112,10 +119,16 @@ function NewSummon({
   modalVisible,
   setModalVisible,
   students,
+  summonMutation,
 }: {
   modalVisible: boolean;
   setModalVisible: (state: boolean) => void;
   students: { id: string; fullName: string }[];
+  summonMutation: (newSummon: {
+    profile_id: string;
+    content: string;
+    sent_to: string;
+  }) => void;
 }) {
   const { session } = useSession();
   const [selectedStudent, setSelectedStudent] = useState<
@@ -128,33 +141,19 @@ function NewSummon({
     title: s.fullName,
     id: s.id,
   }));
-  async function addSummon() {
-    try {
-      setisSaving(true);
-      if (!session?.user) throw new Error("No user on the session!");
-
-      const newSummon = {
-        profile_id: session?.user.id,
-        content: summonContent,
-        sent_to: selectedStudent?.id,
-      };
-
-      const { error } = await supabase.from("summons").insert(newSummon);
-
-      if (error) {
-        throw error;
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert(error.message);
-      }
-    } finally {
-      setisSaving(false);
-      setModalVisible(false);
-      setSelectedStudent(undefined);
-      setsummonContent("");
-      Alert.alert("Convocation Envoyé");
-    }
+  async function handleAddition() {
+    if (!session?.user) throw new Error("No user on the session!");
+    setisSaving(true);
+    const newSummon = {
+      profile_id: session!.user.id,
+      content: summonContent,
+      sent_to: selectedStudent!.id,
+    };
+    summonMutation(newSummon);
+    setisSaving(false);
+    setModalVisible(false);
+    setSelectedStudent(undefined);
+    setsummonContent("");
   }
 
   return (
@@ -241,7 +240,7 @@ function NewSummon({
 
           <TouchableOpacity
             className="  p-2 rounded-lg self-center"
-            onPress={() => addSummon()}
+            onPress={() => handleAddition()}
             disabled={
               isSaving ||
               summonContent.length === 0 ||
@@ -273,6 +272,26 @@ function NewSummon({
       </Pressable>
     </View>
   );
+}
+
+async function addSummon(newSummon: {
+  profile_id: string;
+  content: string;
+  sent_to: string;
+}) {
+  try {
+    const { error } = await supabase.from("summons").insert(newSummon);
+
+    if (error) {
+      throw error;
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      Alert.alert(error.message);
+    }
+  } finally {
+    Alert.alert("Convocation Envoyé");
+  }
 }
 
 const styles = StyleSheet.create({

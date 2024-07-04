@@ -5,6 +5,7 @@ import { useCurrentChild } from "@/context/currentChild";
 import { UploadContent } from "@/components/uploadContent";
 import { useJustification } from "@/hooks/justification";
 import { queryClient } from "@/app/_layout";
+import { LoadingAnimationComp } from "@/components/LoadingComp";
 export default function Justification() {
   const { currentChild } = useCurrentChild();
 
@@ -21,13 +22,13 @@ export default function Justification() {
   // TODO : maybe update card Ui to be red if no justfication sent yet yellow justificaiton sent and still didnt get accepted green when accepted
 
   if (isLoading || !absences)
-    return <Text>please wait while we fetch your data </Text>;
+    return <LoadingAnimationComp />;
   return (
     <>
       <View className="flex-1 bg-white items-center px-4 pt-4">
         <View className="w-full flex-row justify-between px-2 items-center pb-4">
-          <Text className="text-lg font-pmedium  text-darkestGray pb-2">
-            Absences de : {currentChild.username}
+          <Text className="text-lg font-pmedium max-w-[90%]  text-darkestGray pb-2">
+            Absences d'enfant : {currentChild.username}
           </Text>
           <Text className="text-lg font-pregular text-white bg-red-400 px-2 pt-1 items-center rounded-md">
             {absences.length}
@@ -39,7 +40,7 @@ export default function Justification() {
             {absences.map((e) => (
               <View
                 key={e.id}
-                className="w-full border border-grayBorder rounded-lg  py-1 pt-3 px-3 text-center "
+                className="w-full border border-grayBorder rounded-lg  py-1 pt-3 px-3 text-center mb-2"
               >
                 <UploadContent
                   key={e.id}
@@ -60,6 +61,9 @@ export default function Justification() {
                 >
                   <Text className="text-lg font-pmedium text-darkestGray pb-2">
                     {e.created_at}
+                  </Text>
+                  <Text className="text-lg font-pmedium text-primary pb-2">
+                    justifier
                   </Text>
                 </UploadContent>
               </View>

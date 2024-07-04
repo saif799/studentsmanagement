@@ -20,7 +20,9 @@ import ErrorComp from "@/components/ErrorComp";
 import { getStudents } from "@/hooks/getStudentsNames";
 import { ChevronDown, MessageSquarePlus } from "lucide-react-native";
 import { supabase } from "@/lib/supabase";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 export default function NotesManager() {
+  const queryClient = useQueryClient();
   const { session } = useSession();
   const [modalVisible, setModalVisible] = useState(false);
   const { data: notes, isLoading, isError } = getMessages(session?.user.id);
@@ -29,6 +31,10 @@ export default function NotesManager() {
     isLoading: isLoadingStudents,
     isError: isErrorStudents,
   } = getStudents();
+  const { mutateAsync: addNoteMutation } = useMutation({
+    mutationFn: addNote,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["messages"] }),
+  });
 
   if (isError || isErrorStudents) return <ErrorComp />;
   // TODO : handle the loading and error UI
@@ -42,8 +48,6 @@ export default function NotesManager() {
       receiverFullName: receiver?.fullName,
     };
   });
-
-
 
   students = students.filter((s) => s.id !== session?.user.id);
 
@@ -71,7 +75,7 @@ export default function NotesManager() {
                 </View>
 
                 <View className="w-full flex-row justify-between">
-                  <Text className="pl-1 text-lg font-pmedium text-darkestGray pb-2">
+                  <Text className="pl-1 text-lg max-w-[60%] font-pmedium text-darkestGray pb-2">
                     {n.title}
                   </Text>
 
@@ -93,6 +97,7 @@ export default function NotesManager() {
           students={students}
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
+          noteMutation={addNoteMutation}
         />
       </View>
     </>
@@ -118,10 +123,17 @@ function NewNote({
   modalVisible,
   setModalVisible,
   students,
+  noteMutation,
 }: {
   modalVisible: boolean;
   setModalVisible: (state: boolean) => void;
   students: { id: string; fullName: string }[];
+  noteMutation: (newNote: {
+    profile_id: string;
+    content: string;
+    title: string;
+    sent_to: string;
+  }) => void;
 }) {
   const { session } = useSession();
   const [selectedStudent, setSelectedStudent] = useState<
@@ -135,36 +147,23 @@ function NewNote({
     title: s.fullName,
     id: s.id,
   }));
-  async function addNote() {
-    try {
-      setisSaving(true);
-      if (!session?.user) throw new Error("No user on the session!");
+  async function handleAddition() {
+    setisSaving(true);
+    if (!session?.user) throw new Error("No user on the session!");
 
-      const newNote = {
-        profile_id: session?.user.id,
-        content: noteContent,
-        title: titleContent,
-        sent_to: selectedStudent?.id,
-      };
+    const newNote = {
+      profile_id: session!.user.id,
+      content: noteContent,
+      title: titleContent,
+      sent_to: selectedStudent!.id,
+    };
+    noteMutation(newNote!);
 
-
-      const { error } = await supabase.from("messages").insert(newNote);
-
-      if (error) {
-        throw error;
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert(error.message);
-      }
-    } finally {
-      setisSaving(false);
-      setModalVisible(false);
-      setSelectedStudent(undefined);
-      setnoteContent("");
-      setTitleContent("");
-      Alert.alert("Note Enregistré avec succés");
-    }
+    setisSaving(false);
+    setModalVisible(false);
+    setSelectedStudent(undefined);
+    setnoteContent("");
+    setTitleContent("");
   }
 
   return (
@@ -266,7 +265,7 @@ function NewNote({
 
           <TouchableOpacity
             className="  p-2 rounded-lg self-center"
-            onPress={() => addNote()}
+            onPress={() => handleAddition()}
             disabled={
               isSaving ||
               noteContent.length === 0 ||
@@ -300,6 +299,27 @@ function NewNote({
       </Pressable>
     </View>
   );
+}
+
+async function addNote(newNote: {
+  profile_id: string;
+  content: string;
+  title: string;
+  sent_to: string;
+}) {
+  try {
+    const { error } = await supabase.from("messages").insert(newNote);
+
+    if (error) {
+      throw error;
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      Alert.alert(error.message);
+    }
+  } finally {
+    Alert.alert("Note Enregistré avec succés");
+  }
 }
 
 const styles = StyleSheet.create({
