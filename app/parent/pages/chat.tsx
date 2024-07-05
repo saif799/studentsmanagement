@@ -1,4 +1,4 @@
-import { NoNotes } from "@/app/student/pages/myNotes";
+import { NoNotes } from "@/app/student/pages/mynotes";
 import ErrorComp from "@/components/ErrorComp";
 import { LoadingAnimationComp } from "@/components/LoadingComp";
 import { useCurrentChild } from "@/context/currentChild";

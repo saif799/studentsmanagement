@@ -171,7 +171,7 @@ function PresenceTable() {
         </Text>
         <Text className="text-lg font-pmedium text-disabledGray">état</Text>
       </View>
-      <ScrollView>
+      <ScrollView className="mb-[9vh]">
         <GestureHandlerRootView style={styles.scrollTable}>
           {dbStudents?.map((stu) => (
             <Swipeable

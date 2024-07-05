@@ -48,6 +48,7 @@ const Matier = () => {
           className={`h-3/4 w-[90%]`}
           source={{ uri: image }}
           accessibilityLabel="planning table"
+          resizeMode="contain"
         />
       ) : (
         <BlankComp />

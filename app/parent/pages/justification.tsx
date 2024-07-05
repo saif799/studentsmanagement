@@ -80,7 +80,9 @@ export default function Justification() {
             <Text className=" font-pregular text-xl pb-3 pl-2 pt-1">
               en attente de justification
             </Text>
-            {absences
+            {absences.filter(
+              (e) => e.justification.length && e.justification[0].accepted
+            ).length > 0 ? absences
               .filter(
                 (e) => e.justification.length && !e.justification[0].accepted
               )
@@ -99,30 +101,40 @@ export default function Justification() {
                     {e.created_at}
                   </Text>
                 </View>
-              ))}
+              )) : <Text className="text-lg font-pregular text-disabledGray pl-2  pb-2">
+              il n'y a pas
+            </Text>}
             <Text className="font-pregular text-xl pb-3 pl-2 pt-1">
               justifié
             </Text>
-            {absences
-              .filter(
-                (e) => e.justification.length && e.justification[0].accepted
-              )
-              .map((e) => (
-                <View
-                  key={e.id}
-                  className={`w-full border border-grayBorder rounded-lg items-center  py-1 pt-3 px-3 text-center mb-2 ${
-                    e.justification && e.justification.length
-                      ? e.justification[0].accepted
-                        ? "bg-green-300"
-                        : "bg-yellow-100"
-                      : ""
-                  }`}
-                >
-                  <Text className="text-lg font-pmedium text-darkestGray pb-2">
-                    {e.created_at}
-                  </Text>
-                </View>
-              ))}
+            {absences.filter(
+              (e) => e.justification.length && e.justification[0].accepted
+            ).length > 0 ? (
+              absences
+                .filter(
+                  (e) => e.justification.length && e.justification[0].accepted
+                )
+                .map((e) => (
+                  <View
+                    key={e.id}
+                    className={`w-full border border-grayBorder rounded-lg items-center  py-1 pt-3 px-3 text-center mb-2 ${
+                      e.justification && e.justification.length
+                        ? e.justification[0].accepted
+                          ? "bg-green-300"
+                          : "bg-yellow-100"
+                        : ""
+                    }`}
+                  >
+                    <Text className="text-lg font-pmedium text-darkestGray pb-2">
+                      {e.created_at}
+                    </Text>
+                  </View>
+                ))
+            ) : (
+              <Text className="text-lg font-pregular text-disabledGray pl-2  pb-2">
+                il n'y a pas
+              </Text>
+            )}
           </ScrollView>
         ) : (
           <NoAbsences />
