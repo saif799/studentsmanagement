@@ -81,12 +81,19 @@ export default function Auth({
         </TouchableOpacity>
         <View className="flex-row items-center justify-center">
           <View className="mt-4 h-3 border-t-[0.5px] grow border-grayBorder"></View>
-          <Text className="text-neutral-500"> OR </Text>
+          <Text className="text-neutral-500"> Ou </Text>
           <View className="mt-4 h-3 border-t-[0.5px] border-grayBorder grow"></View>
         </View>
 
-        <Link href={signup}>
-          <Text> dont have an account, sign up instead</Text>
+        <Link href={signup} asChild>
+          <TouchableOpacity
+            disabled={loading}
+            className="w-full py-4 justify-center items-center border border-primary rounded-lg"
+          >
+            <Text className=" text-primary font-pbold text-base">
+              Créer un compte
+            </Text>
+          </TouchableOpacity>
         </Link>
       </View>
     </View>

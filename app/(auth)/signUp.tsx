@@ -39,7 +39,7 @@ export default function SignUp() {
                 avenir meilleur.
               </Text>
             </View>
-            <SignUpAuth role="student" signIn="/singin" />
+            <SignUpAuth role="student" signIn="/signin" />
           </View>
         </View>
       </ScrollView>

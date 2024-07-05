@@ -63,7 +63,7 @@ export default function SignUpAuth({
             <FormField
               label="Nom"
               value={userName}
-              placeholder="Mohamed"
+              placeholder="nom ici"
               onValueChange={onUserNameChange}
             />
           </View>
@@ -96,16 +96,24 @@ export default function SignUpAuth({
           }}
           className="w-full py-4 justify-center items-center bg-primary rounded-lg"
         >
-          <Text className=" text-white font-pbold text-base">Sign up</Text>
+          <Text className=" text-white font-pbold text-base">
+            Créer un compte
+          </Text>
         </TouchableOpacity>
         <View className="flex-row items-center justify-center">
           <View className="mt-4 h-3 border-t-[0.5px] grow border-grayBorder"></View>
-          <Text className="text-neutral-500"> OR </Text>
+          <Text className="text-neutral-500"> Ou </Text>
           <View className="mt-4 h-3 border-t-[0.5px] border-grayBorder grow"></View>
         </View>
-
-        <Link href={signIn}>
-          <Text>already have an account sign In</Text>
+        <Link href={signIn} asChild>
+          <TouchableOpacity
+            disabled={loading}
+            className="w-full py-4 justify-center items-center border border-primary rounded-lg"
+          >
+            <Text className=" text-primary font-pbold text-base">
+              Connecter
+            </Text>
+          </TouchableOpacity>
         </Link>
       </View>
     </View>
