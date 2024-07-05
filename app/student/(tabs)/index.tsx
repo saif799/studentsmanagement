@@ -19,12 +19,18 @@ import {
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
+import SignupModal from "@/components/SignupModal";
+import { useSignupModal } from "@/context/useSignupModal";
 
 export default function HomeScreen() {
   const iconSize = 45;
+  const { isOpen } = useSignupModal();
+  console.log(isOpen);
+
   const strokeWidth = 1.3;
   return (
     <SafeAreaView className="bg-white">
+      <SignupModal />
       <ScrollView className="bg-white">
         <HeroSec />
         <View className="gap-3 mt-1 px-2 pb-[14vh]">

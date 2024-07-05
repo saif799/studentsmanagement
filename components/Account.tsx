@@ -14,6 +14,7 @@ import Avatar from "@/components/Avatar";
 import { queryClient } from "@/app/_layout";
 import { LoadingAnimationComp } from "./LoadingComp";
 import { useCurrentChild } from "@/context/currentChild";
+
 export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");

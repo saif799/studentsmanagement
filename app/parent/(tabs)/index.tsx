@@ -17,6 +17,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
 import ChangeSelectChildComp from "@/components/changeSelectChildComp";
 import { useCurrentChild } from "@/context/currentChild";
+import SignupModal from "@/components/SignupModal";
 
 export default function HomeScreen() {
   const iconSize = 45;
@@ -25,6 +26,8 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView className="bg-white">
+      <SignupModal />
+
       <ScrollView className="bg-white">
         <HeroSec />
         <View className="px-2 w-full pt-4">

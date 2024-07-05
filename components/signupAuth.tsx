@@ -3,6 +3,7 @@ import { Alert, View, AppState, Text, TouchableOpacity } from "react-native";
 import { supabase } from "@/lib/supabase";
 import FormField from "@/components/FormField";
 import { Link } from "expo-router";
+import { useSignupModal } from "@/context/useSignupModal";
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -28,6 +29,8 @@ export default function SignUpAuth({
   const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const { change } = useSignupModal();
+
   async function signUpWithEmail() {
     setLoading(true);
 
@@ -47,7 +50,6 @@ export default function SignUpAuth({
     });
     if (error) Alert.alert(error.message);
 
-    Alert.alert("in the signUp function ", error?.name);
     setLoading(false);
   }
   const onUserNameChange = (text: string) => setUserName(text);
@@ -88,7 +90,10 @@ export default function SignUpAuth({
       <View className="pt-8">
         <TouchableOpacity
           disabled={loading}
-          onPress={() => signUpWithEmail()}
+          onPress={() => {
+            signUpWithEmail();
+            change();
+          }}
           className="w-full py-4 justify-center items-center bg-primary rounded-lg"
         >
           <Text className=" text-white font-pbold text-base">Sign up</Text>

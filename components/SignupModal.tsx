@@ -1,0 +1,258 @@
+import { useSignupModal } from "@/context/useSignupModal";
+import { Modal } from "react-native";
+import { useSession } from "@/context/authProvider";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
+import {
+  StyleSheet,
+  View,
+  Alert,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import { LoadingAnimationComp } from "./LoadingComp";
+
+export default function SignupModal() {
+  const { isOpen, change } = useSignupModal();
+  const { session } = useSession();
+
+  const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState("");
+  const [UserFamilyName, setUserFamilyName] = useState("");
+  const [UserTown, setUserTown] = useState("");
+  const [birthDate, setbirthDate] = useState("");
+  const [level, setlevel] = useState("");
+  const [Class, setClass] = useState("");
+
+  const disbaled = UserFamilyName.length < 3 ?? loading;
+
+  useEffect(() => {
+    if (session) getProfile();
+  }, [session]);
+
+  async function getProfile() {
+    try {
+      setLoading(true);
+      if (!session?.user) throw new Error("No user on the session!");
+
+      const { data, error, status } = await supabase
+        .from("profiles")
+        .select(`username, birthDate, class, level, city, familyName`)
+        .eq("id", session?.user.id)
+        .single();
+      if (error && status !== 406) {
+        console.log(error);
+        Alert.alert(error.message);
+        throw error;
+      }
+
+      if (data) {
+        setUsername(data.username);
+        setClass(data.class);
+        setlevel(data.level);
+        setUserFamilyName(data.familyName);
+        setUserTown(data.city);
+        setbirthDate(data.birthDate);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function updateProfile({
+    username,
+    familyName,
+    city,
+  }: {
+    username: string;
+    familyName: string;
+    level: string;
+    city: string;
+    Class: string;
+    birthDate: string;
+  }) {
+    try {
+      setLoading(true);
+      if (!session?.user) throw new Error("No user on the session!");
+
+      const updates = {
+        id: session?.user.id,
+        username,
+        familyName,
+        class: Class,
+        birthDate,
+        level,
+        city,
+        updated_at: new Date(),
+      };
+
+      const { error } = await supabase.from("profiles").upsert(updates);
+
+      if (error) {
+        throw error;
+      }
+      change();
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (loading) {
+    return <LoadingAnimationComp />;
+  }
+
+  return (
+    <Modal
+      animationType="slide"
+      transparent
+      visible={isOpen}
+      onRequestClose={() => change()}
+    >
+      <ScrollView
+        automaticallyAdjustKeyboardInsets={true}
+        style={styles.container}
+        className="bg-white h-[85%] overflow-visible"
+      >
+        <View className="items-center ">
+          <Text className=" font-pbold text-xl pb-5">compléter le profile</Text>
+        </View>
+
+        <View className="flex-row justify-between pt-6">
+          <View>
+            <Text className="pl-2 font-pmedium pb-2 text-base">Nom</Text>
+            <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+              <TextInput
+                cursorColor={"green"}
+                className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+                value={UserFamilyName}
+                placeholder={"nom de famille"}
+                placeholderTextColor={"gray"}
+                onChangeText={(e) => setUserFamilyName(e)}
+              />
+            </View>
+          </View>
+          <View>
+            <Text className="pl-2 font-pmedium pb-2 text-base">Prenom</Text>
+            <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+              <TextInput
+                className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+                value={username}
+                placeholder={"prénom"}
+                placeholderTextColor={"gray"}
+                onChangeText={(e) => setUsername(e)}
+              />
+            </View>
+          </View>
+        </View>
+        <View className="flex-row justify-between pt-6">
+          <View>
+            <Text className="pl-2 font-pmedium pb-2 text-base">
+              Date naissance
+            </Text>
+            <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+              <TextInput
+                className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+                value={birthDate}
+                placeholder={"DD-MM-YYYY"}
+                placeholderTextColor={"gray"}
+                onChangeText={(e) => setbirthDate(e)}
+              />
+            </View>
+          </View>
+          <View>
+            <Text className="pl-2 font-pmedium pb-2 text-base">
+              ville de naissance
+            </Text>
+            <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+              <TextInput
+                className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+                value={UserTown}
+                placeholder={"ville"}
+                placeholderTextColor={"gray"}
+                onChangeText={(e) => setUserTown(e)}
+              />
+            </View>
+          </View>
+        </View>
+        <View className="flex-row justify-between pt-6">
+          <View>
+            <Text className="pl-2 font-pmedium pb-2 text-base">Niveau</Text>
+            <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+              <TextInput
+                className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+                value={level}
+                placeholder={"niveau"}
+                placeholderTextColor={"gray"}
+                onChangeText={(e) => setlevel(e)}
+              />
+            </View>
+          </View>
+          <View>
+            <Text className="pl-2 font-pmedium pb-2 text-base">Classe</Text>
+            <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+              <TextInput
+                className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+                value={Class}
+                placeholder={"classe"}
+                placeholderTextColor={"gray"}
+                onChangeText={(e) => setClass(e)}
+              />
+            </View>
+          </View>
+        </View>
+
+        <View className="pt-5 items-center gap-3 pb-10">
+          <TouchableOpacity
+            disabled={disbaled}
+            onPress={() =>
+              updateProfile({
+                username,
+                familyName: UserFamilyName,
+                birthDate,
+                Class,
+                city: UserTown,
+                level,
+              })
+            }
+            className={`py-4 w-[45vw] justify-center items-center rounded-lg ${
+              !disbaled ? "bg-primary" : "bg-disabledGray"
+            }`}
+          >
+            <Text className=" text-white font-pbold text-base">
+              {!loading ? "Enregistrer" : "en cours d'enregistrement"}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </Modal>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    paddingTop: 40,
+    padding: 12,
+  },
+  verticallySpaced: {
+    paddingTop: 4,
+    paddingBottom: 4,
+    alignSelf: "stretch",
+  },
+  mt20: {
+    marginTop: 20,
+  },
+  qrstyle: {
+    marginTop: 5,
+    alignSelf: "center",
+  },
+});
