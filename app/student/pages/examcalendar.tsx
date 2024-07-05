@@ -50,7 +50,7 @@ export default function ExamCalendar() {
               className={`w-full h-full`}
               source={{ uri: image }}
               accessibilityLabel="planning table"
-              resizeMode="cover"
+              resizeMode="contain"
             />
           </View>
         </>

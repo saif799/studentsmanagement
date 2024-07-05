@@ -52,7 +52,7 @@ export default function SchoolRules() {
               className={`w-full h-full`}
               source={{ uri: image }}
               accessibilityLabel="planning table"
-              resizeMode="cover"
+              resizeMode="contain"
             />
           </View>
         </>

@@ -47,6 +47,7 @@ const UploadSth = () => {
           className={`h-3/4 w-[90%] rounded-xl`}
           source={{ uri: image }}
           accessibilityLabel="planning table"
+          resizeMode="contain"
         />
       ) : (
         <LoadingComp />

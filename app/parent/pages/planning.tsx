@@ -53,7 +53,7 @@ export default function Planning() {
               className={`w-full h-full`}
               source={{ uri: image }}
               accessibilityLabel="planning table"
-              resizeMode="cover"
+              resizeMode="contain"
             />
           </View>
         </>

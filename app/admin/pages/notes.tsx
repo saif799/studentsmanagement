@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { getStudents } from "@/hooks/getStudents";
 import { LoadingAnimationComp } from "@/components/LoadingComp";
@@ -16,19 +16,15 @@ const StudentsNotes = () => {
   //       await supabase.from("notes").insert({ student_id }),
   //   });
   return (
-    <View className="bg-white relative flex-1 px-4 pt-2 items-center">
-      <ScrollView>
-        {data.map((student) => (
-          <TouchableOpacity
-            // onPress={() => {
-            //   mutate(student.id);
-            // }}
-            key={student.id}
-          >
-            <Text>{student.username}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+    <View className="w-full flex-1 items-center pt-[25%] bg-white">
+      <Image
+        source={require("@/assets/images/access_denied.png")}
+        resizeMode="contain"
+        className="w-full h-1/2 border"
+      />
+      <Text className="font-pregular text-xl text-center text-disabledGray pt-4">
+        Cette page est en cours de construction
+      </Text>
     </View>
   );
 };

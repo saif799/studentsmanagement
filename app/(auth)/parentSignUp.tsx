@@ -23,7 +23,7 @@ export default function SginIn() {
                 <ArrowLeft size={35} color={"green"} strokeWidth={2} />
               </Link>
               <Text className="text-white -left-3 font-psemibold text-xl text-center grow">
-                sign Up étudiant
+                sign up parent
               </Text>
             </View>
           </ImageBackground>
