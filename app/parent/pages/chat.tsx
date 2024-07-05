@@ -1,10 +1,9 @@
-import { NoNotes } from "@/app/student/pages/mynotes";
 import ErrorComp from "@/components/ErrorComp";
 import { LoadingAnimationComp } from "@/components/LoadingComp";
 import { useCurrentChild } from "@/context/currentChild";
 import { supabase } from "@/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function Chat() {
   const currentChild = useCurrentChild();
@@ -86,6 +85,21 @@ export default function Chat() {
       ) : (
         <NoNotes />
       )}
+    </View>
+  );
+}
+
+function NoNotes() {
+  return (
+    <View className="w-full flex-1 items-center pt-[25%] bg-white">
+      <Image
+        source={require("@/assets/images/no-absences.png")}
+        resizeMode="contain"
+        className="w-full h-1/2 border"
+      />
+      <Text className="font-pregular text-xl text-center text-disabledGray pt-4">
+        pas des notes pour le moment
+      </Text>
     </View>
   );
 }
