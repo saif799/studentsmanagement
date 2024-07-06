@@ -18,7 +18,7 @@ import { LoadingAnimationComp } from "@/components/LoadingComp";
 import { getMessages } from "@/hooks/getMessages";
 import ErrorComp from "@/components/ErrorComp";
 import { getStudents } from "@/hooks/getStudentsNames";
-import { ChevronDown, MessageSquarePlus } from "lucide-react-native";
+import { ChevronDown, MessageSquarePlus, Search } from "lucide-react-native";
 import { supabase } from "@/lib/supabase";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 export default function NotesManager() {
@@ -194,6 +194,11 @@ function NewNote({
               onSelect={(selectedItem, index) => {
                 setSelectedStudent(selectedItem);
               }}
+              search
+              renderSearchInputLeftIcon={() => <Search color="gray" />}
+              searchInputStyle={{ backgroundColor: "white" }}
+              searchInputTxtStyle={{ fontSize: 18, fontWeight: "500" }}
+              searchPlaceHolder="Tapez le prénom d'étudiant ici"
               renderButton={(selectedItem, isOpened) => {
                 return (
                   <View style={styles.dropdownButtonStyle}>

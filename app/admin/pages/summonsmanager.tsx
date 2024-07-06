@@ -17,7 +17,7 @@ import { useSession } from "@/context/authProvider";
 import { LoadingAnimationComp } from "@/components/LoadingComp";
 import ErrorComp from "@/components/ErrorComp";
 import { getStudents } from "@/hooks/getStudentsNames";
-import { ChevronDown, MessageSquarePlus } from "lucide-react-native";
+import { ChevronDown, MessageSquarePlus, Search } from "lucide-react-native";
 import { supabase } from "@/lib/supabase";
 import { getSummons } from "@/hooks/getSummons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -183,6 +183,11 @@ function NewSummon({
               onSelect={(selectedItem, index) => {
                 setSelectedStudent(selectedItem);
               }}
+              search
+              renderSearchInputLeftIcon={() => <Search color="gray" />}
+              searchInputStyle={{ backgroundColor: "white" }}
+              searchInputTxtStyle={{ fontSize: 18, fontWeight: "500" }}
+              searchPlaceHolder="Tapez le prénom d'étudiant ici"
               renderButton={(selectedItem, isOpened) => {
                 return (
                   <View style={styles.dropdownButtonStyle}>
