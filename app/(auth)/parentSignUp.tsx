@@ -13,10 +13,11 @@ export default function SginIn() {
   return (
     <SafeAreaView className="h-full bg-white ">
       <ScrollView automaticallyAdjustKeyboardInsets={true}>
-        <View className="h-full bg-black relative">
+        <View className="h-full bg-[#3f875c] relative">
           <ImageBackground
-            source={require("@/assets/images/studentImage.jpg")}
+            source={require("@/assets/images/hero-bg-parent.jpg")}
             className=" h-[175px] pt-7"
+            
           >
             <View className="flex-row items-center pl-2">
               <Link href={"/"} asChild className="rounded-full bg-white p-2">

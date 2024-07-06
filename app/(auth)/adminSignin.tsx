@@ -11,9 +11,9 @@ export default function AdminSginIn() {
   return (
     <SafeAreaView className="h-full bg-white ">
       <ScrollView automaticallyAdjustKeyboardInsets={true}>
-        <View className="h-full bg-black relative">
+        <View className="h-full bg-green-950 relative">
           <ImageBackground
-            source={require("@/assets/images/studentImage.jpg")}
+            source={require("@/assets/images/hero-bg-school.jpg")}
             className=" h-[175px] pt-7"
           >
             <View className="flex-row items-center pl-2">

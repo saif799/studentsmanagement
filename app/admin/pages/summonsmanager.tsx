@@ -176,7 +176,7 @@ function NewSummon({
           </Text>
           <View className=" w-full px-[4%] py-[3%] rounded-xl pb-2">
             <Text className="w-full pl-2 text-base font-pregular text-darkestGray pb-2">
-              étudiant concerné
+              parent de 
             </Text>
             <SelectDropdown
               data={displayStudents}

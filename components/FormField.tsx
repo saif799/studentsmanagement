@@ -24,6 +24,7 @@ export default function FormField({
           placeholderTextColor={"gray"}
           onChangeText={onValueChange}
           secureTextEntry={secureTextEntry}
+          autoCapitalize="none"
         />
       </View>
     </>

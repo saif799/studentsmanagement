@@ -1,15 +1,9 @@
 import React, { useState } from "react";
-import {
-  Alert,
-  StyleSheet,
-  View,
-  AppState,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { Alert, View, AppState, Text, TouchableOpacity } from "react-native";
 import { supabase } from "@/lib/supabase";
 import FormField from "@/components/FormField";
 import { Link } from "expo-router";
+import { useSignupModal } from "@/context/useSignupModal";
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive
@@ -23,28 +17,42 @@ AppState.addEventListener("change", (state) => {
   }
 });
 
-export default function Auth({
+export default function SignUpAuth({
   role,
-  signup,
+  signIn,
 }: {
   role: string;
-  signup: string;
+  signIn: string;
 }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function signInWithEmail() {
+  const { change } = useSignupModal();
+
+  async function signUpWithEmail() {
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
+
+    console.log("username ", userName, "role ", role, email, password);
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
       email: email,
       password: password,
+      options: {
+        data: {
+          username: userName,
+          role,
+        },
+      },
     });
+    if (error) Alert.alert(error.message);
 
-    if (error) Alert.alert(error.message, "Vérifiez les informations entré");
     setLoading(false);
   }
-
+  const onUserNameChange = (text: string) => setUserName(text);
   const onPasswordChange = (text: string) => setPassword(text);
   const onEmailChange = (text: string) => setEmail(text);
   return (
@@ -53,7 +61,15 @@ export default function Auth({
         <View className=" gap-3 pr-2">
           <View>
             <FormField
-              label="Email"
+              label="Nom d'établisment"
+              value={userName}
+              placeholder="nom ici"
+              onValueChange={onUserNameChange}
+            />
+          </View>
+          <View>
+            <FormField
+              label="Email admin"
               value={email}
               placeholder="exemple@domain.com"
               onValueChange={onEmailChange}
@@ -63,7 +79,7 @@ export default function Auth({
             <FormField
               label="Mot de passe"
               value={password}
-              placeholder="mot de passe ici"
+              placeholder="**********"
               secureTextEntry
               onValueChange={onPasswordChange}
             />
@@ -74,24 +90,28 @@ export default function Auth({
       <View className="pt-8">
         <TouchableOpacity
           disabled={loading}
-          onPress={() => signInWithEmail()}
+          onPress={() => {
+            signUpWithEmail();
+            change();
+          }}
           className="w-full py-4 justify-center items-center bg-primary rounded-lg"
         >
-          <Text className=" text-white font-pbold text-base">{loading ? "Connexion..." : "Connecter"}</Text>
+          <Text className=" text-white font-pbold text-base">
+            {!loading ? 'Créer un compte' : 'Création...'}
+          </Text>
         </TouchableOpacity>
         <View className="flex-row items-center justify-center">
           <View className="mt-4 h-3 border-t-[0.5px] grow border-grayBorder"></View>
           <Text className="text-neutral-500"> Ou </Text>
           <View className="mt-4 h-3 border-t-[0.5px] border-grayBorder grow"></View>
         </View>
-
-        <Link href={signup} asChild>
+        <Link href={signIn} asChild>
           <TouchableOpacity
             disabled={loading}
             className="w-full py-4 justify-center items-center border border-primary rounded-lg"
           >
             <Text className=" text-primary font-pbold text-base">
-              Créer un compte
+              Connecter
             </Text>
           </TouchableOpacity>
         </Link>
