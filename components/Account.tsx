@@ -72,6 +72,9 @@ export default function Account({ session }: { session: Session }) {
     avatar_url,
     familyName,
     city,
+    Class,
+    level,
+    birthDate,
   }: {
     username: string;
     avatar_url?: string;
@@ -99,9 +102,8 @@ export default function Account({ session }: { session: Session }) {
 
       const { error } = await supabase.from("profiles").upsert(updates);
 
-      Alert.alert("Votre profil a été mis à jour avec succès");
-
       if (error) {
+        Alert.alert(error?.message);
         throw error;
       }
     } catch (error) {
@@ -124,7 +126,9 @@ export default function Account({ session }: { session: Session }) {
       className="bg-white h-[85%] overflow-visible"
     >
       <View className="items-center ">
-        <Text className=" font-pmedium text-darkestGray text-xl pb-5">Profile d’élève</Text>
+        <Text className=" font-pmedium text-darkestGray text-xl pb-5">
+          Profile d’élève
+        </Text>
         <Avatar
           size={120}
           url={avatarUrl}

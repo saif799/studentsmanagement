@@ -30,7 +30,7 @@ export default function NotesManager() {
     data: students,
     isLoading: isLoadingStudents,
     isError: isErrorStudents,
-  } = getStudents();
+  } = getStudents(session?.user.id);
   const { mutateAsync: addSummonMutation } = useMutation({
     mutationFn: addSummon,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["summons"] }),
