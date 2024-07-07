@@ -18,7 +18,7 @@ import {
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
-import SignupModal from "@/components/SignupModal";
+import {SignupModal} from "@/components/SignupModal";
 import { useSignupModal } from "@/context/useSignupModal";
 
 export default function HomeScreen() {

@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Redirect } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import { useSession } from "@/context/authProvider";
-import SignUpAuth from "@/components/signupAuth";
+import { AdminSignUpAuth } from "@/components/signupAuth";
 
 export default function SginIn() {
   const { session } = useSession();
@@ -15,7 +15,7 @@ export default function SginIn() {
       <ScrollView automaticallyAdjustKeyboardInsets={true}>
         <View className="h-full bg-black relative">
           <ImageBackground
-            source={require("@/assets/images/studentImage.jpg")}
+            source={require("@/assets/images/hero-bg-school.jpg")}
             className=" h-[175px] pt-7"
           >
             <View className="flex-row items-center pl-2">
@@ -23,7 +23,7 @@ export default function SginIn() {
                 <ArrowLeft size={35} color={"green"} strokeWidth={2} />
               </Link>
               <Text className="text-white -left-3 font-psemibold text-xl text-center grow">
-                sign Up étudiant
+                sign Up admin
               </Text>
             </View>
           </ImageBackground>
@@ -39,7 +39,7 @@ export default function SginIn() {
                 avenir meilleur.
               </Text>
             </View>
-            <SignUpAuth role="admin" signIn="/adminSignin" />
+            <AdminSignUpAuth role="admin" signIn="/adminSignin" />
           </View>
         </View>
       </ScrollView>

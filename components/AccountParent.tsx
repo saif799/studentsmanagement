@@ -34,9 +34,7 @@ export default function AccountParent({ session }: { session: Session }) {
 
       const { data, error, status } = await supabase
         .from("profiles")
-        .select(
-          `username, avatar_url, birthDate, class, level, city, familyName`
-        )
+        .select(`username, avatar_url, familyName`)
         .eq("id", session?.user.id)
         .single();
       if (error && status !== 406) {
@@ -106,10 +104,12 @@ export default function AccountParent({ session }: { session: Session }) {
     <ScrollView
       automaticallyAdjustKeyboardInsets={true}
       style={styles.container}
-      className="bg-white h-[85%] overflow-visible"
+      className="bg-white h-full overflow-visible"
     >
       <View className="items-center ">
-        <Text className=" font-pmedium text-darkestGray text-xl pb-5">Profile Parent</Text>
+        <Text className=" font-pmedium text-darkestGray text-xl pb-5">
+          Profile Parent
+        </Text>
         <Avatar
           size={120}
           url={avatarUrl}

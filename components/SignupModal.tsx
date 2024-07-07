@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { LoadingAnimationComp } from "./LoadingComp";
 
-export default function SignupModal() {
+export function SignupModal() {
   const { isOpen, change } = useSignupModal();
   const { session } = useSession();
 
@@ -238,6 +238,339 @@ export default function SignupModal() {
   );
 }
 
+export function ParentSignupModal() {
+  const { isOpen, change } = useSignupModal();
+  const { session } = useSession();
+
+  const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState("");
+  const [UserFamilyName, setUserFamilyName] = useState("");
+
+  const disbaled = UserFamilyName.length < 3 ?? loading;
+
+  useEffect(() => {
+    if (session) getProfile();
+  }, [session]);
+
+  async function getProfile() {
+    try {
+      setLoading(true);
+      if (!session?.user) throw new Error("No user on the session!");
+
+      const { data, error, status } = await supabase
+        .from("profiles")
+        .select(`username, familyName`)
+        .eq("id", session?.user.id)
+        .single();
+      if (error && status !== 406) {
+        console.log(error);
+        Alert.alert(error.message);
+        throw error;
+      }
+
+      if (data) {
+        setUsername(data.username);
+        setUserFamilyName(data.familyName);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function updateProfile({
+    username,
+    familyName,
+  }: {
+    username: string;
+    familyName: string;
+  }) {
+    try {
+      setLoading(true);
+      if (!session?.user) throw new Error("No user on the session!");
+
+      const updates = {
+        id: session?.user.id,
+        username,
+        familyName,
+        updated_at: new Date(),
+      };
+
+      const { error } = await supabase.from("profiles").upsert(updates);
+
+      if (error) {
+        throw error;
+      }
+      change();
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (loading) {
+    return <LoadingAnimationComp />;
+  }
+
+  return (
+    <Modal
+      animationType="slide"
+      transparent
+      visible={isOpen}
+      onRequestClose={() => change()}
+    >
+      <ScrollView
+        automaticallyAdjustKeyboardInsets={true}
+        style={styles.container}
+        className="bg-white h-[85%] overflow-visible"
+      >
+        <View className="items-center ">
+          <Text className=" font-pbold text-xl pb-5">compléter le profile</Text>
+        </View>
+
+        <View className="flex-row justify-between pt-6">
+          <View>
+            <Text className="pl-2 font-pmedium pb-2 text-base">Nom</Text>
+            <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+              <TextInput
+                cursorColor={"green"}
+                className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+                value={UserFamilyName}
+                placeholder={"nom de famille"}
+                placeholderTextColor={"gray"}
+                onChangeText={(e) => setUserFamilyName(e)}
+              />
+            </View>
+          </View>
+          <View>
+            <Text className="pl-2 font-pmedium pb-2 text-base">Prenom</Text>
+            <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+              <TextInput
+                className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+                value={username}
+                placeholder={"prénom"}
+                placeholderTextColor={"gray"}
+                onChangeText={(e) => setUsername(e)}
+              />
+            </View>
+          </View>
+        </View>
+
+        <View className="pt-5 items-center gap-3 pb-10">
+          <TouchableOpacity
+            disabled={disbaled}
+            onPress={() =>
+              updateProfile({
+                username,
+                familyName: UserFamilyName,
+              })
+            }
+            className={`py-4 w-[45vw] justify-center items-center rounded-lg ${
+              !disbaled ? "bg-primary" : "bg-disabledGray"
+            }`}
+          >
+            <Text className=" text-white font-pbold text-base">
+              {!loading ? "Enregistrer" : "en cours d'enregistrement"}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </Modal>
+  );
+}
+export function AdminSignupModal() {
+  const { isOpen, change } = useSignupModal();
+  const { session } = useSession();
+
+  const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState("");
+  const [UserFamilyName, setUserFamilyName] = useState("");
+  const [UserTown, setUserTown] = useState("");
+  const [birthDate, setbirthDate] = useState("");
+
+  const disbaled = UserFamilyName.length < 3 ?? loading;
+
+  useEffect(() => {
+    if (session) getProfile();
+  }, [session]);
+
+  async function getProfile() {
+    try {
+      setLoading(true);
+      if (!session?.user) throw new Error("No user on the session!");
+
+      const { data, error, status } = await supabase
+        .from("profiles")
+        .select(`username, birthDate, city, familyName`)
+        .eq("id", session?.user.id)
+        .single();
+      if (error && status !== 406) {
+        console.log(error);
+        Alert.alert(error.message);
+        throw error;
+      }
+
+      if (data) {
+        setUsername(data.username);
+        setUserFamilyName(data.familyName);
+        setUserTown(data.city);
+        setbirthDate(data.birthDate);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function updateProfile({
+    username,
+    familyName,
+    city,
+  }: {
+    username: string;
+    familyName: string;
+    city: string;
+    birthDate: string;
+  }) {
+    try {
+      setLoading(true);
+      if (!session?.user) throw new Error("No user on the session!");
+
+      const updates = {
+        id: session?.user.id,
+        username,
+        familyName,
+        birthDate,
+        city,
+        updated_at: new Date(),
+      };
+
+      const { error } = await supabase.from("profiles").upsert(updates);
+
+      if (error) {
+        throw error;
+      }
+      change();
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (loading) {
+    return <LoadingAnimationComp />;
+  }
+
+  return (
+    <Modal
+      animationType="slide"
+      transparent
+      visible={isOpen}
+      onRequestClose={() => change()}
+    >
+      <ScrollView
+        automaticallyAdjustKeyboardInsets={true}
+        style={styles.container}
+        className="bg-white h-[85%] overflow-visible"
+      >
+        <View className="items-center ">
+          <Text className=" font-pbold text-xl pb-5">compléter le profile</Text>
+        </View>
+
+        <View className="flex-row justify-between pt-6">
+          <View>
+            <Text className="pl-2 font-pmedium pb-2 text-base">Nom</Text>
+            <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+              <TextInput
+                cursorColor={"green"}
+                className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+                value={UserFamilyName}
+                placeholder={"nom de famille"}
+                placeholderTextColor={"gray"}
+                onChangeText={(e) => setUserFamilyName(e)}
+              />
+            </View>
+          </View>
+          <View>
+            <Text className="pl-2 font-pmedium pb-2 text-base">Prenom</Text>
+            <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+              <TextInput
+                className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+                value={username}
+                placeholder={"prénom"}
+                placeholderTextColor={"gray"}
+                onChangeText={(e) => setUsername(e)}
+              />
+            </View>
+          </View>
+        </View>
+        <View className="flex-row justify-between pt-6">
+          <View>
+            <Text className="pl-2 font-pmedium pb-2 text-base">
+              Date naissance
+            </Text>
+            <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+              <TextInput
+                className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+                value={birthDate}
+                placeholder={"DD-MM-YYYY"}
+                placeholderTextColor={"gray"}
+                onChangeText={(e) => setbirthDate(e)}
+              />
+            </View>
+          </View>
+          <View>
+            <Text className="pl-2 font-pmedium pb-2 text-base">
+              ville de naissance
+            </Text>
+            <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+              <TextInput
+                className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+                value={UserTown}
+                placeholder={"ville"}
+                placeholderTextColor={"gray"}
+                onChangeText={(e) => setUserTown(e)}
+              />
+            </View>
+          </View>
+        </View>
+
+        <View className="pt-5 items-center gap-3 pb-10">
+          <TouchableOpacity
+            disabled={disbaled}
+            onPress={() =>
+              updateProfile({
+                username,
+                familyName: UserFamilyName,
+                birthDate,
+                city: UserTown,
+              })
+            }
+            className={`py-4 w-[45vw] justify-center items-center rounded-lg ${
+              !disbaled ? "bg-primary" : "bg-disabledGray"
+            }`}
+          >
+            <Text className=" text-white font-pbold text-base">
+              {!loading ? "Enregistrer" : "en cours d'enregistrement"}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </Modal>
+  );
+}
 const styles = StyleSheet.create({
   container: {
     paddingTop: 40,

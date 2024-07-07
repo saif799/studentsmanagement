@@ -34,9 +34,7 @@ export default function AccountAdmin({ session }: { session: Session }) {
 
       const { data, error, status } = await supabase
         .from("profiles")
-        .select(
-          `username, avatar_url, city`
-        )
+        .select(`username, avatar_url, city`)
         .eq("id", session?.user.id)
         .single();
       if (error && status !== 406) {
@@ -105,10 +103,12 @@ export default function AccountAdmin({ session }: { session: Session }) {
     <ScrollView
       automaticallyAdjustKeyboardInsets={true}
       style={styles.container}
-      className="bg-white h-[85%] overflow-visible"
+      className="bg-white h-full overflow-visible"
     >
       <View className="items-center ">
-        <Text className=" font-pmedium text-darkestGray text-xl pb-5">Profile établissement</Text>
+        <Text className=" font-pmedium text-darkestGray text-xl pb-5">
+          Profile établissement
+        </Text>
         <Avatar
           size={120}
           url={avatarUrl}
@@ -123,9 +123,11 @@ export default function AccountAdmin({ session }: { session: Session }) {
         />
       </View>
 
-      <View className="flex-row justify-between pt-6">
+      <View className="flex-row pt-6">
         <View className="w-full">
-          <Text className="pl-2 font-pmedium pb-2 text-base">Nom d'établissement</Text>
+          <Text className="pl-2 font-pmedium pb-2 text-base">
+            Nom d'établissement
+          </Text>
           <View className="w-full h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
             <TextInput
               className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
@@ -137,13 +139,10 @@ export default function AccountAdmin({ session }: { session: Session }) {
           </View>
         </View>
       </View>
-      <View className="flex-row justify-between pt-6">
-        
-        <View>
-          <Text className="pl-2 font-pmedium pb-2 text-base">
-            Ville
-          </Text>
-          <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+      <View className="flex-row pt-6">
+        <View className="w-full">
+          <Text className="pl-2 font-pmedium pb-2 text-base">Ville</Text>
+          <View className="w-full h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
             <TextInput
               className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
               value={UserTown}
@@ -154,7 +153,6 @@ export default function AccountAdmin({ session }: { session: Session }) {
           </View>
         </View>
       </View>
-      
 
       <View className="pt-5 flex-row gap-3 pb-10">
         <TouchableOpacity
@@ -180,7 +178,9 @@ export default function AccountAdmin({ session }: { session: Session }) {
           }}
           className="w-[45vw] py-4 justify-center items-center border-[1px] border-red-500 bg-white rounded-lg"
         >
-          <Text className=" text-red-500  font-pbold text-base">Déconnecter</Text>
+          <Text className=" text-red-500  font-pbold text-base">
+            Déconnecter
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
