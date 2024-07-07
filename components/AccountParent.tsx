@@ -15,15 +15,11 @@ import { queryClient } from "@/app/_layout";
 import { LoadingAnimationComp } from "./LoadingComp";
 import { useCurrentChild } from "@/context/currentChild";
 
-export default function Account({ session }: { session: Session }) {
+export default function AccountParent({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
   const [UserFamilyName, setUserFamilyName] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
-  const [UserTown, setUserTown] = useState("");
-  const [birthDate, setbirthDate] = useState("");
-  const [level, setlevel] = useState("");
-  const [Class, setClass] = useState("");
 
   const { change: setCurrentChild } = useCurrentChild();
 
@@ -51,11 +47,9 @@ export default function Account({ session }: { session: Session }) {
 
       if (data) {
         setUsername(data.username);
-        setClass(data.class);
-        setlevel(data.level);
+
         setUserFamilyName(data.familyName);
-        setUserTown(data.city);
-        setbirthDate(data.birthDate);
+
         setAvatarUrl(data.avatar_url);
       }
     } catch (error) {
@@ -71,15 +65,10 @@ export default function Account({ session }: { session: Session }) {
     username,
     avatar_url,
     familyName,
-    city,
   }: {
     username: string;
     avatar_url?: string;
     familyName: string;
-    level: string;
-    city: string;
-    Class: string;
-    birthDate: string;
   }) {
     try {
       setLoading(true);
@@ -90,10 +79,6 @@ export default function Account({ session }: { session: Session }) {
         username,
         avatar_url,
         familyName,
-        class: Class,
-        birthDate,
-        level,
-        city,
         updated_at: new Date(),
       };
 
@@ -124,7 +109,7 @@ export default function Account({ session }: { session: Session }) {
       className="bg-white h-[85%] overflow-visible"
     >
       <View className="items-center ">
-        <Text className=" font-pmedium text-darkestGray text-xl pb-5">Profile d’élève</Text>
+        <Text className=" font-pmedium text-darkestGray text-xl pb-5">Profile Parent</Text>
         <Avatar
           size={120}
           url={avatarUrl}
@@ -133,11 +118,8 @@ export default function Account({ session }: { session: Session }) {
             updateProfile({
               username,
               avatar_url: url,
-              birthDate,
-              city: UserTown,
-              Class,
+
               familyName: UserFamilyName,
-              level,
             });
           }}
         />
@@ -157,7 +139,7 @@ export default function Account({ session }: { session: Session }) {
           </View>
         </View>
         <View>
-          <Text className="pl-2 font-pmedium pb-2 text-base">Prenom</Text>
+          <Text className="pl-2 font-pmedium pb-2 text-base">Prénom</Text>
           <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
             <TextInput
               className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
@@ -165,62 +147,6 @@ export default function Account({ session }: { session: Session }) {
               placeholder={"prénom"}
               placeholderTextColor={"gray"}
               onChangeText={(e) => setUsername(e)}
-            />
-          </View>
-        </View>
-      </View>
-      <View className="flex-row justify-between pt-6">
-        <View>
-          <Text className="pl-2 font-pmedium pb-2 text-base">
-            Date naissance
-          </Text>
-          <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
-            <TextInput
-              className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
-              value={birthDate}
-              placeholder={"DD-MM-YYYY"}
-              placeholderTextColor={"gray"}
-              onChangeText={(e) => setbirthDate(e)}
-            />
-          </View>
-        </View>
-        <View>
-          <Text className="pl-2 font-pmedium pb-2 text-base">
-            ville de naissance
-          </Text>
-          <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
-            <TextInput
-              className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
-              value={UserTown}
-              placeholder={"ville"}
-              placeholderTextColor={"gray"}
-              onChangeText={(e) => setUserTown(e)}
-            />
-          </View>
-        </View>
-      </View>
-      <View className="flex-row justify-between pt-6">
-        <View>
-          <Text className="pl-2 font-pmedium pb-2 text-base">Niveau</Text>
-          <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
-            <TextInput
-              className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
-              value={level}
-              placeholder={"niveau"}
-              placeholderTextColor={"gray"}
-              onChangeText={(e) => setlevel(e)}
-            />
-          </View>
-        </View>
-        <View>
-          <Text className="pl-2 font-pmedium pb-2 text-base">Classe</Text>
-          <View className="w-[45vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
-            <TextInput
-              className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
-              value={Class}
-              placeholder={"classe"}
-              placeholderTextColor={"gray"}
-              onChangeText={(e) => setClass(e)}
             />
           </View>
         </View>
@@ -233,10 +159,6 @@ export default function Account({ session }: { session: Session }) {
             updateProfile({
               username,
               familyName: UserFamilyName,
-              birthDate,
-              Class,
-              city: UserTown,
-              level,
             })
           }
           className="py-4 w-[45vw] justify-center items-center bg-primary rounded-lg"
@@ -254,7 +176,9 @@ export default function Account({ session }: { session: Session }) {
           }}
           className="w-[45vw] py-4 justify-center items-center border-[1px] border-red-500 bg-white rounded-lg"
         >
-          <Text className=" text-red-500  font-pbold text-base">Log out</Text>
+          <Text className=" text-red-500  font-pbold text-base">
+            Déconnecter
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

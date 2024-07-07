@@ -76,12 +76,7 @@ export default function TabLayout() {
             ),
           }}
         />
-        <Tabs.Screen
-          name="BarCodeScanner"
-          options={{
-            href: null,
-          }}
-        />
+        
       </Tabs>
     </>
   );

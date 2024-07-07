@@ -12,7 +12,6 @@ import {
   CalendarDays,
   ClipboardCheck,
   ClipboardList,
-  MailIcon,
   Scale,
   SheetIcon,
   TablePropertiesIcon,
@@ -144,19 +143,7 @@ export default function HomeScreen() {
               }
               description="Consultez les évaluations de vos professeurs.s"
             />
-            <FeatureCard
-              pathTo="mysummons"
-              from="student"
-              title="Convocations"
-              icon={
-                <MailIcon
-                  size={iconSize}
-                  strokeWidth={strokeWidth}
-                  className=" text-primary"
-                />
-              }
-              description="Accédez aux informations de convocation des parents."
-            />
+            
           </View>
         </View>
       </ScrollView>
