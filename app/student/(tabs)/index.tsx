@@ -18,10 +18,16 @@ import {
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
-import {SignupModal} from "@/components/SignupModal";
+import { SignupModal } from "@/components/SignupModal";
 import { useSignupModal } from "@/context/useSignupModal";
+import { useSession } from "@/context/authProvider";
+import { Redirect } from "expo-router";
 
 export default function HomeScreen() {
+  const { user } = useSession();
+
+  if (user && user.role !== "student") return <Redirect href="/" />;
+
   const iconSize = 45;
   const { isOpen } = useSignupModal();
   console.log(isOpen);
@@ -143,7 +149,6 @@ export default function HomeScreen() {
               }
               description="Consultez les évaluations de vos professeurs.s"
             />
-            
           </View>
         </View>
       </ScrollView>

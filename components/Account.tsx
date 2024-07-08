@@ -14,6 +14,7 @@ import Avatar from "@/components/Avatar";
 import { queryClient } from "@/app/_layout";
 import { LoadingAnimationComp } from "./LoadingComp";
 import { useCurrentChild } from "@/context/currentChild";
+import { useSession } from "@/context/authProvider";
 
 export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
@@ -25,6 +26,8 @@ export default function Account({ session }: { session: Session }) {
   const [birthDate, setbirthDate] = useState("");
   const [level, setlevel] = useState("");
   const [Class, setClass] = useState("");
+
+  const { removeUser } = useSession();
 
   const { change: setCurrentChild } = useCurrentChild();
 
@@ -58,15 +61,17 @@ export default function Account({ session }: { session: Session }) {
         setUserTown(data.city);
         setbirthDate(data.birthDate);
         setAvatarUrl(data.avatar_url);
-        const { data : school, error, status } = await supabase
-        .from("profiles")
-        .select(
-          `username`
-        )
-        .eq("id", data.school)
-        .single();
+        const {
+          data: school,
+          error,
+          status,
+        } = await supabase
+          .from("profiles")
+          .select(`username`)
+          .eq("id", data.school)
+          .single();
         if (school) {
-          setUserSchool(school.username)
+          setUserSchool(school.username);
         }
       }
     } catch (error) {
@@ -279,6 +284,7 @@ export default function Account({ session }: { session: Session }) {
           onPress={() => {
             supabase.auth.signOut();
             queryClient.clear();
+            removeUser();
             setCurrentChild(null);
           }}
           className="w-[45vw] py-4 justify-center items-center border-[1px] border-red-500 bg-white rounded-lg"

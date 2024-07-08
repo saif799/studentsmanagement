@@ -18,8 +18,15 @@ import { Text } from "react-native";
 import ChangeSelectChildComp from "@/components/changeSelectChildComp";
 import { useCurrentChild } from "@/context/currentChild";
 import { ParentSignupModal } from "@/components/SignupModal";
+import { useSession } from "@/context/authProvider";
+import { Redirect } from "expo-router";
 
 export default function HomeScreen() {
+  const { session, user } = useSession();
+
+  if (user && user.role !== "parent")
+    return <Redirect href="/" />;
+
   const iconSize = 45;
   const strokeWidth = 1.4;
   const { currentChild } = useCurrentChild();

@@ -14,12 +14,14 @@ import Avatar from "@/components/Avatar";
 import { queryClient } from "@/app/_layout";
 import { LoadingAnimationComp } from "./LoadingComp";
 import { useCurrentChild } from "@/context/currentChild";
+import { useSession } from "@/context/authProvider";
 
 export default function AccountParent({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
   const [UserFamilyName, setUserFamilyName] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
+  const { removeUser } = useSession();
 
   const { change: setCurrentChild } = useCurrentChild();
 
@@ -172,6 +174,7 @@ export default function AccountParent({ session }: { session: Session }) {
           onPress={() => {
             supabase.auth.signOut();
             queryClient.clear();
+            removeUser();
             setCurrentChild(null);
           }}
           className="w-[45vw] py-4 justify-center items-center border-[1px] border-red-500 bg-white rounded-lg"
