@@ -19,15 +19,12 @@ import {
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
-import { AdminSignupModal } from "@/components/SignupModal";
 export default function HomeScreen() {
   const pathFrom = "admin";
   const iconSize = 45;
   const strokeWidth = 1.4;
   return (
     <SafeAreaView className="bg-white">
-      {/* <AdminSignupModal /> */}
-
       <ScrollView className="bg-white">
         <HeroSec />
         <View className="gap-3 mt-1 px-2 pb-[14vh]">

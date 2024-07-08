@@ -6,6 +6,6 @@ interface signUpModalState {
 }
 
 export const useSignupModal = create<signUpModalState>()((set) => ({
-  isOpen: true,
+  isOpen: false,
   change: () => set((state) => ({ isOpen: !state.isOpen })),
 }));

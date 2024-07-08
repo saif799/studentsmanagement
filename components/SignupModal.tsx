@@ -135,7 +135,7 @@ export function SignupModal() {
     title: s.username,
     id: s.id,
   }));
-  const disbaled = (UserFamilyName.length < 3 || !selectedSchool) ?? loading;
+  const disbaled = (UserFamilyName.length < 3 || selectedSchool?.id.length === 0) ?? loading;
 
   console.log(selectedSchool);
 
