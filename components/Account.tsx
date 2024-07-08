@@ -19,6 +19,7 @@ export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
   const [UserFamilyName, setUserFamilyName] = useState("");
+  const [UserSchool, setUserSchool] = useState("non selectioné");
   const [avatarUrl, setAvatarUrl] = useState("");
   const [UserTown, setUserTown] = useState("");
   const [birthDate, setbirthDate] = useState("");
@@ -39,7 +40,7 @@ export default function Account({ session }: { session: Session }) {
       const { data, error, status } = await supabase
         .from("profiles")
         .select(
-          `username, avatar_url, birthDate, class, level, city, familyName`
+          `username, avatar_url, birthDate, class, level, city, familyName, school`
         )
         .eq("id", session?.user.id)
         .single();
@@ -57,6 +58,16 @@ export default function Account({ session }: { session: Session }) {
         setUserTown(data.city);
         setbirthDate(data.birthDate);
         setAvatarUrl(data.avatar_url);
+        const { data : school, error, status } = await supabase
+        .from("profiles")
+        .select(
+          `username`
+        )
+        .eq("id", data.school)
+        .single();
+        if (school) {
+          setUserSchool(school.username)
+        }
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -169,6 +180,20 @@ export default function Account({ session }: { session: Session }) {
               placeholder={"prénom"}
               placeholderTextColor={"gray"}
               onChangeText={(e) => setUsername(e)}
+            />
+          </View>
+        </View>
+      </View>
+      <View className="flex-row justify-between pt-6">
+        <View>
+          <Text className="pl-2 font-pmedium pb-2 text-base">Nom d'école</Text>
+          <View className="w-[93vw] h-16 border-[1px] border-neutral-300 rounded-xl items-start ">
+            <TextInput
+              className=" flex-1 text-base text-black  caret-black w-full px-3 focus:caret-black"
+              value={UserSchool}
+              placeholder={"non sélectionée"}
+              placeholderTextColor={"gray"}
+              editable={false}
             />
           </View>
         </View>
