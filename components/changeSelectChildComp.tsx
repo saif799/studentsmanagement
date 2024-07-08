@@ -6,7 +6,7 @@ import {
   Modal,
   Alert,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSession } from "@/context/authProvider";
 import Scanner from "@/app/admin/pages/qrScannerScreen";
 import { BarcodeScanningResult } from "expo-camera";
@@ -161,7 +161,7 @@ function AddModal({ parentId }: { parentId: string | undefined }) {
       >
         <View className="flex-1 bg-white items-center justify-center py-[13vh]">
           <Text className="font-pmedium text-darkestGray text-lg">
-            Ajouter vos enfants
+            Ajoutez vos enfants
           </Text>
           <View className="flex-1 w-full px-[10%] py-[10%] rounded-xl aspect-auto">
             <Scanner

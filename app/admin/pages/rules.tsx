@@ -48,7 +48,7 @@ const Rules = () => {
           source={{ uri: image }}
           accessibilityLabel="planning table"
         />
-      ) : (
+      ) : isPending ? <LoadingComp /> : (
         <BlankComp />
       )}
       <View className=" flex-1 justify-center ">

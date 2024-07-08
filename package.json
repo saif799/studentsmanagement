@@ -20,7 +20,7 @@
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.0.2",
     "@rneui/themed": "^4.0.0-rc.8",
-    "@supabase/supabase-js": "^2.43.4",
+    "@supabase/supabase-js": "^2.44.3",
     "@tanstack/react-query": "^5.45.1",
     "expo": "~51.0.8",
     "expo-asset": "^10.0.8",
@@ -52,6 +52,7 @@
     "react-native-select-dropdown": "^4.0.1",
     "react-native-svg": "15.2.0",
     "react-native-web": "~0.19.10",
+    "supabase": "^1.178.2",
     "uri-scheme": "^1.2.2",
     "zustand": "^4.5.2"
   },
