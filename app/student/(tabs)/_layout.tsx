@@ -13,7 +13,7 @@ export default function TabLayout() {
 
   if (!session) {
     ToastAndroid.show(
-      "Vous n'avez pas accès à cette partie, Redirection en course...",
+      "Redirection en course...",
       ToastAndroid.SHORT
     );
     return <Redirect href="/" />;

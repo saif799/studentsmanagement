@@ -26,15 +26,7 @@ export default function HomeScreen() {
   const pathFrom = "admin";
   const iconSize = 45;
   const strokeWidth = 1.4;
-
-  const { user } = useUser();
-  if (user && user!.role !== "admin") {
-    ToastAndroid.show(
-      "Vous n'avez pas accès à cette partie, Redirection en course...",
-      ToastAndroid.SHORT
-    );
-    return <Redirect href="/" />;
-  }
+  
   return (
     <SafeAreaView className="bg-white">
       <ScrollView className="bg-white">
