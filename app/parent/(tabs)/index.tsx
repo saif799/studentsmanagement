@@ -35,7 +35,7 @@ export default function HomeScreen() {
     <SafeAreaView className="bg-white">
       <ParentSignupModal />
 
-      <ScrollView className="bg-white">
+      <ScrollView className="bg-white h-full">
         <HeroSec />
         <View className="px-2 w-full pt-4">
           <ChangeSelectChildComp />

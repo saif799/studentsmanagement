@@ -137,7 +137,6 @@ export function SignupModal() {
   }));
   const disbaled = (UserFamilyName.length < 3 || selectedSchool?.id.length === 0) ?? loading;
 
-  console.log(selectedSchool);
 
   return (
     <Modal

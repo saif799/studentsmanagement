@@ -1,7 +1,7 @@
 import Auth from "@/components/Auth";
 import { ImageBackground, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Link } from "expo-router";
+import { Link, Redirect } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 
 export default function SginIn() {

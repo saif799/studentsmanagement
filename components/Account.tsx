@@ -289,7 +289,7 @@ export default function Account({ session }: { session: Session }) {
           }}
           className="w-[45vw] py-4 justify-center items-center border-[1px] border-red-500 bg-white rounded-lg"
         >
-          <Text className=" text-red-500  font-pbold text-base">Log out</Text>
+          <Text className=" text-red-500  font-pbold text-base">Se Déconnecter</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

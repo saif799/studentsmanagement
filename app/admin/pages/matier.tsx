@@ -28,7 +28,6 @@ const Matier = () => {
         path = data?.path;
         downloadImage(path, setImage);
       }
-      console.log(data);
 
       return path;
     },

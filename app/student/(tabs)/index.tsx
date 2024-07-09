@@ -30,7 +30,6 @@ export default function HomeScreen() {
 
   const iconSize = 45;
   const { isOpen } = useSignupModal();
-  console.log(isOpen);
 
   const strokeWidth = 1.3;
   return (

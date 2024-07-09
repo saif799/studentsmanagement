@@ -1,11 +1,24 @@
 import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Redirect } from "expo-router";
 import { useSession } from "@/context/authProvider";
+import { LoadingAnimationComp } from "@/components/LoadingComp";
 const App = () => {
   const { session, user } = useSession();
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    if (session !== undefined) {
+      setIsLoading(false);
+    }
+  }, [session]);
+
+  if (isLoading) {
+    return (
+      <LoadingAnimationComp />
+    );
+  }
   if (user && user.role === "student")
     return <Redirect href="/student/(tabs)" />;
   if (user && user.role === "admin") return <Redirect href="/admin/(tabs)" />;
