@@ -28,7 +28,7 @@ export default function HomeScreen() {
   const strokeWidth = 1.4;
 
   const { user } = useSession();
-  if (user!.role !== "admin") {
+  if (user && user!.role !== "admin") {
     ToastAndroid.show(
       "Vous n'avez pas accès à cette partie, Redirection en course...",
       ToastAndroid.SHORT
