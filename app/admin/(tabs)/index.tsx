@@ -4,6 +4,7 @@ import {
   View,
   ScrollView,
   ImageBackground,
+  ToastAndroid,
 } from "react-native";
 
 import { FeatureCard } from "@/components/FeatureCard";
@@ -27,7 +28,13 @@ export default function HomeScreen() {
   const strokeWidth = 1.4;
 
   const { user } = useSession();
-  if (user!.role !== "admin") return <Redirect href="/" />;
+  if (user!.role !== "admin") {
+    ToastAndroid.show(
+      "Vous n'avez pas accès à cette partie, Redirection en course...",
+      ToastAndroid.SHORT
+    );
+    return <Redirect href="/" />;
+  }
   return (
     <SafeAreaView className="bg-white">
       <ScrollView className="bg-white">

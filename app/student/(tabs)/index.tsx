@@ -4,6 +4,7 @@ import {
   View,
   ScrollView,
   ImageBackground,
+  ToastAndroid,
 } from "react-native";
 
 import { FeatureCard } from "@/components/FeatureCard";
@@ -26,7 +27,9 @@ import { Redirect } from "expo-router";
 export default function HomeScreen() {
   const { user } = useSession();
 
-  if (user && user.role !== "student") return <Redirect href="/" />;
+  if (user && user.role !== "student") {
+    ToastAndroid.show("Vous n'avez pas accès à cette partie, Redirection en course...",ToastAndroid.SHORT)
+    return <Redirect href="/" />};
 
   const iconSize = 45;
   const { isOpen } = useSignupModal();
