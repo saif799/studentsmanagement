@@ -4,6 +4,7 @@ import {
   View,
   ScrollView,
   ImageBackground,
+  ToastAndroid,
 } from "react-native";
 
 import { FeatureCard } from "@/components/FeatureCard";
@@ -19,14 +20,9 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
 import { SignupModal } from "@/components/SignupModal";
-import { useSignupModal } from "@/context/useSignupModal";
-import { useSession } from "@/context/authProvider";
-import { Redirect } from "expo-router";
 
 export default function HomeScreen() {
-  
   const iconSize = 45;
-  const { isOpen } = useSignupModal();
 
   const strokeWidth = 1.3;
   return (

@@ -4,6 +4,7 @@ import {
   View,
   ScrollView,
   ImageBackground,
+  ToastAndroid,
 } from "react-native";
 
 import { FeatureCard } from "@/components/FeatureCard";
