@@ -7,6 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useUser } from "./useUser";
 
 type Usertype = {
   role: "parent" | "admin" | "student";
@@ -15,20 +16,15 @@ type Usertype = {
 
 const AuthContext = createContext<{
   session: Session | null;
-  user: Usertype | null;
-
-  removeUser: () => void;
 }>({
   session: null,
-  user: null,
-  removeUser: () => {},
 });
 
 export const useSession = () => useContext(AuthContext);
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [authSession, setSession] = useState<Session | null>(null);
-  const [user, setUser] = useState<Usertype | null>(null);
+  const { user, setUser } = useUser();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -36,7 +32,6 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     });
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-      if (session) setUser(null);
     });
   }, []);
 
@@ -54,12 +49,8 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         });
   }, [authSession]);
 
-  console.log(user);
-
-  const removeUser = () => setUser(null);
-
   return (
-    <AuthContext.Provider value={{ session: authSession, user, removeUser }}>
+    <AuthContext.Provider value={{ session: authSession }}>
       {children}
     </AuthContext.Provider>
   );

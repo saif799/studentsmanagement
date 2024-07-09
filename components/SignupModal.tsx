@@ -52,7 +52,6 @@ export function SignupModal() {
         .eq("id", session?.user.id)
         .single();
       if (error && status !== 406) {
-        console.log(error);
         Alert.alert(error.message);
         throw error;
       }
@@ -336,7 +335,6 @@ export function ParentSignupModal() {
         .eq("id", session?.user.id)
         .single();
       if (error && status !== 406) {
-        console.log(error);
         Alert.alert(error.message);
         throw error;
       }
@@ -484,7 +482,6 @@ export function AdminSignupModal() {
         .eq("id", session?.user.id)
         .single();
       if (error && status !== 406) {
-        console.log(error);
         Alert.alert(error.message);
         throw error;
       }

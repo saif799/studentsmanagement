@@ -3,12 +3,14 @@ import { ImageBackground, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Redirect } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
-import { useSession } from "@/context/authProvider";
+import { useUser } from "@/context/useUser";
 
 export default function ParentSginIn() {
-  const { session } = useSession();
+  const { user } = useUser();
 
-  if (session) return <Redirect href="/parent/(tabs)" />;
+  if (user && user.role === "parent") return <Redirect href="/parent/(tabs)" />;
+  if (user && user.role !== "parent") return <Redirect href="/" />;
+
   return (
     <SafeAreaView className="h-fullbg-white ">
       <ScrollView automaticallyAdjustKeyboardInsets={true}>

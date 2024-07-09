@@ -33,8 +33,6 @@ export default function Chat() {
   }
 
   if (isError) {
-    console.log(isError);
-
     return <ErrorComp />;
   }
 

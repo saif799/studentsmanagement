@@ -32,7 +32,6 @@ export default function Myabsences() {
         .eq("id", session?.user.id)
         .single();
       if (error && status !== 406) {
-        console.log(error);
         Alert.alert(error.message);
         throw error;
       }

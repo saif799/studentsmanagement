@@ -34,7 +34,6 @@ export default function SignUpAuth({
   async function signUpWithEmail() {
     setLoading(true);
 
-    console.log("username ", userName, "role ", role, email, password);
     const {
       data: { session },
       error,

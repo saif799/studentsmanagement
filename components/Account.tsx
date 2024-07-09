@@ -14,7 +14,7 @@ import Avatar from "@/components/Avatar";
 import { queryClient } from "@/app/_layout";
 import { LoadingAnimationComp } from "./LoadingComp";
 import { useCurrentChild } from "@/context/currentChild";
-import { useSession } from "@/context/authProvider";
+import { useUser } from "@/context/useUser";
 
 export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
@@ -27,9 +27,7 @@ export default function Account({ session }: { session: Session }) {
   const [level, setlevel] = useState("");
   const [Class, setClass] = useState("");
 
-  const { removeUser } = useSession();
-
-  const { change: setCurrentChild } = useCurrentChild();
+  const { setUser } = useUser();
 
   useEffect(() => {
     if (session) getProfile();
@@ -48,7 +46,6 @@ export default function Account({ session }: { session: Session }) {
         .eq("id", session?.user.id)
         .single();
       if (error && status !== 406) {
-        console.log(error);
         Alert.alert(error.message);
         throw error;
       }
@@ -139,7 +136,7 @@ export default function Account({ session }: { session: Session }) {
     <ScrollView
       automaticallyAdjustKeyboardInsets={true}
       style={styles.container}
-      className="bg-white h-[85%] overflow-visible"
+      className="bg-white h-full overflow-visible"
     >
       <View className="items-center ">
         <Text className=" font-pmedium text-darkestGray text-xl pb-5">
@@ -284,8 +281,7 @@ export default function Account({ session }: { session: Session }) {
           onPress={() => {
             supabase.auth.signOut();
             queryClient.clear();
-            removeUser();
-            setCurrentChild(null);
+            setUser(null);
           }}
           className="w-[45vw] py-4 justify-center items-center border-[1px] border-red-500 bg-white rounded-lg"
         >

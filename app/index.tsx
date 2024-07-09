@@ -3,26 +3,29 @@ import { ReactNode, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Redirect } from "expo-router";
 import { useSession } from "@/context/authProvider";
+import { useUser } from "@/context/useUser";
 import { LoadingAnimationComp } from "@/components/LoadingComp";
 const App = () => {
-  const { session, user } = useSession();
+  const { session } = useSession();
+  const { user, setUser } = useUser();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!session) setUser(null);
     if (session !== undefined) {
       setIsLoading(false);
     }
   }, [session]);
 
-  if (isLoading) {
-    return (
-      <LoadingAnimationComp />
-    );
-  }
-  if (user && user.role === "student")
+  if (session && user && user.role === "student")
     return <Redirect href="/student/(tabs)" />;
-  if (user && user.role === "admin") return <Redirect href="/admin/(tabs)" />;
-  if (user && user.role === "parent") return <Redirect href="/parent/(tabs)" />;
+  if (session && user && user.role === "admin")
+    return <Redirect href="/admin/(tabs)" />;
+  if (session && user && user.role === "parent")
+    return <Redirect href="/parent/(tabs)" />;
+  if (isLoading) {
+    return <LoadingAnimationComp />;
+  }
 
   return (
     <SafeAreaView className="bg-white">

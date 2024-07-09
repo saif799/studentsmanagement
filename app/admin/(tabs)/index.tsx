@@ -20,14 +20,14 @@ import {
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
-import { useSession } from "@/context/authProvider";
 import { Redirect } from "expo-router";
+import { useUser } from "@/context/useUser";
 export default function HomeScreen() {
   const pathFrom = "admin";
   const iconSize = 45;
   const strokeWidth = 1.4;
 
-  const { user } = useSession();
+  const { user } = useUser();
   if (user && user!.role !== "admin") {
     ToastAndroid.show(
       "Vous n'avez pas accès à cette partie, Redirection en course...",

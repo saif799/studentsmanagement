@@ -5,11 +5,23 @@ import { useSession } from "@/context/authProvider";
 import { HomeIcon, UserCircle2 } from "lucide-react-native";
 import TabIcon from "@/components/TabIcon";
 import { Header } from ".";
+import { useUser } from "@/context/useUser";
+import { ToastAndroid } from "react-native";
 
 export default function TabLayout() {
-  const Auth = useSession();
-
-  if (!Auth.session) return <Redirect href="/adminSignin" />;
+  const { session } = useSession();
+  const { user } = useUser();
+  if (!session) {
+    ToastAndroid.show(
+      "Vous n'avez pas accès à cette partie, Redirection en course...",
+      ToastAndroid.SHORT
+    );
+    return <Redirect href="/" />;
+  }
+  if (!user || user!.role === "parent")
+    return <Redirect href="/parent/(tabs)" />;
+  if (!user || user!.role === "student")
+    return <Redirect href="/student/(tabs)" />;
 
   return (
     <>

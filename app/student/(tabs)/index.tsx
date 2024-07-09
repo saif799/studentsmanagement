@@ -20,19 +20,9 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
 import { SignupModal } from "@/components/SignupModal";
-import { useSignupModal } from "@/context/useSignupModal";
-import { useSession } from "@/context/authProvider";
-import { Redirect } from "expo-router";
 
 export default function HomeScreen() {
-  const { user } = useSession();
-
-  if (user && user.role !== "student") {
-    ToastAndroid.show("Vous n'avez pas accès à cette partie, Redirection en course...",ToastAndroid.SHORT)
-    return <Redirect href="/" />};
-
   const iconSize = 45;
-  const { isOpen } = useSignupModal();
 
   const strokeWidth = 1.3;
   return (
