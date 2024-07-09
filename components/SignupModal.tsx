@@ -52,7 +52,6 @@ export function SignupModal() {
         .eq("id", session?.user.id)
         .single();
       if (error && status !== 406) {
-        console.log(error);
         Alert.alert(error.message);
         throw error;
       }
@@ -137,7 +136,6 @@ export function SignupModal() {
   }));
   const disbaled = (UserFamilyName.length < 3 || selectedSchool?.id.length === 0) ?? loading;
 
-  console.log(selectedSchool);
 
   return (
     <Modal
@@ -337,7 +335,6 @@ export function ParentSignupModal() {
         .eq("id", session?.user.id)
         .single();
       if (error && status !== 406) {
-        console.log(error);
         Alert.alert(error.message);
         throw error;
       }
@@ -485,7 +482,6 @@ export function AdminSignupModal() {
         .eq("id", session?.user.id)
         .single();
       if (error && status !== 406) {
-        console.log(error);
         Alert.alert(error.message);
         throw error;
       }

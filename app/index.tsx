@@ -1,15 +1,23 @@
 import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Redirect } from "expo-router";
 import { useSession } from "@/context/authProvider";
+import { useUser } from "@/context/useUser";
 const App = () => {
-  const { session, user } = useSession();
+  const { session } = useSession();
+  const { user, setUser } = useUser();
 
-  if (user && user.role === "student")
+  useEffect(() => {
+    if (!session) setUser(null);
+  }, [session]);
+
+  if (session && user && user.role === "student")
     return <Redirect href="/student/(tabs)" />;
-  if (user && user.role === "admin") return <Redirect href="/admin/(tabs)" />;
-  if (user && user.role === "parent") return <Redirect href="/parent/(tabs)" />;
+  if (session && user && user.role === "admin")
+    return <Redirect href="/admin/(tabs)" />;
+  if (session && user && user.role === "parent")
+    return <Redirect href="/parent/(tabs)" />;
 
   return (
     <SafeAreaView className="bg-white">

@@ -24,13 +24,9 @@ import { useSession } from "@/context/authProvider";
 import { Redirect } from "expo-router";
 
 export default function HomeScreen() {
-  const { user } = useSession();
-
-  if (user && user.role !== "student") return <Redirect href="/" />;
-
+  
   const iconSize = 45;
   const { isOpen } = useSignupModal();
-  console.log(isOpen);
 
   const strokeWidth = 1.3;
   return (

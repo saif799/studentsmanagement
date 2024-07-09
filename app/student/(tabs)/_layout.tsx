@@ -4,11 +4,16 @@ import { useSession } from "@/context/authProvider";
 import { CreditCardIcon, HomeIcon, UserCircle2 } from "lucide-react-native";
 import TabIcon from "@/components/TabIcon";
 import { Header } from ".";
+import { useUser } from "@/context/useUser";
 
 export default function TabLayout() {
-  const Auth = useSession();
+  const { session } = useSession();
+  const { user } = useUser();
 
-  if (!Auth.session) return <Redirect href="/signin" />;
+  if (!session) return <Redirect href="/" />;
+  if (user && user.role === "parent") return <Redirect href="/parent/(tabs)" />;
+  if (user && user.role === "admin") return <Redirect href="/admin/(tabs)" />;
+
   return (
     <>
       <Header />
@@ -76,7 +81,6 @@ export default function TabLayout() {
             ),
           }}
         />
-        
       </Tabs>
     </>
   );

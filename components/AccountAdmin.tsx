@@ -13,17 +13,14 @@ import { Session } from "@supabase/supabase-js";
 import Avatar from "@/components/Avatar";
 import { queryClient } from "@/app/_layout";
 import { LoadingAnimationComp } from "./LoadingComp";
-import { useCurrentChild } from "@/context/currentChild";
-import { useSession } from "@/context/authProvider";
+import { useUser } from "@/context/useUser";
 
 export default function AccountAdmin({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
   const [UserTown, setUserTown] = useState("");
-  const { removeUser } = useSession();
-
-  const { change: setCurrentChild } = useCurrentChild();
+  const { setUser } = useUser();
 
   useEffect(() => {
     if (session) getProfile();
@@ -40,7 +37,6 @@ export default function AccountAdmin({ session }: { session: Session }) {
         .eq("id", session?.user.id)
         .single();
       if (error && status !== 406) {
-        console.log(error);
         Alert.alert(error.message);
         throw error;
       }
@@ -175,9 +171,8 @@ export default function AccountAdmin({ session }: { session: Session }) {
           disabled={loading}
           onPress={() => {
             supabase.auth.signOut();
-            queryClient.clear();
-            removeUser();
-            setCurrentChild(null);
+            // queryClient.clear();
+            // setUser(null);
           }}
           className="w-[45vw] py-4 justify-center items-center border-[1px] border-red-500 bg-white rounded-lg"
         >

@@ -19,15 +19,11 @@ import {
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
-import { useSession } from "@/context/authProvider";
-import { Redirect } from "expo-router";
 export default function HomeScreen() {
   const pathFrom = "admin";
   const iconSize = 45;
   const strokeWidth = 1.4;
 
-  const { user } = useSession();
-  if (user!.role !== "admin") return <Redirect href="/" />;
   return (
     <SafeAreaView className="bg-white">
       <ScrollView className="bg-white">

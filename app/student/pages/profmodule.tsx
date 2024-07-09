@@ -26,7 +26,6 @@ export default function SchoolRules() {
         path = data?.path;
         downloadImage(path, setImage);
       }
-      console.log(data);
 
       return path;
     },
