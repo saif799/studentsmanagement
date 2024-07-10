@@ -136,7 +136,7 @@ export default function Account({ session }: { session: Session }) {
     <ScrollView
       automaticallyAdjustKeyboardInsets={true}
       style={styles.container}
-      className="bg-white h-full overflow-visible"
+      className="bg-white overflow-visible h-5/6"
     >
       <View className="items-center ">
         <Text className=" font-pmedium text-darkestGray text-xl pb-5">

@@ -1,9 +1,7 @@
 import { ReactNode, useState } from "react";
 import {
-  View,
   Alert,
   TouchableOpacity,
-  Text,
   StyleProp,
   ViewStyle,
 } from "react-native";

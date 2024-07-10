@@ -29,9 +29,6 @@ export function SignupModal() {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [UserFamilyName, setUserFamilyName] = useState("");
-  const [selectedSchool, setSelectedSchool] = useState<
-    { title: string; id: string } | undefined
-  >({title : "", id : ""});
   const [UserTown, setUserTown] = useState("");
   const [birthDate, setbirthDate] = useState("");
   const [level, setlevel] = useState("");
@@ -77,11 +74,9 @@ export function SignupModal() {
     username,
     familyName,
     city,
-    school,
   }: {
     username: string;
     familyName: string;
-    school: string;
     level: string;
     city: string;
     Class: string;
@@ -99,7 +94,6 @@ export function SignupModal() {
         birthDate,
         level,
         city,
-        school: school,
         updated_at: new Date(),
       };
 
@@ -134,7 +128,7 @@ export function SignupModal() {
     title: s.username,
     id: s.id,
   }));
-  const disbaled = (UserFamilyName.length < 3 || selectedSchool?.id.length === 0) ?? loading;
+  const disbaled = (UserFamilyName.length < 3 ) ?? loading;
 
 
   return (
@@ -180,51 +174,7 @@ export function SignupModal() {
             </View>
           </View>
         </View>
-        <View className=" w-full  pt-[3%] rounded-xl">
-          <Text className="pl-2 font-pmedium pb-2 text-base">Votre école</Text>
-          <SelectDropdown
-            data={displaySchools}
-            onSelect={(selectedItem, index) => {
-              setSelectedSchool(selectedItem);
-            }}
-            search
-            renderSearchInputLeftIcon={() => <Search color="gray" />}
-            searchInputStyle={{ backgroundColor: "white" }}
-            searchInputTxtStyle={{ fontSize: 18, fontWeight: "500" }}
-            searchPlaceHolder="Tapez le nom d'école ici"
-            renderButton={(selectedItem, isOpened) => {
-              return (
-                <View style={styles.dropdownButtonStyle}>
-                  <Text
-                    className={`${
-                      selectedItem && selectedItem.title
-                        ? "font-pregular"
-                        : "font-plight"
-                    } text-base w-full`}
-                  >
-                    {(selectedItem && selectedItem.title) ||
-                      "- Selectionner votre école -"}
-                  </Text>
-                  <ChevronDown className="text-darkestGray" strokeWidth={1.5} />
-                </View>
-              );
-            }}
-            renderItem={(item, index, isSelected) => {
-              return (
-                <View
-                  style={{
-                    ...styles.dropdownItemStyle,
-                    ...(isSelected && { backgroundColor: "lightgray" }),
-                  }}
-                >
-                  <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
-                </View>
-              );
-            }}
-            showsVerticalScrollIndicator={true}
-            dropdownStyle={styles.dropdownMenuStyle}
-          />
-        </View>
+        
         <View className="flex-row justify-between pt-6">
           <View>
             <Text className="pl-2 font-pmedium pb-2 text-base">
@@ -293,7 +243,6 @@ export function SignupModal() {
                 Class,
                 city: UserTown,
                 level,
-                school: selectedSchool!.id,
               })
             }
             className={`py-4 w-[45vw] justify-center items-center rounded-lg ${
@@ -645,52 +594,5 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 40,
     padding: 12,
-  },
-  verticallySpaced: {
-    paddingTop: 4,
-    paddingBottom: 4,
-    alignSelf: "stretch",
-  },
-  mt20: {
-    marginTop: 20,
-  },
-  qrstyle: {
-    marginTop: 5,
-    alignSelf: "center",
-  },
-  dropdownButtonStyle: {
-    width: "auto",
-    height: 55,
-    backgroundColor: "white",
-    borderRadius: 8,
-    borderColor: "lightgray",
-    borderWidth: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 25,
-  },
-
-  dropdownMenuStyle: {
-    backgroundColor: "#white",
-    borderRadius: 8,
-  },
-  dropdownItemStyle: {
-    width: "100%",
-    height: 50,
-    flexDirection: "row",
-    paddingHorizontal: 15,
-    alignItems: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: "lightgray",
-    backgroundColor: "white",
-    textAlign: "left",
-  },
-  dropdownItemTxtStyle: {
-    flex: 1,
-    fontSize: 18,
-    fontWeight: "500",
-    color: "#151E26",
-    textAlign: "left",
   },
 });

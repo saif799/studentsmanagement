@@ -8,7 +8,7 @@ async function fetchSummons(userId: string | undefined) {
     .from("summons")
     .select("created_at,id, content , sent_to")
     .eq('profile_id',userId)
-    .order("created_at", { ascending: true });
+    .order("created_at", { ascending: false });
 
   let messages: {
     id: string;

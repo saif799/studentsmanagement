@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import BlankComp from "@/components/blankComp";
 import { useQuery } from "@tanstack/react-query";
-import { Image, Text, View } from "react-native";
-
+import { Image, Pressable, Text, View } from "react-native";
+import ImageView from "react-native-image-viewing";
 import { supabase } from "@/lib/supabase";
 import LoadingComp from "@/components/LoadingComp";
 import { downloadImage } from "@/lib/downloadImage";
@@ -10,6 +9,8 @@ import ErrorComp from "@/components/ErrorComp";
 
 export default function Planning() {
   const [image, setImage] = useState("");
+  const [visible, setIsVisible] = useState(false);
+
   const { data, isPending, isError } = useQuery({
     queryKey: ["planning"],
     queryFn: async () => {
@@ -46,14 +47,23 @@ export default function Planning() {
         <LoadingComp />
       ) : (
         <>
-          <View className="bg-white rounded-lg overflow-hidden h-[60vh] w-[80%] items-center justify-center border border-disabledGray">
+          <Pressable
+            onPress={() => setIsVisible(true)}
+            className="bg-white rounded-lg overflow-hidden h-[60vh] w-[80%] items-center justify-center border border-disabledGray"
+          >
             <Image
               className={`w-full h-full`}
               source={{ uri: image }}
               accessibilityLabel="planning table"
-              resizeMode="contain"
+              resizeMode="contain"/>
+
+            <ImageView
+              images={[{ uri: image }]}
+              imageIndex={0}
+              visible={visible}
+              onRequestClose={() => setIsVisible(false)}
             />
-          </View>
+          </Pressable>
         </>
       )}
     </View>
