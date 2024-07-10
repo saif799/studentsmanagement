@@ -13,6 +13,7 @@ import {
   CalendarDays,
   ClipboardCheck,
   ClipboardList,
+  ClipboardX,
   MailIcon,
   MessageSquareText,
   Scale,
@@ -65,22 +66,24 @@ export default function HomeScreen() {
           >
             <FeatureCard
               from={pathFrom}
-              pathTo="uploadExams"
-              title="Publier calendrier des examens"
+              pathTo="adminJustifcation"
+              title="justfication"
               icon={
-                <CalendarDays
+                <ClipboardCheck
                   size={iconSize}
                   strokeWidth={strokeWidth}
-                  className=" text-primary "
+                  className=" text-primary"
                 />
               }
+              description="Vérifier les justifications"
             />
+
             <FeatureCard
               from={pathFrom}
               pathTo="presence"
               title="les absences"
               icon={
-                <ClipboardCheck
+                <ClipboardX
                   size={iconSize}
                   strokeWidth={strokeWidth}
                   className=" text-primary"
@@ -137,6 +140,23 @@ export default function HomeScreen() {
               }
               description="Contacter les parent en écrivant une note"
             />
+            <FeatureCard
+              from={pathFrom}
+              pathTo="uploadExams"
+              title="Publier calendrier des examens"
+              icon={
+                <CalendarDays
+                  size={iconSize}
+                  strokeWidth={strokeWidth}
+                  className=" text-primary "
+                />
+              }
+            />
+          </View>
+          <View
+            className="flex-row justify-between bg-white"
+            style={styles.Card}
+          >
             <FeatureCard
               from={pathFrom}
               pathTo="summonsmanager"

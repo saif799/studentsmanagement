@@ -28,7 +28,6 @@ type PresenceType = {
     id: string;
   }[];
 }[];
-
 const Presence = () => {
   const date = new Date();
 
@@ -68,6 +67,7 @@ function PresenceTable() {
       .from("profiles")
       .select("id,username,familyName,presence(state,id)")
       .eq("presence.created_at", new Date().toISOString().split("T")[0])
+      .eq("role", "student")
       .then(({ data }) => {
         if (data) {
           const db: PresenceType = data;
@@ -79,7 +79,6 @@ function PresenceTable() {
 
   if (loading) {
     return <LoadingAnimationComp />;
-
   }
 
   function editPresence(id: string, direction: string) {
@@ -164,7 +163,7 @@ function PresenceTable() {
     }, 300);
   };
   return (
-    <View className="w-full pt-3 h-[75vh]">
+    <View className="w-full pt-3 h-[80vh]">
       <View className="w-full flex-row justify-between px-2">
         <Text className="text-lg font-pmedium text-disabledGray pb-2">
           Nom et Prénom

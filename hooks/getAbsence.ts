@@ -39,6 +39,27 @@ async function fetchJustification() {
   if (data) justification = data;
   return justification;
 }
+async function fetchUnAcceptedJustification() {
+  // const setCurrentCHild = useCurrentChild((state) => state.change);
+
+  const { data } = await supabase
+    .from("justification")
+    .select("created_at, id, accepted, file_path, absence_Id")
+    .eq("accepted", false)
+    .order("created_at", { ascending: true });
+
+  let justification: {
+    id: string;
+    created_at: string;
+    accepted: boolean;
+    file_path: string;
+    absence_Id: string;
+  }[] = [];
+
+  if (data) justification = data;
+
+  return justification;
+}
 
 // TODO : maybe update the query so that it joins with the justification table so the parent know if he already sent one or not
 export const getAbsence = (userId: string | undefined) =>
@@ -51,4 +72,10 @@ export const getJustification = () =>
   useQuery({
     queryKey: ["justification"],
     queryFn: async () => await fetchJustification(),
+  });
+
+export const getUnaAcceptedJustification = () =>
+  useQuery({
+    queryKey: ["admin_justification"],
+    queryFn: async () => await fetchUnAcceptedJustification(),
   });

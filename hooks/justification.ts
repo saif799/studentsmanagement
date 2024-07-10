@@ -12,3 +12,23 @@ export const useJustification = () =>
     }) =>
       await supabase.from("justification").insert({ absence_Id, file_path }),
   });
+
+export const useAcceptJustification = () =>
+  useMutation({
+    mutationFn: async ({
+      id,
+      presenceId,
+    }: {
+      id: string;
+      presenceId: string;
+    }) => {
+      await supabase
+        .from("justification")
+        .update({ accepted: true })
+        .eq("id", id);
+      await supabase
+        .from("presence")
+        .update({ state: "present" })
+        .eq("id", presenceId);
+    },
+  });

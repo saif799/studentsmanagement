@@ -6,6 +6,7 @@ import { UploadContent } from "@/components/uploadContent";
 import { useJustification } from "@/hooks/justification";
 import { queryClient } from "@/app/_layout";
 import LoadingComp from "@/components/LoadingComp";
+import ErrorComp from "@/components/ErrorComp";
 export default function Justification() {
   const { currentChild } = useCurrentChild();
 
@@ -15,11 +16,15 @@ export default function Justification() {
   // or maybe make it so that if there is no child we just get the first child data like we did in the main page for the selct component
 
   const { data: absences, isPending, isError } = getAbsence(currentChild.id);
+  console.log(currentChild.id);
+
   const { mutate: justify } = useJustification();
 
   // TODO : handle the is loading and error UI
 
-  if (isPending || !absences) return <LoadingComp />;
+  if (isPending) return <LoadingComp />;
+
+  if (isError) return <ErrorComp />;
 
   return (
     <>
@@ -43,13 +48,7 @@ export default function Justification() {
               .map((e) => (
                 <View
                   key={e.id}
-                  className={`w-full border border-grayBorder rounded-lg  py-1 pt-3 px-3 text-center mb-2 ${
-                    e.justification && e.justification.length
-                      ? e.justification[0].accepted
-                        ? "bg-green-300"
-                        : "bg-yellow-100"
-                      : ""
-                  }`}
+                  className={`w-full border border-grayBorder rounded-lg  py-1 pt-3 px-3 text-center mb-2`}
                 >
                   <UploadContent
                     key={e.id}
@@ -81,29 +80,33 @@ export default function Justification() {
               en attente de justification
             </Text>
             {absences.filter(
-              (e) => e.justification.length && e.justification[0].accepted
-            ).length > 0 ? absences
-              .filter(
-                (e) => e.justification.length && !e.justification[0].accepted
-              )
-              .map((e) => (
-                <View
-                  key={e.id}
-                  className={`w-full border border-grayBorder rounded-lg items-center  py-1 pt-3 px-3 text-center mb-2 ${
-                    e.justification && e.justification.length
-                      ? e.justification[0].accepted
-                        ? "bg-green-300"
-                        : "bg-yellow-100"
-                      : ""
-                  }`}
-                >
-                  <Text className="text-lg font-pmedium text-darkestGray pb-2">
-                    {e.created_at}
-                  </Text>
-                </View>
-              )) : <Text className="text-lg font-pregular text-disabledGray pl-2  pb-2">
-              il n'y a pas
-            </Text>}
+              (e) => e.justification.length && !e.justification[0].accepted
+            ).length > 0 ? (
+              absences
+                .filter(
+                  (e) => e.justification.length && !e.justification[0].accepted
+                )
+                .map((e) => (
+                  <View
+                    key={e.id}
+                    className={`w-full border border-grayBorder rounded-lg items-center  py-1 pt-3 px-3 text-center mb-2 ${
+                      e.justification && e.justification.length
+                        ? e.justification[0].accepted
+                          ? "bg-green-300"
+                          : "bg-yellow-100"
+                        : ""
+                    }`}
+                  >
+                    <Text className="text-lg font-pmedium text-darkestGray pb-2">
+                      {e.created_at}
+                    </Text>
+                  </View>
+                ))
+            ) : (
+              <Text className="text-lg font-pregular text-disabledGray pl-2  pb-2">
+                il n'y a pas
+              </Text>
+            )}
             <Text className="font-pregular text-xl pb-3 pl-2 pt-1">
               justifié
             </Text>

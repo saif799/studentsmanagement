@@ -49,7 +49,9 @@ const Matier = () => {
           accessibilityLabel="planning table"
           resizeMode="contain"
         />
-      ) : isPending ? <LoadingComp /> :(
+      ) : isPending ? (
+        <LoadingComp />
+      ) : (
         <BlankComp />
       )}
       <View className=" flex-1 justify-center ">
