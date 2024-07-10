@@ -4,7 +4,6 @@ import {
   View,
   ScrollView,
   ImageBackground,
-  ToastAndroid,
 } from "react-native";
 
 import { FeatureCard } from "@/components/FeatureCard";
@@ -13,6 +12,7 @@ import {
   CalendarDays,
   ClipboardCheck,
   ClipboardList,
+  List,
   MailIcon,
   MessageSquareText,
   Scale,
@@ -20,8 +20,7 @@ import {
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
-import { Redirect } from "expo-router";
-import { useUser } from "@/context/useUser";
+
 export default function HomeScreen() {
   const pathFrom = "admin";
   const iconSize = 45;
@@ -32,6 +31,24 @@ export default function HomeScreen() {
       <ScrollView className="bg-white">
         <HeroSec />
         <View className="gap-3 mt-1 px-2 pb-[14vh]">
+        <View
+            className="flex-row  justify-between bg-white"
+            style={styles.Card}
+          >
+            <FeatureCard
+              from={pathFrom}
+              pathTo="studentmanager"
+              title="Gestion des élèves"
+              description="Consultez la liste des élèves et en ajoutez de nouveux"
+              icon={
+                <List
+                  size={iconSize}
+                  strokeWidth={strokeWidth}
+                  className=" text-primary"
+                />
+              }
+            />
+          </View>
           <View
             className="flex-row  justify-between bg-white"
             style={styles.Card}

@@ -185,46 +185,55 @@ function PresenceTable() {
         </Text>
         <Text className="text-lg font-pmedium text-disabledGray">état</Text>
       </View>
-      <ScrollView className="mb-[9vh]">
-        <GestureHandlerRootView style={styles.scrollTable}>
-          {dbStudents?.map((stu) => (
-            <Swipeable
-              ref={swipeableRef}
-              friction={1}
-              leftThreshold={20}
-              rightThreshold={20}
-              renderLeftActions={() => renderLeftActions()}
-              renderRightActions={() => renderRightActions()}
-              onSwipeableWillOpen={(direction) =>
-                editPresence(stu.id, direction)
-              }
-              key={stu.id}
-            >
-              <View
-                className={`w-full rounded-lg py-3 px-3 flex-row justify-between items-center ${
-                  stu.presence.length === 0
-                    ? "bg-[#efefef]"
-                    : stu.presence[0].state === "absent"
-                    ? "bg-[#fedddd]"
-                    : "bg-[#e9fdec]"
-                }`}
+      <GestureHandlerRootView style={styles.scrollTable}>
+        {dbStudents?.length !== 0 ? (
+          <ScrollView className="mb-[9vh]">
+            {dbStudents?.map((stu) => (
+              <Swipeable
+                ref={swipeableRef}
+                friction={1}
+                leftThreshold={20}
+                rightThreshold={20}
+                renderLeftActions={() => renderLeftActions()}
+                renderRightActions={() => renderRightActions()}
+                onSwipeableWillOpen={(direction) =>
+                  editPresence(stu.id, direction)
+                }
                 key={stu.id}
               >
-                <Text className={`text-base font-pregular text-darkestGray`}>
-                  {stu.familyName} {stu.username}
-                </Text>
-                {stu.presence.length === 0 ? (
-                  <Minus size={20} color={"#263238"} />
-                ) : stu.presence[0].state === "absent" ? (
-                  <X color={"red"} />
-                ) : (
-                  <Check color={"#16A34A"} />
-                )}
-              </View>
-            </Swipeable>
-          ))}
-        </GestureHandlerRootView>
-      </ScrollView>
+                <View
+                  className={`w-full rounded-lg py-3 px-3 flex-row justify-between items-center ${
+                    stu.presence.length === 0
+                      ? "bg-[#efefef]"
+                      : stu.presence[0].state === "absent"
+                      ? "bg-[#fedddd]"
+                      : "bg-[#e9fdec]"
+                  }`}
+                  key={stu.id}
+                >
+                  <Text className={`text-base font-pregular text-darkestGray`}>
+                    {stu.familyName} {stu.username}
+                  </Text>
+                  {stu.presence.length === 0 ? (
+                    <Minus size={20} color={"#263238"} />
+                  ) : stu.presence[0].state === "absent" ? (
+                    <X color={"red"} />
+                  ) : (
+                    <Check color={"#16A34A"} />
+                  )}
+                </View>
+              </Swipeable>
+            ))}
+          </ScrollView>
+        ) : (
+          <View className="grow items-center justify-center">
+            <Text className="text-disabledGray font-pregular text-lg">
+              L'école n'a pas des étudiants
+            </Text>
+          </View>
+        )}
+      </GestureHandlerRootView>
+
       <View className="items-center flex-1 justify-center">
         <Modal
           animationType="slide"
