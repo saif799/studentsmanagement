@@ -7,7 +7,6 @@ import { downloadImage } from "@/lib/downloadImage";
 import LoadingComp from "@/components/LoadingComp";
 import { UploadContent } from "@/components/uploadContent";
 import { UploadExamPlanning } from "@/hooks/UploadStuff";
-import { Loader2 } from "lucide-react-native";
 
 const uploadExams = () => {
   const [image, setImage] = useState("");

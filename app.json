@@ -2,7 +2,7 @@
   "expo": {
     "name": "Morassalaty",
     "slug": "studentsmanagement",
-    "version": "1.0.0",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "students-management",
@@ -15,7 +15,7 @@
     
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon.png",
+        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.saiiiforg.studentsmanagement",

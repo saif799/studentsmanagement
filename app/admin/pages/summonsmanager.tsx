@@ -21,7 +21,7 @@ import { ChevronDown, MessageSquarePlus, Search } from "lucide-react-native";
 import { supabase } from "@/lib/supabase";
 import { getSummons } from "@/hooks/getSummons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-export default function NotesManager() {
+export default function SummonsManager() {
   const queryClient = useQueryClient();
   const { session } = useSession();
   const [modalVisible, setModalVisible] = useState(false);

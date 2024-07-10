@@ -50,7 +50,7 @@ export default function HomeScreen() {
             />
             <FeatureCard
               from={pathFrom}
-              pathTo="notes"
+              pathTo="gradesmanager"
               title="Publier les relevé de notes"
               icon={
                 <TablePropertiesIcon
