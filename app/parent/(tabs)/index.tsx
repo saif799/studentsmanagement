@@ -12,6 +12,7 @@ import {
   ClipboardCheck,
   MailIcon,
   MessageSquareText,
+  TablePropertiesIcon,
 } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "react-native";
@@ -99,6 +100,26 @@ export default function HomeScreen() {
                 }
                 description="Consulter les vos convocation"
               />
+            </View>
+            <View
+              className="flex-row  justify-between bg-white"
+              style={styles.Card}
+            >
+              <FeatureCard
+                from="parent"
+                pathTo="grades"
+                title="Relevé de notes"
+                icon={
+                  <TablePropertiesIcon
+
+                    size={iconSize}
+                    strokeWidth={strokeWidth}
+                    className=" text-primary"
+                  />
+                }
+                description="Consultez les notes de votre enfant."
+              />
+              
             </View>
           </View>
         ) : null}

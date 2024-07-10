@@ -34,7 +34,7 @@ const GradesManager = () => {
 
   setTimeout(() => {
     setisPending(false);
-  }, 1000);
+  }, 500);
 
   if (isErrorStudents) return <ErrorComp />;
   // TODO : handle the loading and error UI
