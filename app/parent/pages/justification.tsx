@@ -16,7 +16,6 @@ export default function Justification() {
   // or maybe make it so that if there is no child we just get the first child data like we did in the main page for the selct component
 
   const { data: absences, isPending, isError } = getAbsence(currentChild.id);
-  console.log(currentChild.id);
 
   const { mutate: justify } = useJustification();
 
