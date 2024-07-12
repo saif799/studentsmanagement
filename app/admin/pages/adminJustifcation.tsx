@@ -2,9 +2,9 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Alert,
   ToastAndroid,
   Modal,
+  Pressable,
   Image,
 } from "react-native";
 import React, { useState } from "react";
@@ -15,8 +15,12 @@ import { downloadImage } from "@/lib/downloadImage";
 import ErrorComp from "@/components/ErrorComp";
 import { X } from "lucide-react-native";
 import { queryClient } from "@/app/_layout";
+import { useSession } from "@/context/authProvider";
+import ImageView from "react-native-image-viewing/dist/ImageViewing";
 export default function Justification() {
+  const { session } = useSession();
   const [image, setImage] = useState<string | null>(null);
+
   const [selected, setSelected] = useState<{
     id: string;
     absence_Id: string;
@@ -28,7 +32,8 @@ export default function Justification() {
     isPending,
     isError,
     error,
-  } = getUnaAcceptedJustification();
+  } = getUnaAcceptedJustification(session!.user.id);
+  console.log(session!.user.id);
 
   const {
     mutate: justify,
@@ -66,12 +71,12 @@ export default function Justification() {
           queryClient.invalidateQueries({
             queryKey: ["admin_justification"],
           });
-          ToastAndroid.show("justified successfully", ToastAndroid.SHORT);
+          ToastAndroid.show("Absence Justifié", ToastAndroid.SHORT);
 
           setIsOpen(false);
         },
         onError: () =>
-          ToastAndroid.show("justificaiton failed", ToastAndroid.SHORT),
+          ToastAndroid.show("justificaiton échoué", ToastAndroid.SHORT),
       }
     );
   };
@@ -80,34 +85,56 @@ export default function Justification() {
   return (
     <>
       <View className="flex-1 bg-white items-center px-4 pt-4">
-        <View className="w-full  justify-between px-2 items-center pb-4">
-          {justification.map((e) => (
-            <View
-              key={e.id}
-              className={` w-full border border-grayBorder rounded-lg  py-1 pt-3 px-3 text-center mb-2 ${
-                isJustifying ?? "opacity-80"
-              }`}
-            >
-              <Text className="text-lg font-pmedium text-darkestGray pb-2">
-                {e.created_at.slice(0, 10)}
-              </Text>
-              <TouchableOpacity
-                disabled={isJustifying}
-                onPress={() => {
-                  verifier({
-                    file_path: e.file_path,
-                    id: e.id,
-                    absence_Id: e.absence_Id,
-                  });
-                }}
-                className="text-lg font-pmedium text-primary pb-2"
+        <View className="w-full h-full  justify-between px-2 items-center pb-4">
+          {justification.length !== 0 ? (
+            justification.map((e) => (
+              <View
+                key={e.id}
+                className={` w-full border border-grayBorder rounded-lg  py-1 pt-3 px-3 text-center mb-2 ${
+                  isJustifying ?? "opacity-80"
+                }`}
               >
-                <Text className=" text-primary text-lg font-pmedium">
-                  vérifier
+                <View className="flex-row justify-between">
+                  <Text className="text-lg font-pregular text-darkestGray pb-2">
+                    {e.presence.profiles.username}
+                    {e.presence.profiles.familyName ?? ""}
+                  </Text>
+                  <Text className="text-lg font-pmedium text-darkestGray pb-2">
+                    {" "}
+                    {e.created_at.slice(0, 10)}{" "}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  disabled={isJustifying}
+                  onPress={() => {
+                    verifier({
+                      file_path: e.file_path,
+                      id: e.id,
+                      absence_Id: e.absence_Id,
+                    });
+                  }}
+                  className="text-lg font-pmedium text-primary pb-2"
+                >
+                  <Text className=" text-primary text-lg font-pmedium">
+                    vérifier
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ))
+          ) : (
+            <>
+              <View className="w-full flex-1 items-center pt-[25%] bg-white">
+                <Image
+                  source={require("@/assets/images/no-absences.png")}
+                  resizeMode="contain"
+                  className="w-full h-1/2 border"
+                />
+                <Text className="font-pregular text-xl text-center text-disabledGray pt-4">
+                  Il n'y a pas des justifications en attente
                 </Text>
-              </TouchableOpacity>
-            </View>
-          ))}
+              </View>
+            </>
+          )}
         </View>
       </View>
 
@@ -138,6 +165,8 @@ function JustificationModal({
   justify: () => void;
   closeModal: () => void;
 }) {
+  const [visible, setIsVisible] = useState(false);
+
   return (
     <Modal
       animationType="slide"
@@ -146,7 +175,7 @@ function JustificationModal({
       className=" items-center justify-center h-full flex-1 px-4"
       onRequestClose={() => closeModal()}
     >
-      <View className="w-full bg-white rounded-xl p-2 border border-primary h-[85vh]  items-center justify-between m-auto">
+      <View className="w-full bg-white rounded-xl p-2 border-primary h-[85vh]  items-center justify-between m-auto">
         <TouchableOpacity
           onPress={() => closeModal()}
           className=" items-end w-full"
@@ -154,12 +183,24 @@ function JustificationModal({
           <X className=" h-5 w-5 text-black" />
         </TouchableOpacity>
         {image && !isLoading ? (
-          <Image
-            className={`h-3/4 w-[90%]`}
-            source={{ uri: image }}
-            accessibilityLabel="justfication image"
-            resizeMode="contain"
-          />
+          <Pressable
+            onPress={() => setIsVisible(true)}
+            className="bg-white rounded-lg overflow-hidden h-[60vh] w-[80%] items-center justify-center border border-disabledGray"
+          >
+            <Image
+              className={`w-full h-full`}
+              source={{ uri: image }}
+              accessibilityLabel="planning table"
+              resizeMode="contain"
+            />
+
+            <ImageView
+              images={[{ uri: image }]}
+              imageIndex={0}
+              visible={visible}
+              onRequestClose={() => setIsVisible(false)}
+            />
+          </Pressable>
         ) : failed ? (
           <ErrorComp />
         ) : (
@@ -167,7 +208,7 @@ function JustificationModal({
         )}
 
         <TouchableOpacity
-          className="bg-primary w-full rounded-lg py-5 items-center"
+          className="bg-primary px-4 rounded-lg py-3 items-center"
           onPress={() => {
             justify();
           }}

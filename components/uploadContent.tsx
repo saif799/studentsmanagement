@@ -1,10 +1,5 @@
 import { ReactNode, useState } from "react";
-import {
-  Alert,
-  TouchableOpacity,
-  StyleProp,
-  ViewStyle,
-} from "react-native";
+import { Alert, TouchableOpacity, StyleProp, ViewStyle } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { supabase } from "@/lib/supabase";
 
@@ -13,15 +8,24 @@ interface Props {
   children: ReactNode;
   style?: StyleProp<ViewStyle>;
   disabled?: boolean;
+  setIsUploading?: (state: boolean) => void;
 }
 
-export function UploadContent({ onUpload, children, style, disabled }: Props) {
+export function UploadContent({
+  onUpload,
+  children,
+  style,
+  disabled,
+  setIsUploading,
+}: Props) {
   const [uploading, setUploading] = useState(false);
 
   async function uploadAvatar() {
     try {
       setUploading(true);
-
+      if (setIsUploading) {
+        setIsUploading(true);
+      }
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images, // Restrict to only images
         allowsMultipleSelection: false, // Can only select one image
@@ -67,6 +71,9 @@ export function UploadContent({ onUpload, children, style, disabled }: Props) {
       }
     } finally {
       setUploading(false);
+      if (setIsUploading) {
+        setIsUploading(false);
+      }
     }
   }
 

@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 async function fetchChildren(parentId: string | undefined) {
   // const setCurrentCHild = useCurrentChild((state) => state.change);
-
+  
   const { data } = await supabase
     .from("profiles")
     .select("  id, username, familyName, avatar_url")
@@ -16,6 +16,8 @@ async function fetchChildren(parentId: string | undefined) {
     avatar_url: string;
   }[] = [];
   if (data) students = data;
+  console.log(data);
+
   return students;
 }
 
