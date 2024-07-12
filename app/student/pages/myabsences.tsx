@@ -77,7 +77,7 @@ export default function Myabsences() {
                 <Text className="text-lg font-pmedium text-darkestGray pb-2">
                   {e.created_at}
                 </Text>
-                {e.justification && e.justification[0].accepted === true ? (<Text className="text-lg font-pmedium text-primary pb-2">justifé</Text>) : e.justification[0] && e.justification[0].accepted === false ? (<Text className="text-lg font-pmedium text-gray-500 pb-2">en attente</Text>) : <Text className="text-lg font-pmedium text-red-500 pb-2">non-justifé</Text> }
+                {e.justification && e.justification[0].accepted ? (<Text className="text-lg font-pmedium text-primary pb-2">justifé</Text>) : e.justification[0] && !e.justification[0].accepted ? (<Text className="text-lg font-pmedium text-gray-500 pb-2">en attente</Text>) : <Text className="text-lg font-pmedium text-red-500 pb-2">non-justifé</Text> }
               </TouchableOpacity>
             ))}
           </ScrollView>
