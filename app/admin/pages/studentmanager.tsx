@@ -43,7 +43,7 @@ const StudentManager = () => {
           {students?.map((stu) => (
             <View key={stu.id}>
               <View
-                className={`w-full rounded-lg py-3 px-3 flex-row justify-center items-center border border-grayBorder`}
+                className={`w-full rounded-lg py-3 px-3 flex-row justify-center mb-2 items-center border border-grayBorder`}
                 key={stu.id}
               >
                 <Text className={`text-base font-pregular text-darkestGray`}>

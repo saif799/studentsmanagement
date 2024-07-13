@@ -7,13 +7,14 @@ async function fetchAbsence(userId: string | undefined) {
   const { data } = await supabase
     .from("presence")
     .select("created_at,id ,justification(id,accepted)")
-    .match({ userId: userId, state: "absent" })
+    .match({ userId: userId })
     .order("created_at", { ascending: true });
 
   let absences: {
     id: string;
     created_at: string;
     justification: {
+      id: string;
       accepted: string;
     }[];
   }[] = [];
@@ -39,13 +40,15 @@ async function fetchJustification() {
   if (data) justification = data;
   return justification;
 }
-async function fetchUnAcceptedJustification() {
+async function fetchUnAcceptedJustification(school: string) {
   // const setCurrentCHild = useCurrentChild((state) => state.change);
 
   const { data } = await supabase
     .from("justification")
-    .select("created_at, id, accepted, file_path, absence_Id")
-    .eq("accepted", false)
+    .select(
+      "created_at, id, accepted, file_path, absence_Id, presence(id , userId , profiles(id , school , username , familyName))"
+    )
+    .match({ accepted: false, "presence.profiles.school": school })
     .order("created_at", { ascending: true });
 
   let justification: {
@@ -54,9 +57,21 @@ async function fetchUnAcceptedJustification() {
     accepted: boolean;
     file_path: string;
     absence_Id: string;
+    presence: {
+      id: string;
+      userId: string;
+      profiles: {
+        id: string;
+        school: string;
+        username: string;
+        familyName: string;
+      }[];
+    }[];
   }[] = [];
 
-  if (data) justification = data;
+  if (data) {
+    justification = data;
+  }
 
   return justification;
 }
@@ -74,8 +89,8 @@ export const getJustification = () =>
     queryFn: async () => await fetchJustification(),
   });
 
-export const getUnaAcceptedJustification = () =>
+export const getUnaAcceptedJustification = (schoolId: string) =>
   useQuery({
     queryKey: ["admin_justification"],
-    queryFn: async () => await fetchUnAcceptedJustification(),
+    queryFn: async () => await fetchUnAcceptedJustification(schoolId),
   });

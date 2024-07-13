@@ -26,13 +26,13 @@ export default function HomeScreen() {
   const pathFrom = "admin";
   const iconSize = 45;
   const strokeWidth = 1.4;
-  
+
   return (
     <SafeAreaView className="bg-white">
       <ScrollView className="bg-white">
         <HeroSec />
         <View className="gap-3 mt-1 px-2 pb-[14vh]">
-        <View
+          <View
             className="flex-row  justify-between bg-white"
             style={styles.Card}
           >
@@ -49,27 +49,10 @@ export default function HomeScreen() {
                 />
               }
             />
-          </View>
-          <View
-            className="flex-row  justify-between bg-white"
-            style={styles.Card}
-          >
-            <FeatureCard
-              from={pathFrom}
-              pathTo="uploadSth"
-              title="Publier les Emplois du temps"
-              icon={
-                <CalendarClockIcon
-                  size={iconSize}
-                  strokeWidth={strokeWidth}
-                  className=" text-primary"
-                />
-              }
-            />
             <FeatureCard
               from={pathFrom}
               pathTo="gradesmanager"
-              title="Publier les relevé de notes"
+              title="gestion des relevé de notes"
               icon={
                 <TablePropertiesIcon
                   size={iconSize}
@@ -77,6 +60,37 @@ export default function HomeScreen() {
                   className=" text-primary"
                 />
               }
+            />
+          </View>
+          <View
+            className="flex-row  justify-between bg-white"
+            style={styles.Card}
+          >
+            <FeatureCard
+              from={pathFrom}
+              pathTo="summonsmanager"
+              title="gestion des Convocations"
+              icon={
+                <MailIcon
+                  size={iconSize}
+                  strokeWidth={strokeWidth}
+                  className=" text-primary"
+                />
+              }
+              description="Convoquer un parent d’élève"
+            />
+            <FeatureCard
+              from={pathFrom}
+              pathTo="notesmanager"
+              title="Gestion des Notes"
+              icon={
+                <MessageSquareText
+                  size={iconSize}
+                  strokeWidth={strokeWidth}
+                  className=" text-primary"
+                />
+              }
+              description="Contacter les parent en écrivant une note"
             />
           </View>
           <View
@@ -94,7 +108,7 @@ export default function HomeScreen() {
                   className=" text-primary"
                 />
               }
-              description="Vérifier les justifications"
+              description="vérifiez et gérez justifications"
             />
 
             <FeatureCard
@@ -117,10 +131,10 @@ export default function HomeScreen() {
           >
             <FeatureCard
               from={pathFrom}
-              pathTo="rules"
-              title="Ajouter Règlement Intérieur"
+              pathTo="uploadSth"
+              title="Publier les Emplois du temps"
               icon={
-                <Scale
+                <CalendarClockIcon
                   size={iconSize}
                   strokeWidth={strokeWidth}
                   className=" text-primary"
@@ -148,19 +162,6 @@ export default function HomeScreen() {
           >
             <FeatureCard
               from={pathFrom}
-              pathTo="notesmanager"
-              title="Gestion des Notes"
-              icon={
-                <MessageSquareText
-                  size={iconSize}
-                  strokeWidth={strokeWidth}
-                  className=" text-primary"
-                />
-              }
-              description="Contacter les parent en écrivant une note"
-            />
-            <FeatureCard
-              from={pathFrom}
               pathTo="uploadExams"
               title="Publier calendrier des examens"
               icon={
@@ -171,25 +172,23 @@ export default function HomeScreen() {
                 />
               }
             />
-          </View>
-          <View
-            className="flex-row justify-between bg-white"
-            style={styles.Card}
-          >
             <FeatureCard
               from={pathFrom}
-              pathTo="summonsmanager"
-              title="gestion des Convocations"
+              pathTo="rules"
+              title="Ajouter Règlement Intérieur"
               icon={
-                <MailIcon
+                <Scale
                   size={iconSize}
                   strokeWidth={strokeWidth}
                   className=" text-primary"
                 />
               }
-              description="Convoquer un parent d’élève"
             />
           </View>
+          <View
+            className="flex-row justify-between bg-white"
+            style={styles.Card}
+          ></View>
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -1,5 +1,5 @@
 import { View, Text, Image, ScrollView, Alert } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { getAbsence } from "@/hooks/getAbsence";
 import { useCurrentChild } from "@/context/currentChild";
 import { UploadContent } from "@/components/uploadContent";
@@ -7,21 +7,18 @@ import { useJustification } from "@/hooks/justification";
 import { queryClient } from "@/app/_layout";
 import LoadingComp from "@/components/LoadingComp";
 import ErrorComp from "@/components/ErrorComp";
+import { useQueryClient } from "@tanstack/react-query";
 export default function Justification() {
   const { currentChild } = useCurrentChild();
-
+  const [isUploading, setisUploading] = useState(false);
   if (!currentChild) return <Text>please select a child</Text>;
 
-  // TODO : make the ui for the case where the user didint select a child yet
-  // or maybe make it so that if there is no child we just get the first child data like we did in the main page for the selct component
-
   const { data: absences, isPending, isError } = getAbsence(currentChild.id);
+  const queryClient = useQueryClient();
+  const { mutate: justify, isPending: isPendingJustify } =
+    useJustification(queryClient);
 
-  const { mutate: justify } = useJustification();
-
-  // TODO : handle the is loading and error UI
-
-  if (isPending) return <LoadingComp />;
+  if (isPending || isPendingJustify) return <LoadingComp />;
 
   if (isError) return <ErrorComp />;
 
@@ -32,7 +29,7 @@ export default function Justification() {
           <Text className="text-lg font-pmedium  text-darkestGray pb-2">
             Absences de : {currentChild.username}
           </Text>
-          <Text className="text-lg font-pregular text-white bg-red-400 px-2 pt-1 items-center rounded-md">
+          <Text className="text-lg font-pregular text-white bg-primary px-2 pt-1 items-center rounded-md">
             {absences.length}
           </Text>
         </View>
@@ -42,39 +39,46 @@ export default function Justification() {
             <Text className="font-pregular text-xl pb-3 pl-2">
               non justifié
             </Text>
-            {absences
-              .filter((e) => !e.justification.length)
-              .map((e) => (
-                <View
-                  key={e.id}
-                  className={`w-full border border-grayBorder rounded-lg  py-1 pt-3 px-3 text-center mb-2`}
-                >
-                  <UploadContent
+            {absences.filter((e) => !e.justification.length).length > 0 ? (
+              absences
+                .filter((e) => !e.justification.length)
+                .map((e) => (
+                  <View
                     key={e.id}
-                    onUpload={(file_path) =>
-                      justify(
-                        { absence_Id: e.id, file_path },
-                        {
-                          onSuccess: () => {
-                            queryClient.invalidateQueries({
-                              queryKey: ["absence"],
-                            });
-                            Alert.alert("justification sent successfully");
-                          },
-                        }
-                      )
-                    }
-                    style={{ alignItems: "center" }}
+                    className={`w-full border border-grayBorder rounded-lg  py-1 pt-3 px-3 text-center mb-2`}
                   >
-                    <Text className="text-lg font-pmedium text-darkestGray pb-2">
-                      {e.created_at}
-                    </Text>
-                    <Text className="text-lg font-pmedium text-primary pb-2">
-                      justifier
-                    </Text>
-                  </UploadContent>
-                </View>
-              ))}
+                    <UploadContent
+                      key={e.id}
+                      setIsUploading={setisUploading}
+                      onUpload={(file_path) => {
+                        justify(
+                          { absence_Id: e.id, file_path },
+                          {
+                            onSuccess: () => {
+                              queryClient.invalidateQueries({
+                                queryKey: ["absence"],
+                              });
+                              Alert.alert("justification envoyé");
+                            },
+                          }
+                        );
+                      }}
+                      style={{ alignItems: "center" }}
+                    >
+                      <Text className="text-lg font-pmedium text-darkestGray pb-2">
+                        {e.created_at}
+                      </Text>
+                      <Text className="text-lg font-pmedium text-primary pb-2">
+                        justifier
+                      </Text>
+                    </UploadContent>
+                  </View>
+                ))
+            ) : (
+              <Text className="text-lg font-pregular text-disabledGray pl-2  pb-2">
+                il n'y a pas
+              </Text>
+            )}
             <Text className=" font-pregular text-xl pb-3 pl-2 pt-1">
               en attente de justification
             </Text>

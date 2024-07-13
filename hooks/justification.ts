@@ -1,8 +1,8 @@
 import { supabase } from "@/lib/supabase";
-import { useMutation } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
 
-export const useJustification = () =>
-  useMutation({
+export const useJustification = (queryClient : QueryClient) =>
+  useMutation({onSuccess : () => queryClient.invalidateQueries({queryKey : ["absence"]}) ,
     mutationFn: async ({
       file_path,
       absence_Id,
@@ -12,7 +12,7 @@ export const useJustification = () =>
     }) =>
       await supabase.from("justification").insert({ absence_Id, file_path }),
   });
-
+  
 export const useAcceptJustification = () =>
   useMutation({
     mutationFn: async ({

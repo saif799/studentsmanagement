@@ -201,7 +201,7 @@ function PresenceTable() {
                 key={stu.id}
               >
                 <View
-                  className={`w-full rounded-lg py-3 px-3 flex-row justify-between items-center ${
+                  className={`w-full rounded-lg py-3 px-3 flex-row justify-between items-center mb-2 ${
                     stu.presence.length === 0
                       ? "bg-[#efefef]"
                       : stu.presence[0].state === "absent"
