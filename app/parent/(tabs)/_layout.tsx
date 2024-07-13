@@ -13,10 +13,7 @@ export default function TabLayout() {
   const { user } = useUser();
 
   if (!session) {
-    ToastAndroid.show(
-      "Redirection en course...",
-      ToastAndroid.SHORT
-    );
+    ToastAndroid.show("Redirection en course...", ToastAndroid.SHORT);
     return <Redirect href="/" />;
   }
 
@@ -56,7 +53,7 @@ export default function TabLayout() {
             tabBarIcon: ({ color, focused, size }) => (
               <TabIcon
                 color={color}
-                name="Profile"
+                name="Accueil"
                 focused={focused}
                 icon={<HomeIcon size={size} color={color} />}
               />
