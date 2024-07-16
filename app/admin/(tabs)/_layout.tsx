@@ -55,7 +55,7 @@ export default function TabLayout() {
             tabBarIcon: ({ color, focused, size }) => (
               <TabIcon
                 color={color}
-                name="Profile"
+                name="Accueil"
                 focused={focused}
                 icon={<HomeIcon size={size} color={color} />}
               />

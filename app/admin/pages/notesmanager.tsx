@@ -294,7 +294,7 @@ function NewNote({
         </View>
       </Modal>
       <Pressable
-        className="bg-primary p-3 rounded-lg flex-row w-fit absolute bottom-[3%] items-center justify-center "
+        className="bg-primary p-3 rounded-lg flex-row w-fit absolute bottom-[3vh] items-center justify-center "
         onPress={() => setModalVisible(true)}
       >
         <Text className="text-lg font-pmedium text-white pr-3">

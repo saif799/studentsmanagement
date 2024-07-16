@@ -44,25 +44,28 @@ const Matier = () => {
         Matières et Professeurs
       </Text>
 
-      {image ? (
+      {isPending ? (
+        <LoadingComp />
+      ) : image ? (
         <Pressable
-        onPress={() => setIsVisible(true)}
-        className="bg-white rounded-lg overflow-hidden h-[60vh] w-[80%] items-center justify-center border border-disabledGray"
-      >
-        <Image
-          className={`w-full h-full`}
-          source={{ uri: image }}
-          accessibilityLabel="planning table"
-          resizeMode="contain"/>
+          onPress={() => setIsVisible(true)}
+          className="bg-white rounded-lg overflow-hidden h-[60vh] w-[80%] items-center justify-center border border-disabledGray"
+        >
+          <Image
+            className={`w-full h-full`}
+            source={{ uri: image }}
+            accessibilityLabel="planning table"
+            resizeMode="contain"
+          />
 
-        <ImageView
-          images={[{ uri: image }]}
-          imageIndex={0}
-          visible={visible}
-          onRequestClose={() => setIsVisible(false)}
-        />
-      </Pressable>
-      ) : isPending ? <LoadingComp /> :(
+          <ImageView
+            images={[{ uri: image }]}
+            imageIndex={0}
+            visible={visible}
+            onRequestClose={() => setIsVisible(false)}
+          />
+        </Pressable>
+      ) : (
         <BlankComp />
       )}
       <View className=" flex-1 justify-center ">

@@ -41,7 +41,6 @@ async function fetchJustification() {
   return justification;
 }
 async function fetchUnAcceptedJustification(school: string) {
-  // const setCurrentCHild = useCurrentChild((state) => state.change);
 
   const { data } = await supabase
     .from("justification")
@@ -50,7 +49,7 @@ async function fetchUnAcceptedJustification(school: string) {
     )
     .match({ accepted: false, "presence.profiles.school": school })
     .order("created_at", { ascending: true });
-
+      
   let justification: {
     id: string;
     created_at: string;
@@ -72,7 +71,8 @@ async function fetchUnAcceptedJustification(school: string) {
   if (data) {
     justification = data;
   }
-
+  console.log(justification);
+  
   return justification;
 }
 

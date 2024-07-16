@@ -80,7 +80,7 @@ export default function Justification() {
       }
     );
   };
-
+  
   const closeModal = () => setIsOpen(false);
   return (
     <>
@@ -96,8 +96,8 @@ export default function Justification() {
               >
                 <View className="flex-row justify-between">
                   <Text className="text-lg font-pregular text-darkestGray pb-2">
-                    {e.presence.profiles.username}
-                    {e.presence.profiles.familyName ?? ""}
+                    {e.presence && e.presence.profiles && e.presence.profiles.username ? e.presence.profiles.username :  ""}
+                    {e.presence && e.presence.profiles && e.presence.profiles.username ? e.presence.profiles.familyName :  ""}
                   </Text>
                   <Text className="text-lg font-pmedium text-darkestGray pb-2">
                     {" "}
