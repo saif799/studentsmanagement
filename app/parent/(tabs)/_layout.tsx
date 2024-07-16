@@ -13,10 +13,7 @@ export default function TabLayout() {
   const { user } = useUser();
 
   if (!session) {
-    ToastAndroid.show(
-      "Redirection en course...",
-      ToastAndroid.SHORT
-    );
+    ToastAndroid.show("Redirection en course...", ToastAndroid.SHORT);
     return <Redirect href="/" />;
   }
 
